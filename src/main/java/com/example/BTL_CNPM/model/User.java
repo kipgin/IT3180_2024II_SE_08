@@ -2,15 +2,14 @@ package com.example.BTL_CNPM.model;
 
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
 public class User {
-
-
-
     @Id
     private String username;
 
@@ -27,12 +26,18 @@ public class User {
     @Column(nullable = false)
     private boolean isActive;
 
-    @Column(nullable = false, updatable = false)
+
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
+    public enum Role {
+        RESIDENT, ADMIN, SUPER_ADMIN
+    }
+
+    // Getters và Setters
     public User() {
 
     }
@@ -43,16 +48,6 @@ public class User {
         this.password = password;
         this.role = role;
         this.isActive = isActive;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
     }
 
     public String getUsername() {
@@ -87,11 +82,28 @@ public class User {
         this.role = role;
     }
 
-    public boolean getIsActive() {
+    public boolean isActive() {
         return isActive;
     }
 
-    public void setIsActive(boolean active) {
+    public void setActive(boolean active) {
         isActive = active;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 }

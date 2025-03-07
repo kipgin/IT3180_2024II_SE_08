@@ -2,6 +2,7 @@ package com.example.BTL_CNPM.controller;
 
 import com.example.BTL_CNPM.model.LoginRequest;
 import com.example.BTL_CNPM.model.PasswordChangeRequest;
+import com.example.BTL_CNPM.model.SetActiveStatusRequest;
 import com.example.BTL_CNPM.model.User;
 import com.example.BTL_CNPM.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,29 +12,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
-public interface UserController {
+@RequestMapping("/users")
+public class UserController {
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/register")
-    ResponseEntity<String> register(@RequestBody User user);
+    public boolean register(@RequestBody User user) {
+        return userService.register(user);
+    }
 
     @PostMapping("/login")
-    ResponseEntity<String> login(@RequestBody LoginRequest request);
+    public boolean login(@RequestBody LoginRequest loginRequest) {
+        return userService.login(loginRequest.getUsername(), loginRequest.getPassword());
+    }
 
-    @GetMapping("/{username}")
-    ResponseEntity<User> getUser(@PathVariable String username);
+    @PutMapping("/update")
+    public boolean updateUserInfo(@RequestBody User updatedUser) {
+        return userService.updateUserInfo(updatedUser.getUsername(), updatedUser);
+    }
 
-    @PutMapping("/{username}")
-    ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody User updatedUser);
+    @PutMapping("/change-password")
+    public boolean changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest) {
+        return userService.changePassword(passwordChangeRequest.getUsername(), passwordChangeRequest.getOldPassword(), passwordChangeRequest.getNewPassword());
+    }
 
-    @PutMapping("/{username}/password")
-    ResponseEntity<String> changePassword(@PathVariable String username, @RequestBody PasswordChangeRequest request);
-
-    @PatchMapping("/{username}/activate")
-    ResponseEntity<String> activateUser(@PathVariable String username);
-
-    @PatchMapping("/{username}/deactivate")
-    ResponseEntity<String> deactivateUser(@PathVariable String username);
-
-    @DeleteMapping("/{username}")
-    ResponseEntity<String> deleteUser(@PathVariable String username);
+    @PutMapping("/set-active")
+    public boolean setActiveStatus(@RequestBody SetActiveStatusRequest setActiveStatusRequest) {
+        return userService.setActiveStatus(setActiveStatusRequest.getUsername(), setActiveStatusRequest.isActive());
+    }
 }

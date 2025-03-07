@@ -1,15 +1,59 @@
 package com.example.BTL_CNPM.service;
 
 import com.example.BTL_CNPM.model.User;
+import com.example.BTL_CNPM.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-public interface UserService {
-    boolean register(User user);
-    boolean login(String username, String password);
-    User getUser(String username);
-    boolean updateUser(String username, User updatedUser);
-    boolean changePassword(String username, String oldPassword, String newPassword);
-    boolean setUserActive(String username, boolean isActive);
-    boolean deleteUser(String username);
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+
+    public boolean register(User user) {
+        if (userRepository.existsById(user.getUsername())) {
+            return false;
+        }
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean login(String username, String password) {
+        Optional<User> userOpt = userRepository.findById(username);
+        return userOpt.filter(user -> user.getPassword().equals(password)).isPresent();
+    }
+
+    public boolean updateUserInfo(String username, User updatedUser) {
+        if (userRepository.existsById(username)) {
+            updatedUser.setUsername(username);
+            userRepository.save(updatedUser);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean changePassword(String username, String oldPassword, String newPassword) {
+        Optional<User> userOpt = userRepository.findById(username);
+        if (userOpt.isPresent() && userOpt.get().getPassword().equals(oldPassword)) {
+            User user = userOpt.get();
+            user.setPassword(newPassword);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setActiveStatus(String username, boolean isActive) {
+        Optional<User> userOpt = userRepository.findById(username);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setActive(isActive);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
 }
+
