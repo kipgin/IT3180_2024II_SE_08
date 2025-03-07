@@ -33,10 +33,6 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public enum Role {
-        RESIDENT, ADMIN, SUPER_ADMIN
-    }
-
     // Getters và Setters
     public User() {
 
