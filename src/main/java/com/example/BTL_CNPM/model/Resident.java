@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Resident {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String name;
 
@@ -23,7 +23,7 @@ public class Resident {
     @JoinColumn(name = "household_id")
     private Household household;
 
-    public Resident(Long id, String name, Gender gender, int birthYear, AccomStatus accomStatus, Household household) {
+    public Resident(Integer id, String name, Gender gender, int birthYear, AccomStatus accomStatus, Household household) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -36,11 +36,11 @@ public class Resident {
 
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -83,4 +83,5 @@ public class Resident {
     public void setHousehold(Household household) {
         this.household = household;
     }
+
 }

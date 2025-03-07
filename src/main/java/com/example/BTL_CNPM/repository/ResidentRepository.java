@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ResidentRepository extends JpaRepository<Resident, Long> {
-    List<Resident> findByHouseholdId(Long householdId);
+public interface ResidentRepository extends JpaRepository<Resident, Integer> {
+    List<Resident> findByHouseholdId(Integer householdId);
     List<Resident> findByAccomStatus(AccomStatus status);
 }
