@@ -26,34 +26,29 @@ public class ResidentController {
     @Autowired
     private ResidentRepository residentRepository;
 
-    @GetMapping
+    @GetMapping("/get-all")
     public List<Resident> getResidents() {
         return residentService.getAllResidents();
     }
 
-//    @PostMapping("/register")
-//    public ApiResponse addResident(@RequestBody Resident resident) {
-//        // Kiểm tra household có tồn tại không
-//        Optional<Household> householdOpt = householdRepository.findById(resident.getHousehold().getId());
-//        if (householdOpt.isEmpty()) {
-//            return new ApiResponse(false, "Household ID không tồn tại");
-//        }
-//
-//        // Kiểm tra xem cư dân đã tồn tại trong household chưa
-//        boolean exists = residentRepository.existsByNameAndHouseholdId(resident.getName(), resident.getHouseholdId());
-//        if (exists) {
-//            return new ApiResponse(false, "Cư dân đã tồn tại trong hộ này");
-//        }
-//
-//        // Lưu vào DB
-//        residentRepository.save(resident);
-//        return new ApiResponse(true, "Thêm cư dân thành công");
-//    }
+    @PostMapping("/register")
+    public boolean addResident(@RequestBody Resident resident) {
+        return residentService.addResident(resident);
+    }
 
+    @DeleteMapping("/delete/{id}")
+    public boolean deleteResident(@PathVariable Integer id) {
+        return residentService.deleteResident(id);
+    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteResident(@PathVariable Integer id) {
-        residentService.deleteResident(id);
-        return ResponseEntity.ok().build();
+    @GetMapping("/household/{householdId}")
+    public List<Resident> getResidentsByHousehold(@PathVariable Integer householdId) {
+        return residentService.getResidentsByHouseholdId(householdId);
+    }
+
+    @DeleteMapping("/deleteByHousehold/{householdId}")
+    public boolean deleteResidentsByHousehold(@PathVariable Integer householdId) {
+        System.out.println(householdId + " 111111111111111111111");
+        return residentService.deleteAllResidentByHouseholdId(householdId);
     }
 }

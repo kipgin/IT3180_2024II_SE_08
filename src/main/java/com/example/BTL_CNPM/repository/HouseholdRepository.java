@@ -9,5 +9,7 @@ import java.util.Optional;
 @Repository
 public interface HouseholdRepository extends JpaRepository<Household, Integer> {
     boolean existsByOwnerUsername(String ownerUsername);
+    boolean existsById(Integer id);
     Optional<Household> findByOwnerUsername(String ownerUsername);
+    void deleteByOwnerUsername(String ownerUsername);
 }

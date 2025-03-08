@@ -2,6 +2,7 @@ package com.example.BTL_CNPM.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "residents")
 public class Resident {
@@ -19,21 +20,19 @@ public class Resident {
     @Enumerated(EnumType.STRING)
     private AccomStatus accomStatus;
 
-    @ManyToOne
-    @JoinColumn(name = "household_id")
-    private Household household;
+    @Column(name = "household_id", nullable = true)
+    private Integer householdId; // Chỉ lưu ID thay vì đối tượng Household
 
-    public Resident(Integer id, String name, Gender gender, int birthYear, AccomStatus accomStatus, Household household) {
+    public Resident(Integer id, String name, Gender gender, int birthYear, AccomStatus accomStatus, Integer householdId) {
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.birthYear = birthYear;
         this.accomStatus = accomStatus;
-        this.household = household;
+        this.householdId = householdId;
     }
 
     public Resident() {
-
     }
 
     public Integer getId() {
@@ -76,12 +75,11 @@ public class Resident {
         this.accomStatus = accomStatus;
     }
 
-    public Household getHousehold() {
-        return household;
+    public Integer getHouseholdId() {
+        return householdId;
     }
 
-    public void setHousehold(Household household) {
-        this.household = household;
+    public void setHouseholdId(Integer householdId) {
+        this.householdId = householdId;
     }
-
 }

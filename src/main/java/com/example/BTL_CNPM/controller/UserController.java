@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -40,5 +41,15 @@ public class UserController {
     @PutMapping("/set-active")
     public boolean setActiveStatus(@RequestBody SetActiveStatusRequest setActiveStatusRequest) {
         return userService.setActiveStatus(setActiveStatusRequest.getUsername(), setActiveStatusRequest.isActive());
+    }
+
+    @DeleteMapping("/delete/{username}")
+    public boolean deleteUser(@PathVariable String username) {
+        return userService.deleteUserByUsername(username);
+    }
+
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 }

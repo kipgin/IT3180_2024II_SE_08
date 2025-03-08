@@ -14,9 +14,9 @@ public class HouseholdController {
     @Autowired
     private HouseholdService householdService;
 
-    @PostMapping("/register")
-    public boolean createHousehold(@RequestBody Household household) {
-        return householdService.createHousehold(household);
+    @PostMapping("/register/{username}")
+    public boolean createHousehold(@PathVariable String username) {
+        return householdService.createHousehold(new Household(username));
     }
 
     @PutMapping("/update")
@@ -24,8 +24,8 @@ public class HouseholdController {
         return householdService.updateHousehold(household);
     }
 
-    @DeleteMapping("/{username}")
-    public boolean deleteHousehold(@PathVariable String username) {
+    @DeleteMapping("/delete/{username}")
+    public boolean deleteHouseholdByUsername(@PathVariable String username) {
         return householdService.deleteHouseholdByUsername(username);
     }
 

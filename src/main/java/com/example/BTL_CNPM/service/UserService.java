@@ -1,16 +1,23 @@
 package com.example.BTL_CNPM.service;
 
+import com.example.BTL_CNPM.model.Household;
 import com.example.BTL_CNPM.model.User;
 import com.example.BTL_CNPM.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private HouseholdService householdService;
 
     public boolean register(User user) {
         if (userRepository.existsById(user.getUsername())) {
@@ -54,6 +61,21 @@ public class UserService {
             return true;
         }
         return false;
+    }
+
+    @Transactional
+    public boolean deleteUserByUsername(String username) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isPresent()) {
+            householdService.deleteHouseholdByUsername(username);
+            userRepository.deleteByUsername(username);
+            return true;
+        }
+        return false;
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }
 

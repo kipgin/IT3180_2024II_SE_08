@@ -2,8 +2,11 @@ package com.example.BTL_CNPM.service.impl;
 
 import com.example.BTL_CNPM.model.Household;
 import com.example.BTL_CNPM.repository.HouseholdRepository;
+import com.example.BTL_CNPM.repository.ResidentRepository;
 import com.example.BTL_CNPM.repository.UserRepository;
 import com.example.BTL_CNPM.service.HouseholdService;
+import com.example.BTL_CNPM.service.ResidentService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,9 @@ public class HouseholdServiceImpl implements HouseholdService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ResidentService residentService;
 
     public boolean createHousehold(Household household) {
         if (!userRepository.existsByUsername(household.getOwnerUsername())) {
@@ -47,12 +53,20 @@ public class HouseholdServiceImpl implements HouseholdService {
         return false; // Không tìm thấy household để cập nhật
     }
 
+    @Transactional
     @Override
     public boolean deleteHouseholdByUsername(String username) {
         Optional<Household> household = householdRepository.findByOwnerUsername(username);
-
+        System.out.println("dang tim con cho");
         if (household.isPresent()) {
-            householdRepository.delete(household.get());
+            Integer householdId = household.get().getId();
+
+            System.out.println(householdId);
+            // Xóa tất cả Residents trước
+            residentService.deleteAllResidentByHouseholdId(householdId);
+
+            // Xóa Household
+            householdRepository.deleteByOwnerUsername(household.get().getOwnerUsername());
             return true;
         }
         return false;
