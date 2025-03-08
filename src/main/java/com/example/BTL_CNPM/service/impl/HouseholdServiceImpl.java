@@ -57,11 +57,8 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Override
     public boolean deleteHouseholdByUsername(String username) {
         Optional<Household> household = householdRepository.findByOwnerUsername(username);
-        System.out.println("dang tim con cho");
         if (household.isPresent()) {
             Integer householdId = household.get().getId();
-
-            System.out.println(householdId);
             // Xóa tất cả Residents trước
             residentService.deleteAllResidentByHouseholdId(householdId);
 
