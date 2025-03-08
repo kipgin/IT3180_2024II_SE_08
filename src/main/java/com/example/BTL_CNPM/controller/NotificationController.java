@@ -36,7 +36,7 @@ public class NotificationController {
         return notificationService.getNotificationsBySender(username);
     }
 
-    @PutMapping("/update/")
+    @PutMapping("/update")
     public boolean updateNotification(@RequestBody Notification updatedNotification) {
         return notificationService.updateNotification(updatedNotification);
     }
@@ -45,9 +45,12 @@ public class NotificationController {
     public boolean deleteNotification(@PathVariable Integer id) {
         return notificationService.deleteNotification(id);
     }
-
-    @PostMapping("/send/{id}")
-    public boolean sendNotification(@PathVariable Integer id) {
-        return notificationService.sendNotification(id);
-    }
+    /**
+     * Su dung de gui di thong bao
+     * Se code lai sau, vi se can toi cac cong cu de gui thong bao
+     */
+//    @PostMapping("/send/{id}")
+//    public boolean sendNotification(@PathVariable Integer id) {
+//        return notificationService.sendNotification(id);
+//    }
 }
