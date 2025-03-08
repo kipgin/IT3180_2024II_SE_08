@@ -19,10 +19,10 @@ public class HouseholdController {
         return householdService.createHousehold(new Household(username));
     }
 
-    @PutMapping("/update")
-    public boolean updateHousehold(@RequestBody Household household) {
-        return householdService.updateHousehold(household);
-    }
+//    @PutMapping("/update")
+//    public boolean updateHousehold(@RequestBody Household household) {
+//        return householdService.updateHousehold(household);
+//    }
 
     @DeleteMapping("/delete/{username}")
     public boolean deleteHouseholdByUsername(@PathVariable String username) {
