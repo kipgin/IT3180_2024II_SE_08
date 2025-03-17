@@ -1,4 +1,4 @@
-package com.example.BTL_CNPM;
+package com.example.BTL_CNPM.model;
 
 public class ApiResponse {
     private boolean success;
