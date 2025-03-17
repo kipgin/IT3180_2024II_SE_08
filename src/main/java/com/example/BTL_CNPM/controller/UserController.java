@@ -52,4 +52,10 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
+    @GetMapping("/get/{username}")
+    public Optional<User> getUser(@RequestBody String username){
+        return userService.getUser(username);
+    }
+
 }

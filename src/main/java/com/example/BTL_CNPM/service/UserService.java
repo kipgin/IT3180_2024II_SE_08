@@ -1,6 +1,5 @@
 package com.example.BTL_CNPM.service;
 
-import com.example.BTL_CNPM.model.Household;
 import com.example.BTL_CNPM.model.User;
 import com.example.BTL_CNPM.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +75,9 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+    public Optional<User> getUser(String username){
+        return userRepository.findByUsername(username);
     }
 }
 
