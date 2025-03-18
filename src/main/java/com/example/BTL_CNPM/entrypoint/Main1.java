@@ -1,4 +1,4 @@
-//package com.example.BTL_CNPM.entrypoint;
+package com.example.BTL_CNPM.entrypoint;//package com.example.BTL_CNPM.entrypoint;
 //
 //public class Main1 {
 //    public static void main(String[] args) {
