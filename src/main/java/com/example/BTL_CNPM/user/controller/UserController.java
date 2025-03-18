@@ -7,8 +7,8 @@ import com.example.BTL_CNPM.user.model.User;
 import com.example.BTL_CNPM.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -50,4 +50,10 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
+    @GetMapping("/get/{username}")
+    public Optional<User> getUser(@RequestBody String username){
+        return userService.getUser(username);
+    }
+
 }

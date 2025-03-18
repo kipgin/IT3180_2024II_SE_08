@@ -1,8 +1,10 @@
 package com.example.BTL_CNPM.user.service;
 
+import com.example.BTL_CNPM.household.service.HouseholdService;
 import com.example.BTL_CNPM.user.model.User;
 import com.example.BTL_CNPM.user.repository.UserRepository;
-import com.example.BTL_CNPM.household.service.HouseholdService;
+import com.example.BTL_CNPM.user.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +78,9 @@ public class UserService {
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+    public Optional<User> getUser(String username){
+        return userRepository.findByUsername(username);
     }
 }
 

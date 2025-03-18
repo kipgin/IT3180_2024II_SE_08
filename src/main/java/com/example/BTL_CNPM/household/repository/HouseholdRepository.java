@@ -12,4 +12,5 @@ public interface HouseholdRepository extends JpaRepository<Household, Integer> {
     boolean existsById(Integer id);
     Optional<Household> findByOwnerUsername(String ownerUsername);
     void deleteByOwnerUsername(String ownerUsername);
+
 }
