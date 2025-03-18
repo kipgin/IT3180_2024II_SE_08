@@ -77,7 +77,7 @@ public class EzGmail {
         MimeMessage email = createEmailWithAttachments(to, subject, body, attachments);
         Message message = createMessageWithEmail(email);
         service.users().messages().send("me", message).execute();
-        System.out.println("✅ Email sent successfully!");
+        System.out.println("Email sent successfully!");
     }
 
     /**

@@ -29,7 +29,7 @@ public class WordTemplateReplacer {
 
             // Ghi file mới
             document.write(fos);
-            System.out.println("✅ File đã được tạo: " + outputPath);
+            System.out.println("File đã được tạo: " + outputPath);
 
         } catch (IOException e) {
             e.printStackTrace();

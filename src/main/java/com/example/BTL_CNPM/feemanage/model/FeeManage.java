@@ -1,4 +1,5 @@
 package com.example.BTL_CNPM.feemanage.model;
+import com.example.BTL_CNPM.resident.model.AccomStatus;
 import jakarta.persistence.*;
 
 @Entity

@@ -1,5 +1,6 @@
 package com.example.BTL_CNPM.charity.model;
 
+import com.example.BTL_CNPM.resident.model.AccomStatus;
 import jakarta.persistence.*;
 
 import java.util.List;

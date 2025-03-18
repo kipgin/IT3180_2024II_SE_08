@@ -1,4 +1,5 @@
 package com.example.BTL_CNPM.feepaid.model;
+import com.example.BTL_CNPM.resident.model.AccomStatus;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,7 +11,7 @@ public class FeePaid {
     private Integer id;
 
     @Column(nullable = false,unique = true)
-    private String ownerUsername;
+    private String ownerUserName;
 
     @Column(nullable=false)
     private Long totalFee;
@@ -32,7 +33,7 @@ public class FeePaid {
 
     public FeePaid(int id, String ownerUsername,Long totalFee, String dueTime, AccomStatus accom_status, int num_of_charity) {
         this.id = id;
-        this.ownerUsername = ownerUsername;
+        this.ownerUserName = ownerUsername;
         this.totalFee=totalFee;
         this.dueTime = dueTime;
         this.accom_status = accom_status;
@@ -44,7 +45,7 @@ public class FeePaid {
     }
 
     public FeePaid(String ownerUsername){
-        this.ownerUsername=ownerUsername;
+        this.ownerUserName=ownerUsername;
     }
 
     public Integer getId() {
@@ -88,10 +89,10 @@ public class FeePaid {
     }
 
     public String getOwnerUsername() {
-        return ownerUsername;
+        return ownerUserName;
     }
 
     public void setOwnerUsername(String ownerUsername) {
-        this.ownerUsername = ownerUsername;
+        this.ownerUserName = ownerUsername;
     }
 }

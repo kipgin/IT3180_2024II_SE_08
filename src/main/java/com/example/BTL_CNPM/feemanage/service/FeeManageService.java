@@ -1,6 +1,6 @@
 package com.example.BTL_CNPM.feemanage.service;
 
-import com.example.BTL_CNPM.model.AccomStatus;
+import com.example.BTL_CNPM.resident.model.AccomStatus;
 import com.example.BTL_CNPM.feemanage.model.FeeManage;
 import com.example.BTL_CNPM.feemanage.repository.FeeManageRepository;
 import jakarta.transaction.Transactional;
