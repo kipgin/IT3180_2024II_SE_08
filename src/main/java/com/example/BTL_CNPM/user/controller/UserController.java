@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/get/{username}")
-    public Optional<User> getUser(@RequestBody String username){
+    public Optional<User> getUser(@PathVariable String username){
         return userService.getUser(username);
     }
 
