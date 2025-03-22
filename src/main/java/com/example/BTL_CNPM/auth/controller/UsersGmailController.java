@@ -55,7 +55,7 @@ public class UsersGmailController {
     public ResponseEntity<String> sendSecondPassword(@PathVariable String username) {
         Optional<UsersGmail> userOptional = usersGmailService.findByUsername(username);
         if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Username không tồn tại!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Username không tồn tại!");
         }
         OTPWordForm otpWordForm = new OTPWordForm(username);
         String output = otpWordForm.generateForm("src/main/resources/form_word/input/otp_template.docx");
@@ -65,6 +65,6 @@ public class UsersGmailController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok("✅ Mật khẩu cấp 2 đã được gửi qua email!");
+        return ResponseEntity.ok("Mật khẩu cấp 2 đã được gửi qua email!");
     }
 }
