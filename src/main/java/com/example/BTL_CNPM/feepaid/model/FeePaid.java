@@ -37,8 +37,8 @@ public class FeePaid {
 
     }
 
-    public FeePaid(String ownerUsername){
-        this.ownerUserName=ownerUsername;
+    public FeePaid(String ownerUserName){
+        this.ownerUserName=ownerUserName;
     }
 
     public Integer getId() {
@@ -73,11 +73,11 @@ public class FeePaid {
         this.accom_status = accom_status;
     }
 
-    public String getOwnerUsername() {
+    public String getOwnerUserName() {
         return ownerUserName;
     }
 
-    public void setOwnerUsername(String ownerUsername) {
-        this.ownerUserName = ownerUsername;
+    public void setOwnerUserName(String ownerUserName) {
+        this.ownerUserName = ownerUserName;
     }
 }

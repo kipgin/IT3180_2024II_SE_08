@@ -2,6 +2,7 @@ package com.example.BTL_CNPM.charity.service;
 
 
 import com.example.BTL_CNPM.charity.model.Charity;
+import com.example.BTL_CNPM.charity.model.CharitySection;
 import com.example.BTL_CNPM.charity.repository.CharityRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +24,24 @@ public class CharityService {
         return charityRepository.existsByOwnerUserName(ownerUserName);
     }
 
-    public Optional<Charity> findById(Integer id){
-        return charityRepository.findById(id);
+    public Charity findById(Integer id){
+        return charityRepository.findById(id).orElse(null);
     }
 
-    public Optional<Charity> findByOwnerUserName(String ownerUserName){
-        return charityRepository.findByOwnerUserName(ownerUserName);
+    public Charity findByOwnerUserName(String ownerUserName){
+        return charityRepository.findByOwnerUserName(ownerUserName).orElse(null);
     }
     public List<Charity> findAll(){
         return charityRepository.findAll();
     }
 
+    public List<CharitySection> getAllSectionId(Integer id){
+        return charityRepository.findById(id).orElse(null).getCharitySections();
+    }
+
+    public List<CharitySection> getAllSectionOwnerUserName(String ownerUserName){
+        return charityRepository.findByOwnerUserName(ownerUserName).orElse(null).getCharitySections();
+    }
     @Transactional
     public boolean deleteById(Integer id){
         if(!charityRepository.existsById(id)){
@@ -52,31 +60,28 @@ public class CharityService {
         return true;
     }
 
-    public boolean updateById(Integer id,Charity charity){
-        if(!charityRepository.existsById(id)){
+    public boolean update(Charity charity){
+        if(!charityRepository.existsByOwnerUserName(charity.getOwnerUserName())){
             return false;
         }
-        Charity newCharity=charityRepository.findById(id).get();
-        newCharity=charity;
-        charityRepository.save(charity);
-        return true;
-    }
-
-    public boolean updateByUserName(String ownerUserName,Charity charity){
-        if(!charityRepository.existsByOwnerUserName(ownerUserName)){
-            return false;
-        }
-        Charity newCharity =charityRepository.findByOwnerUserName(ownerUserName).get();
-        charityRepository.save(newCharity);
+        Charity existOne = charityRepository.findByOwnerUserName(charity.getOwnerUserName()).orElse(null);
+        existOne.setCharitySections(charity.getCharitySections());
+        existOne.setAccomStatus(charity.getAccomStatus());
+        charityRepository.save(existOne);
         return true;
     }
 
     public boolean add(Charity charity){
-        if(charityRepository.existsById(charity.getId()) || charityRepository.existsByOwnerUserName(charity.getOwnerUserName())){
+        if(charityRepository.existsByOwnerUserName(charity.getOwnerUserName())){
             return false;
         }
         charityRepository.save(charity);
         return true;
+    }
+
+    public Charity addtemp(Charity charity){
+        charityRepository.save(charity);
+        return charity;
     }
 
 }

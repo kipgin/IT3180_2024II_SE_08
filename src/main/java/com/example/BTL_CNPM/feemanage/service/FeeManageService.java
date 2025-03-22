@@ -51,8 +51,13 @@ public class FeeManageService {
         if(!feeManageRepository.existsById(id)){
             return false;
         }
-        FeeManage tempFeeManage = feeManageRepository.findById(id).get();
-        tempFeeManage = feeManage;
+        FeeManage tempFeeManage = feeManageRepository.findById(id).orElse(null);
+        if(tempFeeManage == null){
+            return false;
+        }
+        tempFeeManage.setArea(feeManage.getArea());
+        tempFeeManage.setServiceFeePerSquare(feeManage.getServiceFeePerSquare());
+        tempFeeManage.setTotalFee(feeManage.getTotalFee());
         feeManageRepository.save(tempFeeManage);
         return true;
     }
@@ -60,7 +65,13 @@ public class FeeManageService {
         if(!feeManageRepository.existsByOwnerUserName(ownerUserName)){
             return false;
         }
-        FeeManage tempFeeManage=feeManageRepository.findByOwnerUserName(ownerUserName).get();
+        FeeManage tempFeeManage=feeManageRepository.findByOwnerUserName(ownerUserName).orElse(null);
+        if(tempFeeManage == null){
+            return false;
+        }
+        tempFeeManage.setArea(feeManage.getArea());
+        tempFeeManage.setServiceFeePerSquare(feeManage.getServiceFeePerSquare());
+        tempFeeManage.setTotalFee(feeManage.getTotalFee());
         feeManageRepository.save(tempFeeManage);
         return true;
     }
@@ -117,12 +128,13 @@ public class FeeManageService {
 
     //create
 
-    public boolean createFeeManage(FeeManage feeManage){
-        if(feeManageRepository.existsById(feeManage.getId()) || feeManageRepository.existsByOwnerUserName(feeManage.getOwnerUserName())){
+    public boolean add(FeeManage feeManage){
+        if(feeManageRepository.existsByOwnerUserName(feeManage.getOwnerUserName())){
             return false;
         }
         feeManageRepository.save(feeManage);
         return true;
     }
+
 
 }

@@ -70,12 +70,19 @@ public class FeePaidService {
 
     @Transactional
     public boolean add(FeePaid feePaid){
-        if(feePaidRepository.existsById(feePaid.getId()) || feePaidRepository.existsByOwnerUserName(feePaid.getOwnerUsername())){
+        if(feePaidRepository.existsByOwnerUserName(feePaid.getOwnerUserName())){
             return false;
         }
         feePaid.setTotalFee(0);
         feePaidRepository.save(feePaid);
         return true;
     }
+
+    @Transactional
+    public FeePaid addtemp(FeePaid feePaid){
+        feePaidRepository.save(feePaid);
+        return feePaid;
+    }
+
 
 }

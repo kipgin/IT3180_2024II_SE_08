@@ -75,14 +75,18 @@ public class FeeManageController {
         return feeManageService.deleteById(id);
     }
 
-    @DeleteMapping("/delete-name/{ownerusername}")
+    @DeleteMapping("/delete-name/{ownerUserName}")
     public boolean deleteByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
         return feeManageService.deleteByOwnerUserName(ownerUserName);
     }
 
-    @PostMapping("/create")
-    public boolean createFeeManage(@RequestBody FeeManage feeManage){
-        return feeManageService.createFeeManage(feeManage);
+    @PostMapping("/add")
+    public boolean add(@RequestBody FeeManage feeManage){
+        return feeManageService.add(feeManage);
     }
+//    @PostMapping("/addtemp")
+//    public FeeManage addtemp(@RequestBody FeeManage feeManage){
+//        return feeManageService.addtemp(feeManage);
+//    }
 
 }

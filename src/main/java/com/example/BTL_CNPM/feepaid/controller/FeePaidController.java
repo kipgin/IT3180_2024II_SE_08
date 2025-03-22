@@ -35,8 +35,8 @@ public class FeePaidController {
         return feePaidService.existsById(id);
     }
 
-    @GetMapping("/check-ownerusername/{ownerUseName}")
-    public boolean existsByOwnerUserName(@PathVariable String ownerUserName){
+    @GetMapping("/check-ownerusername/{ownerUserName}")
+    public boolean existsByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
         return feePaidService.existsByOwnerUserName(ownerUserName);
     }
 
@@ -45,19 +45,19 @@ public class FeePaidController {
         return feePaidService.findALl();
     }
 
-    @GetMapping("/get-one/{id}")
-    public FeePaid findById (Integer id){
+    @GetMapping("/get-id/{id}")
+    public FeePaid findById (@PathVariable Integer id){
         return feePaidService.findById(id);
     }
 
-    @GetMapping("/get-one/{ownerUserName}")
-    public FeePaid findByOwnerUserName(@PathVariable String ownerUserName){
+    @GetMapping("/get-username/{ownerUserName}")
+    public FeePaid findByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
         return feePaidService.findByOwnerUserName(ownerUserName);
     }
 
     //put
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update-id/{id}")
     public boolean updateById(@PathVariable Integer id, @RequestBody FeePaid feePaid){
         if(!feePaidService.existsById(id)){
             return false;
@@ -67,8 +67,8 @@ public class FeePaidController {
         return true;
     }
 
-    @PutMapping("/update/{ownerUserName}")
-    public boolean updateByOwnerUserName(@PathVariable String ownerUserName,@RequestBody FeePaid feePaid){
+    @PutMapping("/update-ownerusername/{ownerUserName}")
+    public boolean updateByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName,@RequestBody FeePaid feePaid){
         if(!feePaidService.existsByOwnerUserName(ownerUserName)){
             return false;
         }
@@ -76,19 +76,27 @@ public class FeePaidController {
         return true;
     }
     //post
-    @PostMapping("/add/{id}")
+    @PostMapping("/add")
+//    public boolean add(@RequestBody FeePaid feePaid){
+//        return feePaidService.add(feePaid);
+//    }
     public boolean add(@RequestBody FeePaid feePaid){
         return feePaidService.add(feePaid);
     }
 
+    @PostMapping("/addtemp")
+    public FeePaid addtemp(@RequestBody FeePaid feePaid){
+        return feePaidService.addtemp(feePaid);
+    }
+
     //delete
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete-id/{id}")
     public boolean deleteById(@PathVariable Integer id){
         return feePaidService.deleteById(id);
     }
 
-    @DeleteMapping("/delete/{ownerusername}")
-    public boolean deleteByOwnerUserName(@PathVariable String ownerUserName){
+    @DeleteMapping("/delete-ownerusername/{ownerUserName}")
+    public boolean deleteByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
         return feePaidService.deleteByOwnerUserName(ownerUserName);
     }
 

@@ -79,7 +79,7 @@ public class FeeManage {
         this.id = id;
     }
 
-    public long getTotalFee() {
+    public int getTotalFee() {
         return totalFee;
     }
 
@@ -87,7 +87,7 @@ public class FeeManage {
         this.totalFee = totalFee;
     }
 
-    public long getServiceFeePerSquare() {
+    public int getServiceFeePerSquare() {
         return serviceFeePerSquare;
     }
 
