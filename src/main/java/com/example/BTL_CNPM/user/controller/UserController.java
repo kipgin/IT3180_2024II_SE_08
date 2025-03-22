@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{username}")
-    public boolean deleteUser(@PathVariable String username) {
+    public boolean deleteUserBy(@PathVariable String username) {
         return userService.deleteUserByUsername(username);
     }
 
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/get/{username}")
-    public Optional<User> getUser(@RequestBody String username){
+    public Optional<User> getUser(@PathVariable String username){
         return userService.getUser(username);
     }
 

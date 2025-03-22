@@ -9,8 +9,11 @@ import java.util.Optional;
 @Repository
 public interface FeeManageRepository extends JpaRepository<FeeManage,Integer> {
     boolean existsById(Integer id);
+    boolean existsByOwnerUserName(String ownerUserName);
     void deleteById(Integer id);
+    void deleteByOwnerUserName(String ownerUserName);
     Optional<FeeManage> findById (Integer id);
     List<FeeManage> findAll();
+    Optional<FeeManage> findByOwnerUserName(String ownerUserName);
 
 }
