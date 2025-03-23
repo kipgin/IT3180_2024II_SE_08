@@ -46,4 +46,9 @@ public class ResidentController {
         System.out.println(householdId + " 111111111111111111111");
         return residentService.deleteAllResidentByHouseholdId(householdId);
     }
+
+    @GetMapping("/report/number_of_residents")
+    public int getNumberOfResidents() {
+        return (int) residentRepository.count();
+    }
 }
