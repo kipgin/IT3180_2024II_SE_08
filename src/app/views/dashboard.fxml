@@ -37,7 +37,7 @@
             <Label styleClass="sidebar-title" text="DASHBOARD" />
             <Button fx:id="overviewButton" onAction="#handleOverviewButton" styleClass="sidebar-button" text="Tổng Quan" />
             <Button fx:id="accountButton" onAction="#handleAccountButton" styleClass="sidebar-button" text="Quản Lý Tài khoản" />
-            <Button styleClass="sidebar-button" text="Quản Lý Phí" />
+            <Button fx:id="residentButton" onAction="#handleResidentButton" styleClass="sidebar-button" text="Quản Lý Nhân Khẩu" />
             <Button styleClass="sidebar-button" text="Báo Cáo" />
             <Button styleClass="sidebar-button" text="Hồ Sơ" />
             <Button styleClass="sidebar-button" text="Thống Kê" />

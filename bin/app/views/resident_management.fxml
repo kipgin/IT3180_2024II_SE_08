@@ -12,24 +12,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<VBox alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" styleClass="content" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.AccountController">
+<VBox alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" styleClass="content" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.ResidentController">
    <children>
       <Label styleClass="content-title" text="XIN CHÀO, QUẢN TRỊ VIÊN" />
-            <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Tài khoản" />
+            <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Nhân Khẩu" />
 
             <HBox styleClass="stats">
                 <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Số Tài Khoản" />
+                    <Label styleClass="stat-title" text="Số Nhân khẩu" />
                     <Label styleClass="stat-value" text="100" />
                 </VBox>
                 <VBox styleClass="stat-box">
                     <Label styleClass="stat-title" text="Trạng thái" />
-                    <Label styleClass="stat-value" text="Tài khoản được kích hoạt: 96" />
-                    <Label styleClass="stat-value" text="Tài khoản bị khóa: 4" />
+                    <Label styleClass="stat-value" text="Tạm trú: 4" />
+                    <Label styleClass="stat-value" text="Tạm vắng: 6" />
                 </VBox>
                 <VBox styleClass="stat-box">
                     <Label styleClass="stat-title" text="Gần đây" />
-                    <Label styleClass="stat-value" text="0 tài khoản được thêm mới" />
+                    <Label styleClass="stat-value" text="0 hộ được thêm mới" />
                 </VBox>
             </HBox>
       <HBox prefHeight="40.0" prefWidth="200.0">
@@ -39,7 +39,7 @@
             <VBox minWidth="-Infinity" prefHeight="40.0" prefWidth="110.0" styleClass="register-box">
                <children>
          
-                 <Button fx:id="registerButton" mnemonicParsing="false" onAction="#openRegisterWindow" styleClass="image-button">
+                 <Button fx:id="addHouseholdButton" onAction="#handleAddHouseholdButton" mnemonicParsing="false"  styleClass="image-button">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -48,7 +48,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Label text="Add account" />
+                  <Label text="Add Household" />
                </children>
                <HBox.margin>
                   <Insets left="800.0" />
@@ -85,13 +85,12 @@
               
               <TableView fx:id="tableView" prefHeight="300" prefWidth="1000">
                   <columns>
-                      <TableColumn fx:id="usernameColumn" text="Username" />
-                      <TableColumn fx:id="fullNameColumn" text="Full Name" />
-                      <TableColumn fx:id="roleColumn" text="Role" />
-                      <TableColumn fx:id="activeColumn" text="Active" />
-                      <TableColumn fx:id="createdAtColumn" text="Created at" />
-                      <TableColumn fx:id="updatedAtColumn" text="Updated at" />
-                      <TableColumn fx:id="actionColumn" text="Actions" />
+                      <TableColumn fx:id="colId" text="ID" />
+                      <TableColumn fx:id="colOwner" text="Chủ hộ khẩu" />
+                      <TableColumn fx:id="colNumOfMembers" text="Số thành viên" />
+                      <TableColumn fx:id="colLocation" text="Vị trí" />
+                      <TableColumn fx:id="colStatus" text="Trạng thái" />
+                  
                   </columns>
               </TableView>
             </content>

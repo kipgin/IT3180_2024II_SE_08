@@ -2,6 +2,7 @@ package app.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -52,18 +53,23 @@ public class DashBoardController {
     }
 
     @FXML
-    private void handleFeeManagementButton() {
-        loadFXML("fee_management.fxml","");
+    private void handleResidentButton() {
+        loadFXML("/app/views/resident_management.fxml","/app/assets/resident_management.css");
     }
 
     // Phương thức để load FXML và đặt vào center
-    private void loadFXML(String fxmlFile,String cssFile) {
+    public void loadFXML(String fxmlFile,String cssFile) {
         try {
         	
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            VBox content = loader.load();
-            mainBorderPane.getStylesheets().clear();
-            mainBorderPane.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());
+            Parent content = loader.load();
+            
+            Object controller = loader.getController();
+            if (controller instanceof DashboardControllable) {
+                ((DashboardControllable) controller).setDashboardController(this);
+            }
+            
+            content.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());
 
             mainBorderPane.setCenter(content); 
         } catch (Exception e) {

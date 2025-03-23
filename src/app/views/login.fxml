@@ -16,7 +16,7 @@
     
 
     <VBox alignment="CENTER" spacing="10" styleClass="wrapper">
-        <Label styleClass="title" text="Login Form" />
+        <Label styleClass="title" text="Login" />
         
         <HBox alignment="CENTER" spacing="10" styleClass="input-field">
             <TextField fx:id="emailField" prefHeight="26.0" prefWidth="185.0" promptText="Username" />
