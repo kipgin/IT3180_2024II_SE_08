@@ -1,14 +1,17 @@
 package com.example.BTL_CNPM.charity.model;
 
 import com.example.BTL_CNPM.resident.model.AccomStatus;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name="charity")
-
 public class Charity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,7 @@ public class Charity {
     private AccomStatus accomStatus;
 
     @OneToMany(mappedBy ="charity",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<CharitySection> charitySections = new ArrayList<>();
 
     public Charity(){

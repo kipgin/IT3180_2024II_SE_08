@@ -14,6 +14,7 @@ public interface CharityNameRepository extends JpaRepository<CharityName,Integer
     Optional<CharityName> findByName(String name);
     List<CharityName> findAll();
     void deleteById(Integer id);
+    //deleteByName bi loi
     void deleteByName(String name);
     void deleteAll();
 }

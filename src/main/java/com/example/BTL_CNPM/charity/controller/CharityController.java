@@ -19,12 +19,12 @@ public class CharityController {
     @Autowired
     private CharityRepository charityRepository;
 
-    @GetMapping("/exists-id/{id}")
+    @GetMapping("/check-id/{id}")
     public boolean existsById(@PathVariable Integer id){
         return charityService.existsById(id);
     }
 
-    @GetMapping("/exists-ownerusername/{ownerUserName}")
+    @GetMapping("/check-ownerusername/{ownerUserName}")
     public boolean existsByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
         return charityService.existsByOwnerUserName(ownerUserName);
     }
@@ -44,6 +44,8 @@ public class CharityController {
         return charityService.findAll();
     }
 
+
+    //truoc khi goi getAllSection Id/OwnerUserName thi can phai check xem id/ownerUserName co ton tai hay khong
     @GetMapping ("/get-all-section-id/{id}")
     public List<CharitySection> getAllSectionId(@PathVariable Integer id){
         return charityService.getAllSectionId(id);
@@ -54,16 +56,35 @@ public class CharityController {
         return charityService.getAllSectionOwnerUserName(ownerUserName);
     }
 
+    @GetMapping("/get-section-from-ownerusername/{sectionName}/{ownerUserName}")
+    public CharitySection findCharitySectionFromOwnerUserName(@PathVariable("sectionName") String sectionName,@PathVariable("ownerUserName") String ownerUserName){
+        return charityService.findCharitySectionFromOwnerUserName(sectionName,ownerUserName);
+    }
+
+    //update bi loi phan setCharitySections
     @PutMapping("/update")
     public boolean update(@RequestBody Charity charity){
         return charityService.update(charity);
     }
+
+    @PostMapping("/add-section-to-ownerusername/{ownerUserName}")
+    public boolean addSectionToOwnerUserName(@RequestBody CharitySection charitySection,@PathVariable("ownerUserName") String ownerUserName){
+        return charityService.addSectionToOwnerUserName(charitySection,ownerUserName);
+    }
+
+    //add-section-ownerusername debug
+    @PostMapping("/add-section-ownerusername-temp/{ownerUserName}")
+    public Charity addSectionToOwnerUserNameTemp(@RequestBody CharitySection charitySection,@PathVariable("ownerUserName") String ownerUserName){
+        return charityService.addSectionToOwnerUserNameTemp(charitySection,ownerUserName);
+    }
+
 
     @PostMapping("/add")
     public boolean add(@RequestBody Charity charity){
         return charityService.add(charity);
     }
 
+    //add de debug
     @PostMapping("/addtemp")
     public Charity addtemp(@RequestBody Charity charity){
         return charityService.addtemp(charity);

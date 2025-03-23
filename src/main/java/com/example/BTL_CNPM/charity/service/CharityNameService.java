@@ -1,5 +1,6 @@
 package com.example.BTL_CNPM.charity.service;
 
+import com.example.BTL_CNPM.charity.model.Charity;
 import com.example.BTL_CNPM.charity.model.CharityName;
 import com.example.BTL_CNPM.charity.repository.CharityNameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,12 @@ public class CharityNameService {
     }
 
     //put
-    public boolean update(CharityName charityName, String name){
-        if(charityNameRepository.existsByName(charityName.getName())){
+    public boolean update(String newName, String name){
+        if(charityNameRepository.existsByName(newName) || !charityNameRepository.existsByName(name)){
             return false;
         }
-        CharityName existsOne =charityNameRepository.findByName(charityName.getName()).orElse(null);
-        existsOne.setName(name);
+        CharityName existsOne =charityNameRepository.findByName(name).orElse(null);
+        existsOne.setName(newName);
         charityNameRepository.save(existsOne);
         return true;
     }
@@ -61,12 +62,15 @@ public class CharityNameService {
         return false;
     }
 
+
+    // ham charityNameRepository.deleteByName(name) dang bi loi
     public boolean deleteByName(String name){
-        if(charityNameRepository.existsByName(name)){
-            charityNameRepository.deleteByName(name);
-            return true;
+        CharityName charityName =charityNameRepository.findByName(name).orElse(null);
+        if(charityName == null){
+            return false;
         }
-        return false;
+        charityNameRepository.deleteById(charityName.getId());
+        return true;
     }
 
     public void deleteAll(){

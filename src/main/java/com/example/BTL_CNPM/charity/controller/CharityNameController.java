@@ -40,9 +40,9 @@ public class CharityNameController {
     }
 
     //put
-    @PutMapping("/update/{name}")
-    public boolean update(@RequestBody CharityName charityName,@PathVariable("name") String name){
-        return charityNameService.update(charityName,name);
+    @PutMapping("/update/{newName}/{name}")
+    public boolean update(@PathVariable("newName") String newName,@PathVariable("name") String name){
+        return charityNameService.update(newName,name);
     }
     //create
     @PostMapping("/create")
@@ -55,6 +55,8 @@ public class CharityNameController {
     public boolean deleteById(@PathVariable Integer id){
         return charityNameService.deleteById(id);
     }
+
+    //khong hieu sao cho nay khong dung duoc @PathVariable cho name
 
     @DeleteMapping("/delete-name/{name}")
     public boolean deleteByName(@PathVariable("name") String name){

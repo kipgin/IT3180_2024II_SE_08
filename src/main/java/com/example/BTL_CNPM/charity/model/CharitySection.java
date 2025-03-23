@@ -1,8 +1,12 @@
 package com.example.BTL_CNPM.charity.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name="charitysection")
 public class CharitySection {
@@ -18,14 +22,14 @@ public class CharitySection {
 
     @ManyToOne
     @JoinColumn(name="charity_id",nullable = false)
+    @JsonBackReference
     private Charity charity;
 
     public CharitySection(){
 
     }
 
-    public CharitySection(Integer id, String name, int donate){
-        this.id=id;
+    public CharitySection(String name, int donate){
         this.name=name;
         this.donate=donate;
     }

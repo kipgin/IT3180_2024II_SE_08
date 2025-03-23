@@ -58,6 +58,8 @@ public class CharitySectionController {
         return charitySectionService.findOneOfOwnerByName(name,ownerUserName);
     }
 
+
+    //thuc chat la de cong tien
     @PutMapping("/update/{ownerUserName}")
     public boolean update(@PathVariable("ownerUserName") String ownerUserName, @RequestBody CharitySection charitySection){
         return charitySectionService.update(ownerUserName,charitySection);
@@ -71,5 +73,10 @@ public class CharitySectionController {
     @DeleteMapping("/delete/{ownerUserName}")
     public boolean delete(@PathVariable("ownerUserName") String ownerUserName,@RequestBody CharitySection charitySection){
         return charitySectionService.delete(ownerUserName,charitySection);
+    }
+
+    @DeleteMapping("/delete/all")
+    public void deleteAll(){
+        charitySectionService.deleteAll();
     }
 }

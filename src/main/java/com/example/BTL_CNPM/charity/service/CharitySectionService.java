@@ -88,8 +88,11 @@ public class CharitySectionService {
 
     //update
     public boolean update(String ownerUserName , CharitySection charitySection){
+        if(ownerUserName == null || charitySection == null || charitySection.getName() == null){
+            return false;
+        }
         Charity charity = charityRepository.findByOwnerUserName(ownerUserName).orElse(null);
-        if(charity == null){
+        if(charity == null || charity.getOwnerUserName()== null){
             return false;
         }
         if(!charityNameRepository.existsByName(charitySection.getName()) || charitySection.getDonate() <= 0){
@@ -111,6 +114,9 @@ public class CharitySectionService {
 
     //create
     public boolean create(String ownerUserName, CharitySection charitySection){
+        if(ownerUserName == null || charitySection == null || charitySection.getName() == null){
+            return false;
+        }
         Charity charity = charityRepository.findByOwnerUserName(ownerUserName).orElse(null);
         if(charity == null){
             return false;
@@ -119,9 +125,11 @@ public class CharitySectionService {
             return false;
         }
         List<CharitySection> tempCharitySection = charity.getCharitySections();
-        for(CharitySection section : tempCharitySection){
-            if(section.getName().equals(charitySection.getName())){
-                return false;
+        if(!tempCharitySection.isEmpty()) {
+            for (CharitySection section : tempCharitySection) {
+                if (section.getName().equals(charitySection.getName())) {
+                    return false;
+                }
             }
         }
         charitySection.setCharity(charity);
@@ -139,6 +147,10 @@ public class CharitySectionService {
         charity.getCharitySections().removeIf(section -> section.getName().equals(charitySection.getName()));
         charityRepository.save(charity);
         return true;
+    }
+
+    public void deleteAll(){
+        charitySectionRepository.deleteAll();
     }
 
 }
