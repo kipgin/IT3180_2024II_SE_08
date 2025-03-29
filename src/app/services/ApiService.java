@@ -220,6 +220,35 @@ public class ApiService {
 	        }
 	    }
 	    
+	    public static boolean addResident(Resident resident) {
+	        try {
+	        	//System.out.print(fullName + username + password + role + active);
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("name", resident.getName());
+	            jsonNode.put("gender", resident.getGender());
+	            jsonNode.put("birthYear", resident.getBirthYear());
+	            jsonNode.put("accomStatus", resident.getAccomStatus());
+	            jsonNode.put("householdId", resident.getHouseholdId());
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/residents/register"))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	                
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
 	    public static List<Household> getAllHouseholds() {
 	        try {
 	            HttpClient client = HttpClient.newHttpClient();

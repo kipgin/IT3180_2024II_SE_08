@@ -1,16 +1,22 @@
 package app.controllers.admin;
 
+import java.io.IOException;
 import java.util.List;
 
 import app.models.Household;
+import app.models.PaymentRecord;
 import app.models.Resident;
 import app.models.User;
 import app.services.ApiService;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -84,7 +90,28 @@ public class HouseholdDetailController {
     @FXML
     public void addResident() {
         // Gọi API hoặc mở form nhập liệu để thêm nhân khẩu
-        System.out.println("Thêm nhân khẩu vào hộ: " + household.getId());
+    	try {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/admin/add_resident.fxml"));
+    		Parent root = loader.load();
+    		Object controller = loader.getController();
+    		((AddResidentController) controller).setIdHousehold(Integer.parseInt(household.getId()));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("/app/assets/css/admin/add_resident.css").toExternalForm());
+            Stage stage = new Stage();
+            stage.setTitle("Thêm Nhân Khẩu Mới");
+            stage.setScene(scene);
+            stage.showAndWait();
+            
+            if (((AddResidentController) controller).isConfirmed()) {
+                loadTable();
+               
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            
+        
     }
 
     @FXML
