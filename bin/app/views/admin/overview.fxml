@@ -44,7 +44,7 @@
     <Pane fx:id="treeContainer" layoutX="20" layoutY="200">
     <!-- Card cha (Tổng quan chung cư) -->
     <VBox fx:id="overviewBox" layoutX="140" layoutY="0" prefHeight="150" prefWidth="300" styleClass="card">
-        <Label styleClass="title" text="Tòa nhà chung cư" />
+        <Label styleClass="title" text="Chung cư Blue Moon" />
          <ImageView fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../../assets/img/building.jpg" />

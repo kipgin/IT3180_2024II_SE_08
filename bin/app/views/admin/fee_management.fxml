@@ -47,8 +47,8 @@
             <HBox styleClass="stats">
                 <VBox prefHeight="50" styleClass="stat-box">
                     <Label styleClass="stat-title" text="Tổng quan" />
-                    <Label styleClass="stat-value" text="Số hộ: 100" />
-                    <Label styleClass="stat-value" text="Cập nhật đến ngày: 25/3/2025" />
+                    <Label fx:id="numberLabel" styleClass="stat-value" text="Số hộ: Đang tải..." />
+                    <Label styleClass="stat-value" text="Cập nhật đến ngày: 29/3/2025" />
                 </VBox>
                <PieChart fx:id="paymentPieChart" />
                <VBox.margin>

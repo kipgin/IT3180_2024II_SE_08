@@ -20,12 +20,12 @@
             <HBox styleClass="stats">
                 <VBox styleClass="stat-box">
                     <Label styleClass="stat-title" text="Số Nhân khẩu" />
-                    <Label styleClass="stat-value" text="100" />
+                    <Label fx:id="numberLabel" styleClass="stat-value" text="đang tải..." />
                 </VBox>
                 <VBox styleClass="stat-box">
                     <Label styleClass="stat-title" text="Trạng thái" />
-                    <Label styleClass="stat-value" text="Tạm trú: 4" />
-                    <Label styleClass="stat-value" text="Tạm vắng: 6" />
+                    <Label styleClass="stat-value" text="Tạm trú: 2" />
+                    <Label styleClass="stat-value" text="Tạm vắng: 1" />
                 </VBox>
                 <VBox styleClass="stat-box">
                     <Label styleClass="stat-title" text="Gần đây" />
@@ -90,6 +90,7 @@
                       <TableColumn fx:id="colNumOfMembers" text="Số thành viên" />
                       <TableColumn fx:id="colLocation" text="Vị trí" />
                       <TableColumn fx:id="colStatus" text="Trạng thái" />
+                      <TableColumn fx:id="actionColumn" text="Actions" />
                   
                   </columns>
               </TableView>

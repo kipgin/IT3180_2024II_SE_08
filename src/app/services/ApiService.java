@@ -157,6 +157,44 @@ public class ApiService {
 	        }
 	    }
 	    
+	    public static boolean delUser(User user) {
+	        try {
+	            	         
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/users/delete/" + user.getUsername()))
+	                    .header("Content-Type", "application/json")
+	                    .DELETE()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            System.out.print(response.statusCode());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean delHouseholdByUsername(Household household) {
+	        try {
+	            	         
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/households/delete/" + household.getOwnerUsername()))
+	                    .header("Content-Type", "application/json")
+	                    .DELETE()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            System.out.print(response.statusCode());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
 	    public static boolean addHousehold(String ownerUserName, int numOfMembers) {
 	        try {
 	            System.out.print(ownerUserName + " " + numOfMembers + " " );

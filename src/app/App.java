@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -23,6 +24,7 @@ public class App extends Application {
 			primaryStage.setX(500);
 			primaryStage.setY(150);
 			primaryStage.show();
+			primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/app/assets/img/logo.png")));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

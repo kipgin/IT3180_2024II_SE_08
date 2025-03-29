@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import app.models.User;
 import app.services.ApiService;
@@ -58,6 +59,7 @@ public class LoginController {
             stage.setScene(scene);
             stage.setX(50);
             stage.setY(30);
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/app/assets/img/logo.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,6 +76,7 @@ public class LoginController {
             stage.setScene(scene);
             stage.setX(50);
             stage.setY(30);
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/app/assets/img/logo.png")));
         } catch (IOException e) {
             e.printStackTrace();
         }

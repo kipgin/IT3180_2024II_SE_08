@@ -52,9 +52,13 @@ public class CharityManagementController {
 	    @FXML
 	    private BarChart<Number, String> donationChart;  
 	    @FXML
+	    private Label numberLabel;
+	    @FXML
 	    private NumberAxis xAxis;
 	    @FXML
 	    private CategoryAxis yAxis;
+	    
+	
 
 	    @FXML
 	    public void initialize() {
@@ -81,6 +85,7 @@ public class CharityManagementController {
 
 	            List<CharityName> charityNames = data.getKey();
 	            List<CharityRecord> charityRecords = data.getValue();
+	            numberLabel.setText("Số hộ: " + String.valueOf(charityRecords.size()));
 
 	            tableView.getColumns().clear();
 	            tableView.getColumns().addAll(colId, colName, colAccomStatus);

@@ -12,6 +12,7 @@ module IT3180_2024II_SE_08 {
     opens app.views.admin to javafx.fxml;
     opens app.controllers.resident to javafx.fxml;
     opens app.views.resident to javafx.fxml;
+    opens app.assets.img to javafx.fxml, javafx.graphics;
 
     exports app;
 }

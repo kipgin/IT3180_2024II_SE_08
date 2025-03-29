@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import app.controllers.DashboardControllable;
 import app.models.User;
@@ -60,6 +61,8 @@ public class AccountController implements DashboardControllable{
     private TableColumn<User, String> updatedAtColumn;
     @FXML
     private TableColumn<User, Void> actionColumn;
+    @FXML
+    private Label numberLabel,activeLabel,inactiveLabel;
 
     //private final ApiService userService = new ApiService();
 
@@ -78,16 +81,26 @@ public class AccountController implements DashboardControllable{
         actionColumn.setCellFactory(param -> new TableCell<User, Void>() {
             private final Button deleteButton = new Button();
             {   
-            	System.out.println(getClass().getResource("/app/assets/img/find.png").toString());
-                //ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/assets/img/find.png").toString()));
-                //deleteIcon.setFitHeight(20);
-                //deleteIcon.setFitWidth(20);
-                //deleteButton.setGraphic(deleteIcon);
+            	//System.out.println(getClass().getResource("/app/assets/img/find.png").toString());
+                ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/app/assets/img/delete.png").toString()));
+                deleteIcon.setFitHeight(20);
+                deleteIcon.setFitWidth(20);
+                deleteButton.setGraphic(deleteIcon);
                 deleteButton.getStyleClass().add("icon-button");
-
+                
                 deleteButton.setOnAction(event -> {
                     User data = getTableView().getItems().get(getIndex());
-                    //ApiService.DeleteAccount(data);
+                    
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Xác nhận xóa");
+                    alert.setHeaderText("Bạn có chắc chắn muốn xóa?");
+                    alert.setContentText("Người dùng: " + data.getUsername());
+                    // Xử lý kết quả từ hộp thoại
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                       ApiService.delUser(data);
+                       showStatistics();
+                    }
                 });
             }
 
@@ -126,6 +139,13 @@ public class AccountController implements DashboardControllable{
             try {
                 List<User> users = ApiService.getAllUsers();
                 Platform.runLater(() -> {
+                	numberLabel.setText(String.valueOf(users.size()));
+                	int CntActive = 0;
+                	for(User user:users) {
+                		if(user.isActive()) CntActive++;
+                	}
+                	activeLabel.setText("Tài khoản được kích hoạt: " + String.valueOf(CntActive));
+                	inactiveLabel.setText("Tài khoản bị khóa: " + String.valueOf(users.size()-CntActive));
                     ObservableList<User> data = FXCollections.observableArrayList(users);
                     tableView.setItems(data);
                 });

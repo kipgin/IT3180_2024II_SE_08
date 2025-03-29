@@ -53,7 +53,8 @@ public class FeeManagementController implements DashboardControllable {
     
     @FXML
     private PieChart paymentPieChart;
-
+    @FXML
+    private Label numberLabel;
     @FXML
     public void initialize() {
        
@@ -111,7 +112,9 @@ public class FeeManagementController implements DashboardControllable {
         new Thread(() -> {
             try {
                 List<PaymentRecord> payments = ApiService.getAllPayments();
+                
                 Platform.runLater(() -> {
+                	numberLabel.setText("Số hộ: " + String.valueOf(payments.size()));
                     ObservableList<PaymentRecord> data = FXCollections.observableArrayList(payments);
                     tableView.setItems(data);
                     updatePieChart(data);

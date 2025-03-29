@@ -56,6 +56,7 @@ public class DashBoardController {
     
     @FXML
     public void initialize() {
+    	
     	loadFXML("/app/views/admin/overview.fxml","/app/assets/css/admin/overview.css");
     }
     

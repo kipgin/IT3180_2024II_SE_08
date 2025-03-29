@@ -20,12 +20,12 @@
             <HBox styleClass="stats">
                 <VBox styleClass="stat-box">
                     <Label styleClass="stat-title" text="Số Tài Khoản" />
-                    <Label styleClass="stat-value" text="100" />
+                    <Label fx:id="numberLabel" styleClass="stat-value" text="đang tải..." />
                 </VBox>
                 <VBox styleClass="stat-box">
                     <Label styleClass="stat-title" text="Trạng thái" />
-                    <Label styleClass="stat-value" text="Tài khoản được kích hoạt: 96" />
-                    <Label styleClass="stat-value" text="Tài khoản bị khóa: 4" />
+                    <Label fx:id="activeLabel" styleClass="stat-value" text="Tài khoản được kích hoạt: đang tải..." />
+                    <Label fx:id="inactiveLabel" styleClass="stat-value" text="Tài khoản bị khóa: đang tải..." />
                 </VBox>
                 <VBox styleClass="stat-box">
                     <Label styleClass="stat-title" text="Gần đây" />

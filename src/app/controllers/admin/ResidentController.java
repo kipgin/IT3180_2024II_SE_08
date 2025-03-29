@@ -18,9 +18,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import app.controllers.DashboardControllable;
 import app.models.Household;
+import app.models.User;
 import app.services.ApiService;
 
 public class ResidentController implements DashboardControllable{
@@ -54,6 +56,11 @@ public class ResidentController implements DashboardControllable{
 
     @FXML
     private TableColumn<Household, String> colStatus;
+    
+    @FXML
+    private TableColumn<Household, Void> actionColumn;
+    @FXML
+    private Label numberLabel;
 
 
     @FXML
@@ -67,15 +74,47 @@ public class ResidentController implements DashboardControllable{
         colNumOfMembers.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNumOfMembers()));
         colLocation.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCurrentLocation()));
         colStatus.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getStatus()));
-       
+        actionColumn.setCellFactory(param -> new TableCell<Household, Void>() {
+            private final Button deleteButton = new Button();
+            {   
+            	//System.out.println(getClass().getResource("/app/assets/img/find.png").toString());
+                ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/app/assets/img/delete.png").toString()));
+                deleteIcon.setFitHeight(20);
+                deleteIcon.setFitWidth(20);
+                deleteButton.setGraphic(deleteIcon);
+                deleteButton.getStyleClass().add("icon-button");
+                
+                deleteButton.setOnAction(event -> {
+                    Household data = getTableView().getItems().get(getIndex());
+                    
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Xác nhận xóa");
+                    alert.setHeaderText("Bạn có chắc chắn muốn xóa?");
+                    alert.setContentText("Hộ gia đình: " + data.getOwnerUsername());
+                    // Xử lý kết quả từ hộp thoại
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                       ApiService.delHouseholdByUsername(data);
+                       showStatistics();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : deleteButton);
+            }
+        });
 
         
         
         colId.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));   
         colOwner.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2)); 
         colNumOfMembers.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2));
-        colLocation.prefWidthProperty().bind(tableView.widthProperty().multiply(0.4));  
+        colLocation.prefWidthProperty().bind(tableView.widthProperty().multiply(0.25));  
         colStatus.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1)); 
+        actionColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.15)); 
         
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) { // Double click
@@ -125,6 +164,7 @@ public class ResidentController implements DashboardControllable{
             try {
                 List<Household> users = ApiService.getAllHouseholds();
                 Platform.runLater(() -> {
+                	numberLabel.setText(String.valueOf(users.size()));
                     ObservableList<Household> data = FXCollections.observableArrayList(users);
                     tableView.setItems(data);
                 });
