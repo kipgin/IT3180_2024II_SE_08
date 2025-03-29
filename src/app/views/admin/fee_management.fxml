@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.FeeManagementController">
+   <center>
+       <VBox spacing="10">
+        <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1150.0" />
+        <!-- Table and Add Button Container -->
+        <HBox spacing="10">
+            <Label styleClass="table-title" text="Danh sách khoản thu" />
+            <Button styleClass="add-button" onAction="#handleAddPaymentButton" text="+ Thêm hộ gia đình mới" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="700.0" />
+               </HBox.margin></Button>
+        </HBox>
+         
+        <TableView fx:id="tableView" styleClass="custom-table">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" />
+                <TableColumn fx:id="colArea" text="Diện Tích (m²)" />
+                <TableColumn fx:id="colServiceFeePerSquare" text="Phí Dịch Vụ/m²" />
+                <TableColumn fx:id="colTotalFee" text="Tổng Phí" />
+                <TableColumn fx:id="colOwner" text="Tên Chủ Hộ" />
+                <TableColumn fx:id="colStatus" text="Trạng Thái" />
+                <TableColumn fx:id="colAction" text="Ghi Nhận Nộp Phí" />
+            </columns>
+        </TableView>
+    </VBox>
+   </center>
+   
+   <top>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+             <Label styleClass="content-title" text="XIN CHÀO, QUẢN TRỊ VIÊN" />
+            <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Khoản thu" />
+
+            <HBox styleClass="stats">
+                <VBox prefHeight="50" styleClass="stat-box">
+                    <Label styleClass="stat-title" text="Tổng quan" />
+                    <Label styleClass="stat-value" text="Số hộ: 100" />
+                    <Label styleClass="stat-value" text="Cập nhật đến ngày: 25/3/2025" />
+                </VBox>
+               <PieChart fx:id="paymentPieChart" />
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" top="5.0" />
+               </VBox.margin>
+   
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+</BorderPane>

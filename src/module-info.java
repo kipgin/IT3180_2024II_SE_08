@@ -8,8 +8,10 @@ module IT3180_2024II_SE_08 {
     requires java.base;
 
     opens app.models to com.fasterxml.jackson.databind;
-    opens app.controllers to javafx.fxml;
-    opens app.views to javafx.fxml;
+    opens app.controllers.admin to javafx.fxml;
+    opens app.views.admin to javafx.fxml;
+    opens app.controllers.resident to javafx.fxml;
+    opens app.views.resident to javafx.fxml;
 
     exports app;
 }

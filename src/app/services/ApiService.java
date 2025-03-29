@@ -11,7 +11,11 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+import app.models.CharityName;
+import app.models.CharityRecord;
 import app.models.Household;
+import app.models.PaymentRecord;
+import app.models.Resident;
 import app.models.User;
 
 public class ApiService {
@@ -41,8 +45,8 @@ public class ApiService {
 
 	        // Gửi yêu cầu và nhận phản hồi
 	        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-	        // Kiểm tra nếu server trả về false thì đăng nhập thất bại
+	        
+	       
 	        if (response.body().equals("false")) {
 	            return null;
 	        }
@@ -52,6 +56,50 @@ public class ApiService {
 //	        return responseJson.has("token") ? responseJson.get("token").asText() : null;
 	        
 		    } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+	 
+	 public static User getUserByUsername(String username) {
+	        try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/users/get/" + username))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch residents: " + response.statusCode());
+	            }
+
+	            ObjectMapper mapper = new ObjectMapper();
+	            return mapper.readValue(response.body(), User.class);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+	 
+	 public static Household getHouseholdByUsername(String username) {
+	        try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/households/" + username))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch residents: " + response.statusCode());
+	            }
+
+	            ObjectMapper mapper = new ObjectMapper();
+	            return mapper.readValue(response.body(), Household.class);
+	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return null;
 	        }
@@ -82,7 +130,7 @@ public class ApiService {
 	 
 	    public static boolean register(String fullName, String username, String password, String role, String active) {
 	        try {
-	        	System.out.print(fullName + username + password + role + active);
+	        	//System.out.print(fullName + username + password + role + active);
 	            ObjectMapper objectMapper = new ObjectMapper();
 	            ObjectNode jsonNode = objectMapper.createObjectNode();
 	            jsonNode.put("fullName", fullName);
@@ -100,8 +148,9 @@ public class ApiService {
 	                    .build();
 
 	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-	            System.out.print(response.statusCode() );
-	            return response.statusCode() == 200;
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	                
+
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return false;
@@ -126,7 +175,7 @@ public class ApiService {
 
 	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 	            System.out.print(response.statusCode());
-	            return response.statusCode() == 200 || response.statusCode() == 201;
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return false;
@@ -154,4 +203,270 @@ public class ApiService {
 	            return null;
 	        }
 	    }
+	    
+	    public static List<Resident> getResidentsByHouseholdId(int householdId) {
+	        try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/residents/household/" + householdId))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch residents: " + response.statusCode());
+	            }
+
+	            ObjectMapper mapper = new ObjectMapper();
+	            return mapper.readValue(response.body(), new TypeReference<List<Resident>>() {});
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+	    
+	    public static List<PaymentRecord> getAllPayments() {
+	        try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/get-all"))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch payments: " + response.statusCode());
+	            }
+
+	            ObjectMapper mapper = new ObjectMapper();
+	            return mapper.readValue(response.body(), new TypeReference<List<PaymentRecord>>() {});
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+	    
+	    public static boolean addPaymentRecord(double area, double serviceFeePerSquare, double totalFee, String ownerUserName, String accom_status) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("area", area);
+	            jsonNode.put("serviceFeePerSquare", serviceFeePerSquare);
+	            jsonNode.put("totalFee", totalFee);
+	            jsonNode.put("ownerUserName", ownerUserName);
+	            jsonNode.put("accom_status", accom_status);
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/add"))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean updatePayment(PaymentRecord paymenRecord) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("area", paymenRecord.getArea());
+	            jsonNode.put("serviceFeePerSquare", paymenRecord.getServiceFeePerSquare());
+	            jsonNode.put("totalFee", paymenRecord.getTotalFee());
+	            jsonNode.put("ownerUserName", paymenRecord.getOwnerUserName());
+	            jsonNode.put("accom_status", paymenRecord.getAccom_status());
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/update-id/" + String.valueOf(paymenRecord.getId()) ) )
+	                    .header("Content-Type", "application/json")
+	                    .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            System.out.println("Response Code: " + response.statusCode());
+	            System.out.println("Response Body: " + response.body());
+	            
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static List<CharityName> getAllCharityName(){
+	    	try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charityname/get-all"))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch payments: " + response.statusCode());
+	            }
+
+	            ObjectMapper mapper = new ObjectMapper();
+	            return mapper.readValue(response.body(), new TypeReference<List<CharityName>>() {});
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+	    
+	    public static List<CharityRecord> getAllCharityRecords() {
+	        try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charity/get-all"))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch charitys: " + response.statusCode());
+	            }
+
+	            ObjectMapper mapper = new ObjectMapper();
+	            return mapper.readValue(response.body(), new TypeReference<List<CharityRecord>>() {});
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+	    
+	    public static boolean updateCharitySection(String username, String charityName, int donate) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("name", charityName);
+	            jsonNode.put("donate", donate);
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charity/add-section-to-ownerusername/" + username ) )
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            System.out.println("Response Code: " + response.statusCode());
+	            System.out.println("Response Body: " + response.body());
+	            
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean addCharityRecord(String ownerUserName, String accom_status) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	           
+	            jsonNode.put("ownerUserName", ownerUserName);
+	            jsonNode.put("accomStatus", accom_status);
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charity/add"))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean addCharityName(String donateName) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	           
+	            jsonNode.put("name", donateName);
+	      
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charityname/create"))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean delCharityName(String donateName) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	           
+	            jsonNode.put("name", donateName);
+	      
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charityname/delete-name/" + donateName))
+	                    .header("Content-Type", "application/json")
+	                    .DELETE()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static int getNumberOfResidents() {
+	        try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/residents/report/number_of_residents"))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch charitys: " + response.statusCode());
+	            }
+
+	            return Integer.parseInt(response.body());
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return 0;
+	        }
+	    }
+	    
+	    
 }

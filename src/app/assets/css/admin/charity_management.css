@@ -1,0 +1,123 @@
+
+.custom-table {
+    -fx-font-size: 14px;
+}
+
+/* Định dạng header */
+.custom-table .column-header {
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #d0d0d0;
+}
+
+/* Định dạng hàng */
+.custom-table .table-row-cell {
+    -fx-min-height: 40px; /* Tăng chiều cao hàng */
+    -fx-pref-height: 40px;
+}
+
+/* Căn giữa nội dung ô */
+.custom-table .table-cell {
+    -fx-alignment: CENTER;
+}
+
+
+.content {
+	 -fx-border-size: 3px;
+     -fx-padding: 0px; 
+    -fx-spacing: 20px;
+}
+
+.content-title {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.content-subtitle {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 16px;
+}
+
+/* Stats */
+.stats {
+    -fx-spacing: 16px;
+}
+
+.stat-box {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-spacing: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.stat-title {
+    -fx-text-fill: #7f8c8d;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.stat-value {
+    -fx-text-fill: #2c3e50;
+    -fx-font-size: 13px;
+    
+}
+
+/* Định dạng tiêu đề danh sách */
+.table-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Định dạng nút Thêm hộ gia đình */
+.add-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 4);
+    -fx-cursor: hand;
+}
+.add-button:hover {
+    -fx-background-color: #0056b3;
+}
+
+/* Định dạng bảng */
+.custom-table {
+    -fx-border-color: #ccc;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-background-color: #f9f9f9;
+}
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
+}
+.table-view .column-header {
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+}
+
+/* Định dạng container của bảng và nút */
+.hbox-container {
+    -fx-alignment: center-left;
+    -fx-spacing: 10;
+    -fx-padding: 10 0 10 10;
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 8px 8px 0 0;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+}
+
+/* Áp dụng hiệu ứng mềm mại */
+.shadow-pane {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 4);
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+}

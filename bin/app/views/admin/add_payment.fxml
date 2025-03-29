@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="app.controllers.admin.AddPaymentController" spacing="10" alignment="CENTER" >
+    <Label text="Thêm Hộ Khẩu Mới" styleClass="header-label" />
+    
+    <GridPane hgap="10" vgap="10">
+        <Label text="Diện tích (m²):" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="areaField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <Label text="Phí dịch vụ trên mỗi m²:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <TextField fx:id="serviceFeeField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <Label text="Tổng phí:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <TextField fx:id="totalFeeField" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <Label text="Tên chủ hộ:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+        <TextField fx:id="ownerUserNameField" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+        <Label text="Trạng thái cư trú:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+         <ComboBox fx:id="statusComboBox" GridPane.rowIndex="4" GridPane.columnIndex="1">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="RESIDENT" />
+                    <String fx:value="MOVED_OUT" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+    </GridPane>
+    
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Hủy" fx:id="cancelButton" onAction="#handleCancel" />
+        <Button text="Xác nhận" fx:id="confirmButton" onAction="#handleConfirm" />
+    </HBox>
+</VBox>

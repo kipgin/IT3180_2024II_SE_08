@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane style="-fx-background-color: #cfcfcf;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.OverviewController">
+   
+    <!-- Thời tiết -->
+    <VBox fx:id="weatherBox" layoutX="20" layoutY="20" prefHeight="160" prefWidth="280" styleClass="card">
+        <Label fx:id="weatherTitle" styleClass="title" text="Thời tiết Hà Nội" />
+        <Label fx:id="weatherInfo" styleClass="content" text="Đang tải..." />
+    </VBox>
+    
+    <VBox layoutX="330" layoutY="20" prefHeight="160" prefWidth="330" styleClass="card">
+        <Label styleClass="title" text="Tiện ích chung cư" />
+        <Label fx:id="Info" styleClass="content" text="🏊 Hồ bơi: Hoạt động từ 6h - 21h " />
+
+    </VBox>
+
+    <!-- Bản đồ -->
+    <VBox fx:id="mapBox" layoutX="700" layoutY="20" prefHeight="250" prefWidth="300" styleClass="card">
+        <Label styleClass="title" text="Bản đồ vị trí" />
+        <ImageView fitHeight="200.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../assets/img/map.png" />
+            </image>
+        </ImageView>
+    </VBox>
+    
+    <!-- Biểu đồ thống kê -->
+    <VBox fx:id="chartBox" layoutX="700" layoutY="300" prefHeight="300" prefWidth="400"  styleClass="card">
+        <Label styleClass="title" text="Thống kê khoản đóng góp" />
+        <PieChart fx:id="donationChart" />
+    </VBox>
+
+    <!-- Pane chứa toàn bộ cây -->
+    <Pane fx:id="treeContainer" layoutX="20" layoutY="200">
+    <!-- Card cha (Tổng quan chung cư) -->
+    <VBox fx:id="overviewBox" layoutX="140" layoutY="0" prefHeight="150" prefWidth="300" styleClass="card">
+        <Label styleClass="title" text="Tòa nhà chung cư" />
+         <ImageView fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../assets/img/building.jpg" />
+            </image>
+         </ImageView>
+    </VBox>
+
+    <!-- Dây nối từ card cha xuống các card con -->
+   
+    <Line endX="170" endY="260" startX="300" startY="230" stroke="gray" strokeWidth="1.5" />
+    <Line endX="300" endY="260" startX="300" startY="230" stroke="gray" strokeWidth="1.5" />
+    <Line endX="430" endY="260" startX="300" startY="230" stroke="gray" strokeWidth="1.5" />
+
+    <!-- HBox chứa các card con -->
+    <HBox layoutX="20" layoutY="260" spacing="50">
+        <VBox fx:id="apartmentBox" prefHeight="90" prefWidth="150" styleClass="card">
+            <Label styleClass="title" text="Số căn hộ" />
+             <Label fx:id="apartmentCount" styleClass="content" text="Đang tải..." />
+        </VBox>
+
+        <VBox fx:id="populationBox" prefHeight="90" prefWidth="150" styleClass="card">
+            <Label styleClass="title" text="Số nhân khẩu" />
+             <Label fx:id="populationCount" styleClass="content" text="Đang tải..." />
+        </VBox>
+
+        <VBox fx:id="paymentRateBox" prefHeight="90" prefWidth="200" styleClass="card">
+            <Label styleClass="title" text="Hộ đã đóng phí (%)" />
+            <Label fx:id="paymentRate" styleClass="content" text="Đang tải..." />
+        </VBox>
+    </HBox>
+</Pane>
+
+</AnchorPane>

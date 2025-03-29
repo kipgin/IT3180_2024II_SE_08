@@ -1,0 +1,70 @@
+/* Định dạng chung cho VBox */
+VBox {
+    -fx-padding: 30px;
+    -fx-background-color: #f9f9f9;
+    -fx-spacing: 20px;
+}
+
+/* Tiêu đề */
+.header-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* GridPane */
+GridPane {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+/* Label */
+Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+}
+
+/* TextField */
+TextField {
+    -fx-pref-width: 200px;
+    -fx-pref-height: 35px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* ComboBox */
+ComboBox {
+    -fx-pref-width: 210px;
+    -fx-pref-height: 35px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px;
+}
+
+/* Button */
+Button {
+    -fx-pref-width: 100px;
+    -fx-pref-height: 35px;
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+}
+
+Button:hover {
+    -fx-background-color: #0056b3;
+}
+
+#cancelButton {
+    -fx-background-color: #dc3545;
+}
+
+#cancelButton:hover {
+    -fx-background-color: #c82333;
+}

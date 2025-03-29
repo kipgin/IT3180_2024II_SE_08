@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.resident.DashBoardController">
+    <top>
+        <HBox styleClass="header"> 
+        <Label styleClass="header-title" text="Chung cư Blue Moon xin kính chào!" />
+         <Pane HBox.hgrow="ALWAYS" />
+         <HBox prefHeight="30.0" prefWidth="200.0" styleClass="search-box">
+            <children>
+               <TextField fx:id="searchField" promptText="Tìm kiếm..." styleClass="search-field" />
+               <ImageView fitHeight="26.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="search-icon">
+                  <image>
+                     <Image url="@../../assets/img/find.png" />
+                  </image>
+               </ImageView>
+            </children>
+         </HBox>
+           
+            
+            
+            <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-button" text="Đăng Xuất" />
+        </HBox>
+    </top>
+    <left>
+        <VBox styleClass="sidebar">
+            <Label styleClass="sidebar-title" text="DASHBOARD" />
+            <Button fx:id="overviewButton" onAction="#handleOverviewButton" styleClass="sidebar-button" text="Tổng Quan" />
+            <Button fx:id="residentButton" onAction="#handleResidentButton" styleClass="sidebar-button" text="Danh Sách Nhân Khẩu" />
+             <Button fx:id="feeButton" onAction="#handleFeeButton" styleClass="sidebar-button" text="Danh Sách Khoản thu" />
+            <Button fx:id="charityButton" onAction="#handleCharityButton" styleClass="sidebar-button" text="Danh Sách Đóng Góp" />
+            
+            <Button styleClass="sidebar-button" text="Thống Kê" />
+
+            <Separator styleClass="separator" />
+
+            <Label styleClass="sidebar-title" text="TÀI KHOẢN" />
+            <Button styleClass="sidebar-button" text="Đổi Mật Khẩu" />
+            
+            <Separator styleClass="separator" />
+
+            <Label styleClass="sidebar-title" text="EXTRAS" />
+           
+            <Button styleClass="sidebar-button" text="Hỗ Trợ" />
+           
+        </VBox>
+    </left>
+    <center>
+        
+    </center>
+</BorderPane>

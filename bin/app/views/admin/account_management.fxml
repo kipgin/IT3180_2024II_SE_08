@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" styleClass="content" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.AccountController">
+   <children>
+      <Label styleClass="content-title" text="XIN CHÀO, QUẢN TRỊ VIÊN" />
+            <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Tài khoản" />
+
+            <HBox styleClass="stats">
+                <VBox styleClass="stat-box">
+                    <Label styleClass="stat-title" text="Số Tài Khoản" />
+                    <Label styleClass="stat-value" text="100" />
+                </VBox>
+                <VBox styleClass="stat-box">
+                    <Label styleClass="stat-title" text="Trạng thái" />
+                    <Label styleClass="stat-value" text="Tài khoản được kích hoạt: 96" />
+                    <Label styleClass="stat-value" text="Tài khoản bị khóa: 4" />
+                </VBox>
+                <VBox styleClass="stat-box">
+                    <Label styleClass="stat-title" text="Gần đây" />
+                    <Label styleClass="stat-value" text="0 tài khoản được thêm mới" />
+                </VBox>
+            </HBox>
+      <HBox prefHeight="40.0" prefWidth="200.0">
+         <children>
+      
+            <Label minWidth="-Infinity" prefHeight="18.0" prefWidth="113.0" styleClass="section-title" text="THỐNG KÊ" />
+            <VBox minWidth="-Infinity" prefHeight="40.0" prefWidth="110.0" styleClass="register-box">
+               <children>
+         
+                 <Button fx:id="registerButton" mnemonicParsing="false" onAction="#openRegisterWindow" styleClass="image-button">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/img/addAcc.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Label text="Add account" />
+               </children>
+               <HBox.margin>
+                  <Insets left="800.0" />
+               </HBox.margin>
+            </VBox>
+              
+            
+         </children>
+      </HBox>
+      <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1150.0" />
+            
+            
+      <VBox fx:id="vboxIcon" alignment="CENTER" prefHeight="180.0" prefWidth="100.0">
+         <children>
+                  
+            <Button fx:id="statisticsIcon" styleClass="icon-button">
+               <graphic>
+                  <ImageView fitHeight="43.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/img/statistics_icon.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      
+      
+            
+      <VBox fx:id="statisticsTable" alignment="CENTER" spacing="10" visible="false">
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Bảng Thống Kê Tài Khoản" />
+         <ScrollPane fitToHeight="true" fitToWidth="true">
+            <content>
+              
+              <TableView fx:id="tableView" prefHeight="300" prefWidth="1000">
+                  <columns>
+                      <TableColumn fx:id="usernameColumn" text="Username" />
+                      <TableColumn fx:id="fullNameColumn" text="Full Name" />
+                      <TableColumn fx:id="roleColumn" text="Role" />
+                      <TableColumn fx:id="activeColumn" text="Active" />
+                      <TableColumn fx:id="createdAtColumn" text="Created at" />
+                      <TableColumn fx:id="updatedAtColumn" text="Updated at" />
+                      <TableColumn fx:id="actionColumn" text="Actions" />
+                  </columns>
+              </TableView>
+            </content>
+         </ScrollPane>
+    </VBox>
+   </children>
+</VBox>

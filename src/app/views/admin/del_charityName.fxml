@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.DelCharityNameController">
+    <Label styleClass="header-label" text="Thêm Hộ Khẩu Mới" />
+    
+    <GridPane hgap="10" vgap="10">
+ 
+
+        <Label text="Tên khoản thu muốn xóa:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+      <ComboBox fx:id="charityNameComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+      </rowConstraints>
+
+        
+    </GridPane>
+    
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="cancelButton" onAction="#handleCancel" text="Hủy" />
+        <Button fx:id="confirmButton" onAction="#handleConfirm" text="Xác nhận" />
+    </HBox>
+</VBox>
