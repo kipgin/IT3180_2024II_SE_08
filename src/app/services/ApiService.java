@@ -32,7 +32,7 @@ public class ApiService {
 	        jsonNode.put("username", username);
 	        jsonNode.put("password", password);
 	        String requestBody = objectMapper.writeValueAsString(jsonNode);
-	        
+	         
 	        // Tạo HttpClient
 	        HttpClient client = HttpClient.newHttpClient();
 
@@ -58,6 +58,34 @@ public class ApiService {
 		    } catch (Exception e) {
 	            e.printStackTrace();
 	            return null;
+	        }
+	    }
+	 
+	 public static boolean changePassword(String username, String oldPassword, String newPassword) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("username",username);
+	            jsonNode.put("oldPassword", oldPassword);
+	            jsonNode.put("newPassword", newPassword);
+	          
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/users/change-password" ) ) 
+	                    .header("Content-Type", "application/json")
+	                    .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            
+	            
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
 	        }
 	    }
 	 

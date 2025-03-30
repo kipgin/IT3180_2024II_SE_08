@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 import app.controllers.DashboardControllable;
+import app.controllers.admin.ChangePasswordController;
 import app.models.CharityName;
 import app.models.User;
 import app.services.ApiService;
@@ -78,6 +79,10 @@ public class DashBoardController {
     private void handleCharityButton() {
     	 loadFXML("/app/views/resident/charity_list.fxml","/app/assets/css/resident/charity_list.css");
     }
+    @FXML
+    private void handleChangePasswordButton() {
+    	 loadFXML("/app/views/admin/change_password.fxml","/app/assets/css/admin/change_password.css");
+    }
 
     // Phương thức để load FXML và đặt vào center
     public void loadFXML(String fxmlFile,String cssFile) {
@@ -90,7 +95,9 @@ public class DashBoardController {
             if (controller instanceof HouseholdDetailController) {
                 ((HouseholdDetailController) controller).setUser(user);
             }
-            
+            if (controller instanceof ChangePasswordController) {
+                ((ChangePasswordController) controller).setUser(user);
+            }
             
             content.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());
 

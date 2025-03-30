@@ -46,7 +46,7 @@
             <Separator styleClass="separator" />
 
             <Label styleClass="sidebar-title" text="TÀI KHOẢN" />
-            <Button styleClass="sidebar-button" text="Đổi Mật Khẩu" />
+            <Button fx:id="changePasswordButton" onAction="#handleChangePasswordButton" styleClass="sidebar-button" text="Đổi Mật Khẩu" />
             
             <Separator styleClass="separator" />
 
