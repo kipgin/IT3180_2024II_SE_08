@@ -16,44 +16,77 @@ public class FeeManageController {
     @Autowired
     private FeeManageService feeManageService;
 
-    @GetMapping("/check-one/{id}")
-    public boolean existsFeeManageById(@PathVariable Integer id){
-        return feeManageService.existsFeeManageById(id);
+    @GetMapping("/check-id/{id}")
+    public boolean existsById(@PathVariable Integer id){
+        return feeManageService.existsById(id);
     }
 
-    @GetMapping("/get-all/{id}")
-    public List<FeeManage> findFeeManageAll(@PathVariable Integer id){
-        return feeManageService.findFeeManageAll();
+    @GetMapping("/check-ownerusername/{ownerUserName}")
+    public boolean existsByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
+        return feeManageService.existsByOwnerUserName(ownerUserName);
     }
 
-    @GetMapping("/get-one/{id}")
-    public Optional<FeeManage> getFeeManageById(@PathVariable  Integer id){
-        return feeManageService.getFeeManageById(id);
+    @GetMapping("/get-all")
+    public List<FeeManage> findAll(){
+        return feeManageService.findAll();
     }
 
-    @PutMapping("/update/{id}")
-    public boolean updateFeeManage(@PathVariable Integer id,@RequestBody FeeManage feeManage){
-        return feeManageService.updateFeeManage(id,feeManage);
+    @GetMapping("/get-one-id/{id}")
+    public FeeManage getById(@PathVariable  Integer id){
+        return feeManageService.getById(id);
     }
 
-    @PutMapping("/payfee/{id}")
-    public boolean paidFeeNormal(@PathVariable Integer id, Long fee){
-        return feeManageService.paidFeeNormal(id,fee);
+    @GetMapping("/get-one-ownerusername/{ownerUserName}")
+    public FeeManage getByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
+        return feeManageService.getByOwnerUserName(ownerUserName);
     }
 
-    @PutMapping("/online-banking/{id}")
-    public boolean paidFeeOnline(@PathVariable  Integer id,Long fee){
-        return feeManageService.paidFeeOnline(id,fee);
+    @PutMapping("/update-id/{id}")
+    public boolean updateById(@PathVariable Integer id,@RequestBody FeeManage feeManage){
+        return feeManageService.updateById(id,feeManage);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public boolean deleteFeeManage(@PathVariable Integer id){
-        return feeManageService.deleteFeeManage(id);
+    @PutMapping("/update-ownerusername/{ownerUserName}")
+    public boolean updateByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName ,@RequestBody FeeManage feeManage){
+        return feeManageService.updateByOwnerUserName(ownerUserName,feeManage);
     }
 
-    @PostMapping("/create")
-    public boolean createFeeManage(@RequestBody FeeManage feeManage){
-        return feeManageService.createFeeManage(feeManage);
+    @PutMapping("/payfeenormal-id/{id}/{fee}")
+    public boolean paidFeeNormalById(@PathVariable Integer id,@PathVariable int fee){
+        return feeManageService.paidFeeNormalById(id,fee);
     }
+
+    @PutMapping("/payfeenormal-ownerusername/{ownerUserName}/{fee}")
+    public boolean paidFeeNormalById(@PathVariable("ownerUserName") String ownerUserName,@PathVariable int fee){
+        return feeManageService.paidFeeNormalByOwnerUserName(ownerUserName,fee);
+    }
+
+    @PutMapping("/online-banking-id/{id}/{fee}")
+    public boolean paidFeeOnlinebyId(@PathVariable  Integer id,@PathVariable int fee){
+        return feeManageService.paidFeeOnlineById(id,fee);
+    }
+
+    @PutMapping("/online-banking-name/{ownerUserName}/{fee}")
+    public boolean paidFeeOnlineByOwnerUserName(@PathVariable("ownerUserName")  String ownerUserName,@PathVariable int fee){
+        return feeManageService.paidFeeOnlineByOwnerUserName(ownerUserName,fee);
+    }
+    @DeleteMapping("/delete-id/{id}")
+    public boolean deleteById(@PathVariable Integer id){
+        return feeManageService.deleteById(id);
+    }
+
+    @DeleteMapping("/delete-name/{ownerUserName}")
+    public boolean deleteByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
+        return feeManageService.deleteByOwnerUserName(ownerUserName);
+    }
+
+    @PostMapping("/add")
+    public boolean add(@RequestBody FeeManage feeManage){
+        return feeManageService.add(feeManage);
+    }
+//    @PostMapping("/addtemp")
+//    public FeeManage addtemp(@RequestBody FeeManage feeManage){
+//        return feeManageService.addtemp(feeManage);
+//    }
 
 }

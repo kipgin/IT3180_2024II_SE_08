@@ -1,6 +1,7 @@
 package com.example.BTL_CNPM.feepaid.model;
 import com.example.BTL_CNPM.resident.model.AccomStatus;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 
 @Entity
 @Table(name="feepaid")
@@ -14,7 +15,7 @@ public class FeePaid {
     private String ownerUserName;
 
     @Column(nullable=false)
-    private Long totalFee;
+    private Integer totalFee;
 
 
     @Column(nullable = false)
@@ -24,28 +25,20 @@ public class FeePaid {
     @Enumerated(EnumType.STRING)
     private AccomStatus accom_status;
 
-    public final int num_max=20;
-
-    public final int length_max =30;
-
-    public int num_of_charity;
-
-
-    public FeePaid(int id, String ownerUsername,Long totalFee, String dueTime, AccomStatus accom_status, int num_of_charity) {
+    public FeePaid(int id, String ownerUsername,Integer totalFee, String dueTime, AccomStatus accom_status) {
         this.id = id;
         this.ownerUserName = ownerUsername;
         this.totalFee=totalFee;
         this.dueTime = dueTime;
         this.accom_status = accom_status;
-        this.num_of_charity = num_of_charity;
     }
 
     public FeePaid(){
 
     }
 
-    public FeePaid(String ownerUsername){
-        this.ownerUserName=ownerUsername;
+    public FeePaid(String ownerUserName){
+        this.ownerUserName=ownerUserName;
     }
 
     public Integer getId() {
@@ -56,11 +49,11 @@ public class FeePaid {
         this.id = id;
     }
 
-    public Long getTotalFee() {
+    public Integer getTotalFee() {
         return totalFee;
     }
 
-    public void setTotalFee(Long totalFee) {
+    public void setTotalFee(Integer totalFee) {
         this.totalFee = totalFee;
     }
 
@@ -80,19 +73,11 @@ public class FeePaid {
         this.accom_status = accom_status;
     }
 
-    public int getNum_of_charity() {
-        return num_of_charity;
-    }
-
-    public void setNum_of_charity(int num_of_charity) {
-        this.num_of_charity = num_of_charity;
-    }
-
-    public String getOwnerUsername() {
+    public String getOwnerUserName() {
         return ownerUserName;
     }
 
-    public void setOwnerUsername(String ownerUsername) {
-        this.ownerUserName = ownerUsername;
+    public void setOwnerUserName(String ownerUserName) {
+        this.ownerUserName = ownerUserName;
     }
 }

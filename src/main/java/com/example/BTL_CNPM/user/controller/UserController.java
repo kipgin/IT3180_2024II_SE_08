@@ -5,6 +5,7 @@ import com.example.BTL_CNPM.user.model.PasswordChangeRequest;
 import com.example.BTL_CNPM.user.model.SetActiveStatusRequest;
 import com.example.BTL_CNPM.user.model.User;
 import com.example.BTL_CNPM.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -16,11 +17,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
+
     @PostMapping("/register")
     public boolean register(@RequestBody User user) {
         return userService.register(user);
     }
 
+
+    @Operation(summary = "Đăng nhập vào hệ thống")
     @PostMapping("/login")
     public boolean login(@RequestBody LoginRequest loginRequest) {
         return userService.login(loginRequest.getUsername(), loginRequest.getPassword());
@@ -42,7 +47,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{username}")
-    public boolean deleteUser(@PathVariable String username) {
+    public boolean deleteUserBy(@PathVariable String username) {
         return userService.deleteUserByUsername(username);
     }
 
@@ -52,8 +57,9 @@ public class UserController {
     }
 
     @GetMapping("/get/{username}")
-    public Optional<User> getUser(@RequestBody String username){
+    public Optional<User> getUser(@PathVariable String username){
         return userService.getUser(username);
     }
+
 
 }

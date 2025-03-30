@@ -1,13 +1,17 @@
 package com.example.BTL_CNPM.charity.model;
 
 import com.example.BTL_CNPM.resident.model.AccomStatus;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name="charity")
-
 public class Charity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,23 +24,26 @@ public class Charity {
     @Enumerated(EnumType.STRING)
     private AccomStatus accomStatus;
 
-    @ElementCollection
-    private List<String> listOfCharity;
-
-    @ElementCollection
-    private List<Integer> donateMoney;
+    @OneToMany(mappedBy ="charity",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
+    private List<CharitySection> charitySections = new ArrayList<>();
 
     public Charity(){
 
     }
 
-    public Charity(Integer id, String ownerUserName, AccomStatus accomStatus, List<String> listOfCharity, List<Integer> donateMoney) {
-        this.id = id;
-        this.ownerUserName = ownerUserName;
-        this.accomStatus = accomStatus;
-        this.listOfCharity = listOfCharity;
-        this.donateMoney = donateMoney;
+    public Charity(Integer id, String ownerUserName, AccomStatus accomStatus){
+        this.id=id;
+        this.ownerUserName=ownerUserName;
+        this.accomStatus=accomStatus;
     }
+
+    //cap nhat cho CharitySection
+    public void add(CharitySection section){
+        section.setCharity(this);
+        this.charitySections.add(section);
+    }
+
 
     public Integer getId() {
         return id;
@@ -44,14 +51,6 @@ public class Charity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public AccomStatus getAccomStatus() {
-        return accomStatus;
-    }
-
-    public void setAccomStatus(AccomStatus accomStatus) {
-        this.accomStatus = accomStatus;
     }
 
     public String getOwnerUserName() {
@@ -62,19 +61,19 @@ public class Charity {
         this.ownerUserName = ownerUserName;
     }
 
-    public List<String> getListOfCharity() {
-        return listOfCharity;
+    public AccomStatus getAccomStatus() {
+        return accomStatus;
     }
 
-    public void setListOfCharity(List<String> listOfCharity) {
-        this.listOfCharity = listOfCharity;
+    public void setAccomStatus(AccomStatus accomStatus) {
+        this.accomStatus = accomStatus;
     }
 
-    public List<Integer> getDonateMoney() {
-        return donateMoney;
+    public List<CharitySection> getCharitySections() {
+        return charitySections;
     }
 
-    public void setDonateMoney(List<Integer> donateMoney) {
-        this.donateMoney = donateMoney;
+    public void setCharitySections(List<CharitySection> charitySections) {
+        this.charitySections = charitySections;
     }
 }

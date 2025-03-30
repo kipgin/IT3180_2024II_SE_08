@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="feemanage")
-
 public class FeeManage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,43 +13,48 @@ public class FeeManage {
     private int area;
 
     @Column(nullable = false)
-    private long serviceFeePerSquare;
+    private int serviceFeePerSquare;
 
     @Column(nullable = false)
-    private long totalFee;
+    private int totalFee;
 
     @Column(nullable = false,unique = true)
-    private String ownerUsername;
+    private String ownerUserName;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private AccomStatus accom_status;
 
-    public final int num_max=20;
+    //final private long managingFeePerSquare =7000;
 
-    public final int length_max =30;
-
-    public int num_of_charity;
-
-    final private long managingFeePerSquare =7000;
-
-    public FeeManage(Integer id, int area, long serviceFeePerSquare, String ownerUsername, AccomStatus accom_status, int num_of_charity) {
+    public FeeManage(Integer id, int area, int serviceFeePerSquare, String ownerUserName, AccomStatus accom_status) {
         this.id = id;
         this.area = area;
         this.serviceFeePerSquare = serviceFeePerSquare;
-        this.ownerUsername = ownerUsername;
+        this.ownerUserName = ownerUserName;
         this.accom_status = accom_status;
-        this.totalFee=area*serviceFeePerSquare+area*managingFeePerSquare;
-        this.num_of_charity=num_of_charity;
+        this.totalFee=0;
+    }
+    public FeeManage(int area, int serviceFeePerSquare, String ownerUserName, AccomStatus accom_status) {
+        this.area = area;
+        this.serviceFeePerSquare = serviceFeePerSquare;
+        this.ownerUserName = ownerUserName;
+        this.accom_status = accom_status;
+        this.totalFee=0;
     }
 
     public FeeManage(){
 
     }
 
-    public FeeManage(String ownerUsername){
-        this.ownerUsername=ownerUsername;
+    public FeeManage(String ownerUserName){
+        this.ownerUserName=ownerUserName;
     }
+
+    public void updateFee(){
+        this.totalFee += this.area * serviceFeePerSquare + this.area * 7000;
+    }
+
     public int getArea() {
         return area;
     }
@@ -75,11 +79,27 @@ public class FeeManage {
         this.id = id;
     }
 
-    public long getTotalFee() {
+    public int getTotalFee() {
         return totalFee;
     }
 
-    public void setTotalFee(long totalFee) {
+    public void setTotalFee(int totalFee) {
         this.totalFee = totalFee;
+    }
+
+    public int getServiceFeePerSquare() {
+        return serviceFeePerSquare;
+    }
+
+    public void setServiceFeePerSquare(int serviceFeePerSquare) {
+        this.serviceFeePerSquare = serviceFeePerSquare;
+    }
+
+    public String getOwnerUserName() {
+        return ownerUserName;
+    }
+
+    public void setOwnerUserName(String ownerUserName) {
+        this.ownerUserName = ownerUserName;
     }
 }

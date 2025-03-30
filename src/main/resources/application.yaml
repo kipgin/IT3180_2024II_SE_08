@@ -1,0 +1,14 @@
+spring:
+  datasource:
+
+  #JPA Settings
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+#    logging:
+#      level:
+#        org.springframework.web: DEBUG
+#        org.hibernate.SQL: DEBUG

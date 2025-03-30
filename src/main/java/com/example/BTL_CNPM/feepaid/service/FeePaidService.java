@@ -20,6 +20,25 @@ public class FeePaidService {
     public boolean existsById(Integer id){
         return feePaidRepository.existsById(id);
     }
+    //kiem tra ton tai ownerUserName
+
+    public boolean existsByOwnerUserName(String ownerUserName){
+        return feePaidRepository.existsByOwnerUserName(ownerUserName);
+    }
+
+    //tim kiem theo id
+    public FeePaid findById (Integer id){
+        return feePaidRepository.findById(id).orElse(null);
+    }
+
+    public FeePaid findByOwnerUserName(String ownerUserName){
+        return feePaidRepository.findByOwnerUserName(ownerUserName).orElse(null);
+    }
+
+    //tim kiem het
+    public List<FeePaid> findALl(){
+        return feePaidRepository.findAll();
+    }
 
     //xoa theo id
 
@@ -30,11 +49,6 @@ public class FeePaidService {
         }
         feePaidRepository.deleteById(id);
         return true;
-    }
-    //kiem tra ton tai ownerUserName
-
-    public boolean existsByOwnerUserName(String ownerUserName){
-        return feePaidRepository.existsByOwnerUserName(ownerUserName);
     }
 
     //xoa theo username
@@ -54,28 +68,21 @@ public class FeePaidService {
         feePaidRepository.deleteAll();
     }
 
-    //add theo id
-
     @Transactional
-    public boolean addById(Integer id,FeePaid feePaid){
-        if(feePaidRepository.existsById(id) || feePaidRepository.existsByOwnerUserName(feePaid.getOwnerUsername())){
+    public boolean add(FeePaid feePaid){
+        if(feePaidRepository.existsByOwnerUserName(feePaid.getOwnerUserName())){
             return false;
         }
-
-        Optional<FeePaid> optionalFeePaid=feePaidRepository.findById(id);
-        FeePaid newFeePaid=optionalFeePaid.get();
-        newFeePaid=feePaid;
+        feePaid.setTotalFee(0);
         feePaidRepository.save(feePaid);
         return true;
     }
 
-    //tim kiem theo id
-    public Optional<FeePaid> findById (Integer id){
-        return feePaidRepository.findById(id);
+    @Transactional
+    public FeePaid addtemp(FeePaid feePaid){
+        feePaidRepository.save(feePaid);
+        return feePaid;
     }
 
-    //tim kiem het
-    public List<FeePaid> findALl(){
-        return feePaidRepository.findAll();
-    }
+
 }
