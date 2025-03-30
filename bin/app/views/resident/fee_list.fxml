@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.resident.FeeListController">
+   <center>
+       <VBox spacing="10">
+        
+        <!-- Table and Add Button Container -->
+        <HBox spacing="10">
+            <Label styleClass="table-title" text="Danh sách khoản thu">
+               <padding>
+                  <Insets top="10.0" />
+               </padding></Label>
+           
+        </HBox>
+        <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1150.0" />
+         
+        <TableView fx:id="tableView" styleClass="custom-table">
+            <columns>
+                <TableColumn fx:id="colId" text="ID" />
+                <TableColumn fx:id="colArea" text="Diện Tích (m²)" />
+                <TableColumn fx:id="colServiceFeePerSquare" text="Phí Dịch Vụ/m²" />
+                <TableColumn fx:id="colTotalFee" text="Tổng Phí" />
+                <TableColumn fx:id="colOwner" text="Tên Chủ Hộ" />
+                <TableColumn fx:id="colStatus" text="Trạng Thái" />
+                
+            </columns>
+        </TableView>
+    </VBox>
+   </center>
+   
+   <top>
+     
+   </top>
+</BorderPane>

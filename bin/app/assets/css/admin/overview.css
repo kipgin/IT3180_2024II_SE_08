@@ -1,0 +1,60 @@
+/* Áp dụng cho toàn bộ giao diện */
+.root {
+    -fx-background-color: #1c1c1c; /* Nền xám đậm */
+    -fx-padding: 20px;
+}
+
+/* Kiểu thẻ card */
+.card {
+    -fx-background-color: #f0f0f0;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 8, 0, 3, 3);
+}
+
+/* Tiêu đề trong card */
+.title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222;
+    -fx-padding: 5px 0;
+}
+
+/* Nội dung bên trong */
+.content {
+    -fx-font-size: 14px;
+    -fx-text-fill: #444;
+}
+
+/* Biểu đồ */
+.chart-pie-label {
+    -fx-fill: black;
+    -fx-font-weight: bold;
+}
+
+/* Hiệu ứng khi di chuột vào card */
+.card:hover {
+    -fx-background-color: #dbe9ff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 100, 255, 0.3), 12, 0, 5, 5);
+}
+
+/* Kiểu card nhỏ */
+.card-small {
+    -fx-background-color: #e6e6e6;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px;
+    -fx-pref-width: 140px;
+    -fx-pref-height: 100px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 6, 0, 2, 2);
+}
+
+/* Thêm hiệu ứng dây nối giữa card lớn và card nhỏ */
+.card-connector {
+    -fx-border-color: #888;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-background-insets: 10px;
+    -fx-padding: 5px;
+}

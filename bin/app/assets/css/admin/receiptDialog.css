@@ -1,0 +1,63 @@
+/* Định dạng nền chính và bo góc */
+.receipt-container {
+    -fx-background-color: #F9F9F9;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-padding: 30px;
+}
+
+/* Tiêu đề */
+.header {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+/* GridPane Labels */
+.label-title {
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+}
+
+.label-value {
+    -fx-text-fill: #000000;
+}
+
+/* TextField */
+.text-field {
+    -fx-pref-width: 200px;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+}
+
+/* Button Styles */
+.confirm-button {
+    -fx-background-color: #007BFF;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.cancel-button {
+    -fx-background-color: #DC3545;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.confirm-button:hover, .cancel-button:hover {
+    -fx-opacity: 0.8;
+}
+
+/* Background Blur Effect */
+.blur-background {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+    -fx-background-radius: 15px;
+}
