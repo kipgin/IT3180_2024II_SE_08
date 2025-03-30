@@ -36,7 +36,7 @@ Lúc này, backend của ứng dụng sẽ bắt đầu chạy
 2. Import các jar cần thiết từ thư mục libs vào project, bên cạnh đó là của JavaFx
 3. Xóa module-info.java trong src
 4. Chạy project
-
+  
 ### Kiểm tra hoạt động của ứng dụng
 
 Nếu mọi thứ đã được cấu hình đúng, bạn sẽ thấy giao diện chính của ứng dụng.
