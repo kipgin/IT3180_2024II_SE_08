@@ -1,11 +1,5 @@
 package com.example.BTL_CNPM.entrypoint;
 
-import com.example.BTL_CNPM.gmail.EzGmail;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
 //        try {

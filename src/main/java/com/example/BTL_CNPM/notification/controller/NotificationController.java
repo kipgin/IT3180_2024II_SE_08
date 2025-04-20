@@ -1,56 +1,98 @@
 package com.example.BTL_CNPM.notification.controller;
 
+import com.example.BTL_CNPM.notification.exception.*;
 import com.example.BTL_CNPM.notification.model.Notification;
 import com.example.BTL_CNPM.notification.service.NotificationService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/notifications")
+@RequestMapping("/api/notifications")
+@RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
 
-    public NotificationController(NotificationService notificationService) {
-        this.notificationService = notificationService;
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getUserNotifications(@PathVariable String userId) {
+        try {
+            List<Notification> notifications = notificationService.getUserNotifications(userId);
+            return ResponseEntity.ok(notifications);
+        } catch (NotificationValidationException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @PostMapping("/create")
-    public boolean createNotification(@RequestBody Notification notification) {
-        return notificationService.createNotification(notification);
+    @GetMapping("/user/{userId}/unread")
+    public ResponseEntity<?> getUnreadNotifications(@PathVariable String userId) {
+        try {
+            List<Notification> notifications = notificationService.getUnreadNotifications(userId);
+            return ResponseEntity.ok(notifications);
+        } catch (NotificationValidationException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @GetMapping("/all")
-    public List<Notification> getAllNotifications() {
-        return notificationService.getAllNotifications();
+    @GetMapping("/general")
+    public ResponseEntity<List<Notification>> getGeneralNotifications() {
+        return ResponseEntity.ok(notificationService.getGeneralNotifications());
     }
 
-    @GetMapping("/{id}")
-    public Optional<Notification> getNotificationById(@PathVariable Integer id) {
-        return notificationService.getNotificationById(id);
+    @PostMapping
+    public ResponseEntity<?> createNotification(@RequestBody Notification notification) {
+        try {
+            Notification created = notificationService.createNotification(notification);
+            return ResponseEntity.ok(created);
+        } catch (NotificationValidationException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @GetMapping("/user/{username}")
-    public List<Notification> getNotificationsBySender(@PathVariable String username) {
-        return notificationService.getNotificationsBySender(username);
+    @PatchMapping("/{notificationId}/read/{userId}")
+    public ResponseEntity<?> markAsRead(
+            @PathVariable Long notificationId,
+            @PathVariable String userId) {
+        try {
+            notificationService.markAsRead(notificationId, userId);
+            return ResponseEntity.ok().build();
+        } catch (NotificationNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (NotificationAccessException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        }
     }
 
-    @PutMapping("/update")
-    public boolean updateNotification(@RequestBody Notification updatedNotification) {
-        return notificationService.updateNotification(updatedNotification);
+    @DeleteMapping("/{notificationId}/{requesterId}")
+    public ResponseEntity<?> deleteNotification(
+            @PathVariable Long notificationId,
+            @PathVariable String requesterId) {
+        try {
+            notificationService.deleteNotification(notificationId, requesterId);
+            return ResponseEntity.noContent().build();
+        } catch (NotificationNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (NotificationAccessException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public boolean deleteNotification(@PathVariable Integer id) {
-        return notificationService.deleteNotification(id);
+    @DeleteMapping("/sender/{senderId}")
+    public ResponseEntity<Void> deleteAllBySender(@PathVariable String senderId) {
+        notificationService.deleteAllBySender(senderId);
+        return ResponseEntity.noContent().build();
     }
-    /**
-     * Su dung de gui di thong bao
-     * Se code lai sau, vi se can toi cac cong cu de gui thong bao
-     */
-//    @PostMapping("/send/{id}")
-//    public boolean sendNotification(@PathVariable Integer id) {
-//        return notificationService.sendNotification(id);
-//    }
+
+    @DeleteMapping("/receiver/{receiverId}")
+    public ResponseEntity<Void> deleteAllByReceiver(@PathVariable String receiverId) {
+        notificationService.deleteAllByReceiver(receiverId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAll() {
+        notificationService.deleteAllNotifications();
+        return ResponseEntity.noContent().build();
+    }
 }

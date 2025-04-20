@@ -3,7 +3,7 @@ package com.example.BTL_CNPM.auth.model.otp;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.BTL_CNPM.gmail.wordtemplate.WordTemplateReplacer.generateDocument;
+import static com.example.BTL_CNPM.gmail.WordTemplateReplacer.generateDocument;
 
 public class OTPWordForm extends OTPFormGenerator {
 
