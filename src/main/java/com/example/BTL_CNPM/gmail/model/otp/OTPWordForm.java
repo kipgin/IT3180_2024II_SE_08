@@ -1,4 +1,4 @@
-package com.example.BTL_CNPM.auth.model.otp;
+package com.example.BTL_CNPM.gmail.model.otp;
 
 import java.util.HashMap;
 import java.util.Map;

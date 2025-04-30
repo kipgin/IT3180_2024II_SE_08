@@ -1,15 +1,14 @@
-package com.example.BTL_CNPM.auth.controller;
+package com.example.BTL_CNPM.gmail.controller;
 
-import com.example.BTL_CNPM.auth.model.otp.OTPWordForm;
-import com.example.BTL_CNPM.auth.model.users.UsersGmail;
-import com.example.BTL_CNPM.auth.service.UsersGmailService;
 import com.example.BTL_CNPM.gmail.EmailSender;
+import com.example.BTL_CNPM.gmail.model.otp.OTPWordForm;
+import com.example.BTL_CNPM.gmail.model.users.UsersGmail;
+import com.example.BTL_CNPM.gmail.service.UsersGmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -85,6 +84,4 @@ public class UsersGmailController {
                     .body("Đã xảy ra lỗi khi gửi email: " + e.getMessage());
         }
     }
-
-
 }

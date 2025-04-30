@@ -1,24 +1,35 @@
 package com.example.BTL_CNPM.notification.service;
 
+import com.example.BTL_CNPM.gmail.EmailSender;
+import com.example.BTL_CNPM.gmail.model.users.UsersGmail;
+import com.example.BTL_CNPM.gmail.repository.UsersGmailRepository;
+import com.example.BTL_CNPM.gmail.service.UsersGmailService;
 import com.example.BTL_CNPM.notification.exception.*;
 import com.example.BTL_CNPM.notification.model.Notification;
 import com.example.BTL_CNPM.notification.model.NotificationType;
 import com.example.BTL_CNPM.notification.repository.NotificationRepository;
 import com.example.BTL_CNPM.user.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
+    @Autowired
     private final NotificationRepository notificationRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UsersGmailService usersGmailService;
 
     // Lấy tất cả thông báo của user
     public List<Notification> getUserNotifications(String userId) throws NotificationValidationException {
@@ -26,6 +37,10 @@ public class NotificationService {
             throw new NotificationValidationException("User ID không hợp lệ", "INVALID_USER_ID");
         }
         return notificationRepository.findByReceiverId(userId);
+    }
+
+    public List<Notification> getAllNotifications() {
+        return notificationRepository.findAll();
     }
 
     // Lấy thông báo chưa đọc
@@ -113,5 +128,44 @@ public class NotificationService {
     @Transactional
     public void deleteAllNotifications() {
         notificationRepository.deleteAll();
+    }
+
+    public void sendNotificationByGmail(Long notificationId) throws NotificationAccessException {
+        // Ví dụ sử dụng
+        EmailSender sender = new EmailSender("caohuythinh@gmail.com", "plop alwz udsz opmu");
+
+        try {
+            Notification object = notificationRepository.findById(notificationId).get();
+            if (object.getType() == NotificationType.SPECIFIC) {
+                UsersGmail userGmail = usersGmailService.getUserByUsername(object.getReceiverId()).get();
+                sender.sendEmail(userGmail.getEmail(),
+                        object.getTitle(),
+                        object.getContent());
+            } else if (object.getType() == NotificationType.GENERAL) {
+                List<UsersGmail> allUsers = usersGmailService.getAllUsers();
+                for (UsersGmail user : allUsers) {
+                    sender.sendEmail(user.getEmail(),
+                            object.getTitle(),
+                            object.getContent());
+                }
+            }
+            // Gửi email thông thường
+
+
+            // Gửi email có đính kèm
+//            List<String> attachments = Arrays.asList(
+//                    "src/main/resources/test.pdf"
+//            );
+//            sender.sendEmailWithAttachment(
+//                    Arrays.asList("thinhhuycaotraistorm@gmail.com"),
+//                    "Email with Attachments",
+//                    "Please find attached files",
+//                    attachments
+//            );
+
+            System.out.println("Emails sent successfully!");
+        } catch (MessagingException e) {
+            System.err.println("Failed to send email: " + e.getMessage());
+        }
     }
 }

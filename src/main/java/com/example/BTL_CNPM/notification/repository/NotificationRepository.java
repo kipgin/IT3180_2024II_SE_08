@@ -26,4 +26,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     @Transactional
     @Modifying
     void deleteAll();
+
+
 }

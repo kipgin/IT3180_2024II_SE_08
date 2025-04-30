@@ -1,6 +1,6 @@
-package com.example.BTL_CNPM.auth.repository;
+package com.example.BTL_CNPM.gmail.repository;
 
-import com.example.BTL_CNPM.auth.model.users.UsersGmail;
+import com.example.BTL_CNPM.gmail.model.users.UsersGmail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

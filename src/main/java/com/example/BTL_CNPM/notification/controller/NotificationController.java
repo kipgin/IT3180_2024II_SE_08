@@ -40,6 +40,11 @@ public class NotificationController {
         return ResponseEntity.ok(notificationService.getGeneralNotifications());
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Notification>> getAllNotifications() {
+        return ResponseEntity.ok(notificationService.getAllNotifications());
+    }
+
     @PostMapping
     public ResponseEntity<?> createNotification(@RequestBody Notification notification) {
         try {
@@ -94,5 +99,10 @@ public class NotificationController {
     public ResponseEntity<Void> deleteAll() {
         notificationService.deleteAllNotifications();
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/send/{notificationId}")
+    public void sendNotificationByGmail(@PathVariable Long notificationId) throws NotificationAccessException {
+        notificationService.sendNotificationByGmail(notificationId);
     }
 }
