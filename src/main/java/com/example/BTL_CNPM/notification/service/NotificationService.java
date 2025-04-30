@@ -20,14 +20,11 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class NotificationService {
     @Autowired
-    private final NotificationRepository notificationRepository;
-
+    private NotificationRepository notificationRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private UsersGmailService usersGmailService;
 
@@ -68,7 +65,7 @@ public class NotificationService {
             throw new NotificationAccessException("Không có quyền đánh dấu đã đọc");
         }
 
-        notification.setIsRead(true);
+        notification.setRead(true);
         notificationRepository.save(notification);
     }
 
