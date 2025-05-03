@@ -1,4 +1,4 @@
-//package com.example.BTL_CNPM.model.otp;
+package com.example.BTL_CNPM.gmail.model.otp;//package com.example.BTL_CNPM.model.otp;
 //
 //import jakarta.persistence.*;
 //import java.time.LocalDateTime;

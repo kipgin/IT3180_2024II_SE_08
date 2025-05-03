@@ -1,4 +1,4 @@
-package com.example.BTL_CNPM.gmail.wordtemplate;
+package com.example.BTL_CNPM.gmail;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;

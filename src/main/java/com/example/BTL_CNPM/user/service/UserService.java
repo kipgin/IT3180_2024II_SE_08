@@ -1,5 +1,6 @@
 package com.example.BTL_CNPM.user.service;
 
+import com.example.BTL_CNPM.gmail.service.UsersGmailService;
 import com.example.BTL_CNPM.household.service.HouseholdService;
 import com.example.BTL_CNPM.user.model.User;
 import com.example.BTL_CNPM.user.repository.UserRepository;
@@ -20,6 +21,9 @@ public class UserService {
 
     @Autowired
     private HouseholdService householdService;
+
+    @Autowired
+    private UsersGmailService usersGmailService;
 
     public boolean register(User user) {
         if (userRepository.existsById(user.getUsername())) {
@@ -71,6 +75,7 @@ public class UserService {
         if (userOpt.isPresent()) {
             householdService.deleteHouseholdByUsername(username);
             userRepository.deleteByUsername(username);
+            usersGmailService.deleteUser(username);
             return true;
         }
         return false;

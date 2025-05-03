@@ -1,7 +1,7 @@
-package com.example.BTL_CNPM.auth.service;
+package com.example.BTL_CNPM.gmail.service;
 
-import com.example.BTL_CNPM.auth.model.users.UsersGmail;
-import com.example.BTL_CNPM.auth.repository.UsersGmailRepository;
+import com.example.BTL_CNPM.gmail.model.users.UsersGmail;
+import com.example.BTL_CNPM.gmail.repository.UsersGmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

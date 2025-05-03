@@ -1,55 +1,88 @@
 package com.example.BTL_CNPM.notification.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
+import lombok.Data;
+import org.hibernate.annotations.Check;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notifications")
+@Data
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer notificationId;
+    private Long id;
 
+    @Column(nullable = false)
+    private String senderId;
+
+    @Column(nullable = true)
+    private String receiverId; // Nullable for GENERAL notifications
+
+    @Column(nullable = false, length = 255)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @Enumerated(EnumType.STRING)
-    private NotificationType type;
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
-    private String senderId; // username của người gửi
-
-    private LocalDateTime scheduledAt;
-
-    private LocalDateTime sentAt;
+    @Column(nullable = false)
+    private Boolean isRead = false;
 
     @Enumerated(EnumType.STRING)
-    private NotificationStatus status;
+    @Column(nullable = false, length = 10)
+    private NotificationType type = NotificationType.SPECIFIC;
+
+
+
+    @AssertTrue
+    public boolean isValidNotification() {
+        return (type == NotificationType.GENERAL && receiverId == null) ||
+                (type == NotificationType.SPECIFIC && receiverId != null);
+    }
+
+    public Notification(Long id, String senderId, String receiverId, String title, String content, LocalDateTime createdAt, Boolean isRead, NotificationType type) {
+        this.id = id;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.title = title;
+        this.content = content;
+        this.createdAt = createdAt;
+        this.isRead = isRead;
+        this.type = type;
+    }
 
     public Notification() {
 
     }
+    public Long getId() {
+        return id;
+    }
 
-    public Notification(String title, String content, NotificationType type, String senderId, LocalDateTime scheduledAt) {
-        this.title = title;
-        this.content = content;
-        this.type = type;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
         this.senderId = senderId;
-        this.scheduledAt = scheduledAt;
-        this.status = NotificationStatus.PENDING;
     }
 
-    // Getter và Setter
-
-
-    public Integer getNotificationId() {
-        return notificationId;
+    public String getReceiverId() {
+        return receiverId;
     }
 
-    public void setNotificationId(Integer notificationId) {
-        this.notificationId = notificationId;
+    public void setReceiverId(String receiverId) {
+        this.receiverId = receiverId;
     }
 
     public String getTitle() {
@@ -68,43 +101,27 @@ public class Notification {
         this.content = content;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Boolean getRead() {
+        return isRead;
+    }
+
+    public void setRead(Boolean read) {
+        isRead = read;
+    }
+
     public NotificationType getType() {
         return type;
     }
 
     public void setType(NotificationType type) {
         this.type = type;
-    }
-
-    public String getSenderId() {
-        return senderId;
-    }
-
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
-    }
-
-    public LocalDateTime getScheduledAt() {
-        return scheduledAt;
-    }
-
-    public void setScheduledAt(LocalDateTime scheduledAt) {
-        this.scheduledAt = scheduledAt;
-    }
-
-    public LocalDateTime getSentAt() {
-        return sentAt;
-    }
-
-    public void setSentAt(LocalDateTime sentAt) {
-        this.sentAt = sentAt;
-    }
-
-    public NotificationStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(NotificationStatus status) {
-        this.status = status;
     }
 }
