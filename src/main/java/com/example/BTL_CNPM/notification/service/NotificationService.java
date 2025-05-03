@@ -37,6 +37,9 @@ public class NotificationService {
     }
 
     public List<Notification> getAllNotifications() {
+//        for (Notification notification : notificationRepository.findAll()) {
+//            System.out.println(notification.getId());
+//        }
         return notificationRepository.findAll();
     }
 
