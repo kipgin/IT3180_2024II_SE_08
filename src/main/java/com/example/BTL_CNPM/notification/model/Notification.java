@@ -61,7 +61,6 @@ public class Notification {
     public Notification() {
 
     }
-
     public Long getId() {
         return id;
     }
