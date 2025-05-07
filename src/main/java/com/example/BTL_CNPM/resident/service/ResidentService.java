@@ -1,6 +1,7 @@
 package com.example.BTL_CNPM.resident.service;
 
 import com.example.BTL_CNPM.household.model.Household;
+import com.example.BTL_CNPM.resident.model.AccomStatus;
 import com.example.BTL_CNPM.resident.model.Resident;
 import com.example.BTL_CNPM.household.repository.HouseholdRepository;
 import com.example.BTL_CNPM.resident.repository.ResidentRepository;
@@ -67,6 +68,30 @@ public class ResidentService {
 
     public List<Resident> getResidentsByHouseholdId(Integer householdId) {
         return residentRepository.findByHouseholdId(householdId);
+    }
+
+    @Transactional
+    public boolean updateResident(Integer residentId, Resident updatedResident) {
+        Optional<Resident> existingOpt = residentRepository.findById(residentId);
+        if (existingOpt.isPresent()) {
+            Resident resident = existingOpt.get();
+
+            // Cập nhật từng trường
+            resident.setName(updatedResident.getName());
+            resident.setGender(updatedResident.getGender());
+            resident.setBirthYear(updatedResident.getBirthYear());
+            resident.setAccomStatus(updatedResident.getAccomStatus());
+            resident.setHouseholdId(updatedResident.getHouseholdId());
+
+            residentRepository.save(resident);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public void deleteAllResidents() {
+        residentRepository.deleteAll();
     }
 }
 
