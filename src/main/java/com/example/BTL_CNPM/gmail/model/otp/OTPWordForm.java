@@ -26,5 +26,6 @@ public class OTPWordForm extends OTPFormGenerator {
         // Gọi hàm tạo file
         generateDocument(templatePath, outputPath, replacements);
         return outputPath;
+
     }
 }

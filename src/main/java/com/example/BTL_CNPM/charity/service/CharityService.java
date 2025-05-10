@@ -2,13 +2,20 @@ package com.example.BTL_CNPM.charity.service;
 
 
 import com.example.BTL_CNPM.charity.model.Charity;
+import com.example.BTL_CNPM.charity.model.CharityName;
 import com.example.BTL_CNPM.charity.model.CharitySection;
 import com.example.BTL_CNPM.charity.repository.CharityNameRepository;
 import com.example.BTL_CNPM.charity.repository.CharityRepository;
+import com.example.BTL_CNPM.charity.repository.CharitySectionRepository;
+import com.example.BTL_CNPM.gmail.EmailSender;
+import com.example.BTL_CNPM.household.model.Household;
+import com.example.BTL_CNPM.household.repository.HouseholdRepository;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +28,15 @@ public class CharityService {
 
     @Autowired
     private CharityNameRepository charityNameRepository;
+
+    @Autowired
+    private CharitySectionRepository charitySectionRepository;
+
+    @Autowired
+    private HouseholdRepository householdRepository;
+
+//    @Autowired
+//    private HouseholdRepository householdRepository;
 
     public boolean existsById(Integer id){
         return charityRepository.existsById(id);
@@ -66,14 +82,71 @@ public class CharityService {
         return true;
     }
 
-    //update bi loi phan setCharitySections
-    public boolean update(Charity charity){
-        if(charity.getOwnerUserName() == null || !charityRepository.existsByOwnerUserName(charity.getOwnerUserName())){
+    @Transactional
+    public boolean deleteSectionByOwnerUserName(String ownerUserName, String name){
+        if(!charityRepository.existsByOwnerUserName(ownerUserName)){
             return false;
         }
-        Charity existOne = charityRepository.findByOwnerUserName(charity.getOwnerUserName()).orElse(null);
+        Charity charity=charityRepository.findByOwnerUserName(ownerUserName).orElse(null);
+        List<CharitySection> list =charity.getCharitySections();
+        if(list.isEmpty()){
+            return false;
+        }
+        Boolean flag=false;
+        for(int i = 0 ; i < list.size();i++){
+            if(list.get(i).getName().equals(name)){
+                flag=true;
+                CharitySection charitySection=list.get(i);
+                list.remove(i);
+                charitySectionRepository.delete(charitySection);
+                break;
+            }
+        }
+        if(!flag){
+            return false;
+        }
+        charityRepository.save(charity);
+        return true;
+    }
+
+    //update bi loi phan setCharitySections
+    @Transactional
+    public boolean update(String ownerUserName, String charityName, Integer money) throws MessagingException {
+        if(!charityRepository.existsByOwnerUserName(ownerUserName)){
+            return false;
+        }
+        Charity existOne = charityRepository.findByOwnerUserName(ownerUserName).orElse(null);
         //existOne.setCharitySections(charity.getCharitySections());
-        existOne.setAccomStatus(charity.getAccomStatus());
+        List<CharitySection> list = existOne.getCharitySections();
+        if(list.isEmpty()){
+            return false;
+        }
+        if( !(money instanceof Integer) || money <= 0){
+            return false;
+        }
+
+        Boolean flag=false;
+        for(int i =0 ; i < list.size() ; i++){
+            if(list.get(i).getName().equals(charityName)){
+                CharitySection charitySection = list.get(i);
+                charitySection.setDonate(charitySection.getDonate()+money);
+                Integer fee=charitySection.getDonate();
+                EmailSender emailSender = new EmailSender("caohuythinh@gmail.com","plop alwz udsz opmu");
+                LocalDateTime paidTime = LocalDateTime.now();
+                String subject="Xác nhận đóng góp vào lúc:  " + paidTime.toString();
+                String body="Số tiền cư dân vừa nộp là: "+ money.toString() + " VND." +"\n"
+                        + "Hình thức thanh toán: Tiền mặt."+"\n"
+                        +"Tên quỹ đóng góp: "+ charitySection.getName() +"."+"\n"
+                        +"Tổng số tiền hộ cư dân đã ủng hộ cho quỹ là: " + fee.toString() + " VND."+"\n"
+                        +"Chúc cư dân một ngày tốt lành!";
+
+                flag=true;
+                break;
+            }
+        }
+        if(!flag){
+            return false;
+        }
         charityRepository.save(existOne);
         return true;
     }
@@ -120,6 +193,7 @@ public class CharityService {
                 }
             }
         }
+        charitySection.setDonate(0);
         charity.add(charitySection);
         charityRepository.save(charity);
         return true;
@@ -155,7 +229,7 @@ public class CharityService {
     }
 
     public boolean add(Charity charity){
-        if(charity==null || charity.getOwnerUserName()==null || charityRepository.existsByOwnerUserName(charity.getOwnerUserName())){
+        if(charity==null || charity.getOwnerUserName()==null || charity.getOwnerUserName().isEmpty() || charityRepository.existsByOwnerUserName(charity.getOwnerUserName()) || !householdRepository.existsByOwnerUsername(charity.getOwnerUserName())){
             return false;
         }
         charity.setCharitySections(new ArrayList<>());

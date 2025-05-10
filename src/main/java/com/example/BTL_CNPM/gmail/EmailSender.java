@@ -29,7 +29,7 @@ public class EmailSender {
      * @param body Nội dung email
      * @throws MessagingException Nếu có lỗi khi gửi email
      */
-    public void sendEmail(String toEmail, String subject, String body) throws MessagingException {
+    public void sendEmail(String toEmail, String subject, String body) throws  MessagingException {
         sendEmail(Collections.singletonList(toEmail), subject, body, null);
     }
 

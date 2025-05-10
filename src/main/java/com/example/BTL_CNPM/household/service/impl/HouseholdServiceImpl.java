@@ -1,5 +1,7 @@
 package com.example.BTL_CNPM.household.service.impl;
 
+import com.example.BTL_CNPM.charity.service.CharityService;
+import com.example.BTL_CNPM.feemanage.service.FeeManageService;
 import com.example.BTL_CNPM.household.model.Household;
 import com.example.BTL_CNPM.household.repository.HouseholdRepository;
 import com.example.BTL_CNPM.user.repository.UserRepository;
@@ -24,6 +26,12 @@ public class HouseholdServiceImpl implements HouseholdService {
     @Autowired
     private ResidentService residentService;
 
+//    @Autowired
+//    private FeeManageService feeManageService;
+//
+//    @Autowired
+//    private CharityService charityService;
+
     public boolean createHousehold(Household household) {
         if (!userRepository.existsByUsername(household.getOwnerUsername())) {
             return false;
@@ -34,6 +42,7 @@ public class HouseholdServiceImpl implements HouseholdService {
         }
 
         householdRepository.save(household);
+
         return true;
     }
 
