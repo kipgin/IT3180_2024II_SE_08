@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "households")
 public class Household {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -14,17 +15,35 @@ public class Household {
 
     private int numOfMembers;
 
+    @Column(nullable = false)
+    private String buildingBlock;  // Tên hoặc ký hiệu tòa (ví dụ: A, B, C)
+
+    @Column(nullable = false)
+    private int floor;             // Số tầng (int để tiện tìm kiếm/sắp xếp)
+
+    @Column(nullable = false)
+    private String roomNumber;     // Số phòng (ví dụ: 301, 12A)
+
     public Household() {
+
     }
 
-    public Household(Integer id, String ownerUsername, int numOfMembers) {
+    public Household(Integer id, String ownerUsername, String buildingBlock, int floor, String roomNumber) {
         this.id = id;
         this.ownerUsername = ownerUsername;
-        this.numOfMembers = numOfMembers;
+        this.buildingBlock = buildingBlock;
+        this.floor = floor;
+        this.roomNumber = roomNumber;
     }
 
-    public Household(String ownerUsername) {
-        this.ownerUsername = ownerUsername;
+    // Getters and Setters
+
+    public int getNumOfMembers() {
+        return numOfMembers;
+    }
+
+    public void setNumOfMembers(int numOfMembers) {
+        this.numOfMembers = numOfMembers;
     }
 
     public Integer getId() {
@@ -43,11 +62,27 @@ public class Household {
         this.ownerUsername = ownerUsername;
     }
 
-    public int getNumOfMembers() {
-        return numOfMembers;
+    public String getBuildingBlock() {
+        return buildingBlock;
     }
 
-    public void setNumOfMembers(int numOfMembers) {
-        this.numOfMembers = numOfMembers;
+    public void setBuildingBlock(String buildingBlock) {
+        this.buildingBlock = buildingBlock;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
+
+    public String getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }

@@ -1,7 +1,9 @@
 package com.example.BTL_CNPM.user.service;
 
+import com.example.BTL_CNPM.gmail.model.users.UsersGmail;
 import com.example.BTL_CNPM.gmail.service.UsersGmailService;
 import com.example.BTL_CNPM.household.service.HouseholdService;
+import com.example.BTL_CNPM.user.model.PasswordReset;
 import com.example.BTL_CNPM.user.model.User;
 import com.example.BTL_CNPM.user.repository.UserRepository;
 import com.example.BTL_CNPM.user.service.UserService;
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -24,6 +28,9 @@ public class UserService {
 
     @Autowired
     private UsersGmailService usersGmailService;
+
+    @Autowired
+    private PasswordResetService passwordResetService;
 
     public boolean register(User user) {
         if (userRepository.existsById(user.getUsername())) {
@@ -87,5 +94,32 @@ public class UserService {
     public Optional<User> getUser(String username){
         return userRepository.findByUsername(username);
     }
+
+    // Phương thức quên mật khẩu
+
+    public boolean sendPasswordResetToken(String username) {
+        Optional<User> userOpt = userRepository.findById(username);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+
+            // Lấy userGmail từ dịch vụ usersGmailService
+            Optional<UsersGmail> userGmailOpt = usersGmailService.getUserByUsername(username);
+            if (userGmailOpt.isPresent()) {
+                UsersGmail userGmail = userGmailOpt.get();
+
+                // Kiểm tra nếu userGmail không có email
+                if (userGmail.getEmail() == null || userGmail.getEmail().isEmpty()) {
+                    System.out.println("User does not have an email address.");
+                    return false;  // Trả về false nếu không có email
+                }
+                return passwordResetService.createPasswordResetToken(username);
+            } else {
+                System.out.println("No Gmail account found for the user.");
+                return false;
+            }
+        }
+        return false;
+    }
+
 }
 
