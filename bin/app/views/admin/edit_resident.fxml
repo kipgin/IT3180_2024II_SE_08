@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="500" prefWidth="420" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="app.controllers.admin.EditResidentController">
+    <VBox alignment="CENTER" spacing="12" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" styleClass="edit-account-pane">
+        <Label styleClass="title-label" text="📝 Chỉnh sửa cư dân" />
+
+        <VBox alignment="CENTER_LEFT" maxWidth="350" spacing="8">
+            <Label styleClass="field-label" text="📛 Họ và tên:" />
+            <TextField fx:id="nameField" promptText="Họ và tên" />
+
+            <Label styleClass="field-label" text="🧬 Giới tính:" />
+            <ComboBox fx:id="genderComboBox" promptText="Chọn giới tính" />
+
+            <Label styleClass="field-label" text="🎂 Năm sinh:" />
+            <TextField fx:id="birthYearField" promptText="Năm sinh" />
+
+            <Label styleClass="field-label" text="📌 Trạng thái:" />
+            <ComboBox fx:id="statusComboBox" promptText="Chọn trạng thái" />
+
+            <Label styleClass="field-label" text="🏠 Hộ khẩu ID:" />
+            <TextField fx:id="householdIdField" promptText="Mã hộ khẩu" />
+        </VBox>
+
+        <HBox alignment="CENTER" spacing="15">
+            <Button onAction="#handleSave" styleClass="save-button" text="💾 Lưu" />
+            <Button onAction="#handleCancel" styleClass="cancel-button" text="❌ Hủy" />
+        </HBox>
+    </VBox>
+</AnchorPane>

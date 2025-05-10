@@ -46,36 +46,57 @@ public class AddPaymentController {
 
     @FXML
     private void handleConfirm() {
-    	 try {
-             if (areaField.getText().isEmpty() || serviceFeeField.getText().isEmpty() ||
-                     totalFeeField.getText().isEmpty() || ownerUserNameField.getText().isEmpty() ||
-                     statusComboBox.getValue() == null) {
-                 showAlert(Alert.AlertType.ERROR, "Lỗi", "Vui lòng điền đầy đủ thông tin.");
-                 return;
-             }
+        try {
+            // Kiểm tra các trường có rỗng không
+            if (areaField.getText().isEmpty() || serviceFeeField.getText().isEmpty() ||
+                    totalFeeField.getText().isEmpty() || ownerUserNameField.getText().isEmpty() ||
+                    statusComboBox.getValue() == null) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Vui lòng điền đầy đủ thông tin.");
+                return;
+            }
 
-             double area = Double.parseDouble(areaField.getText());
-             double serviceFeePerSquare = Double.parseDouble(serviceFeeField.getText());
-             double totalFee = Double.parseDouble(totalFeeField.getText());
-             String ownerUserName = ownerUserNameField.getText();
-             String accomStatus = statusComboBox.getValue();
+            // Parse và kiểm tra số hợp lệ
+            double area = Double.parseDouble(areaField.getText());
+            double serviceFeePerSquare = Double.parseDouble(serviceFeeField.getText());
+            double totalFee = Double.parseDouble(totalFeeField.getText());
 
-             boolean success = ApiService.addPaymentRecord(area, serviceFeePerSquare, totalFee, ownerUserName, accomStatus);
+            if (area <= 0 || serviceFeePerSquare <= 0 || totalFee < 0) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Diện tích, phí dịch vụ phải lớn hơn 0 và tổng phí không được âm.");
+                return;
+            }
 
-             if (success) {
-                 showAlert(Alert.AlertType.INFORMATION, "Thành công", "Thêm hộ khẩu thành công.");
-                 controller.loadData();
-                 handleCancel();
-             } else {
-                 showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi xảy ra khi thêm hộ khẩu.");
-             }
-         } catch (NumberFormatException e) {
-             showAlert(Alert.AlertType.ERROR, "Lỗi", "Vui lòng nhập đúng định dạng số.");
-         } catch (Exception e) {
-             showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi không xác định: " + e.getMessage());
-             e.printStackTrace();
-         }
+            // (Tùy chọn) kiểm tra số chữ số thập phân
+            if (!isValidDecimal(area) || !isValidDecimal(serviceFeePerSquare) || !isValidDecimal(totalFee)) {
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Vui lòng nhập số với tối đa 2 chữ số sau dấu thập phân.");
+                return;
+            }
+
+            String ownerUserName = ownerUserNameField.getText().trim();
+            String accomStatus = statusComboBox.getValue();
+
+            boolean success = ApiService.addPaymentRecord(area, serviceFeePerSquare, totalFee, ownerUserName, accomStatus);
+
+            if (success) {
+                showAlert(Alert.AlertType.INFORMATION, "Thành công", "Thêm hộ khẩu thành công.");
+                controller.loadData();
+                handleCancel();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Lỗi", "Có lỗi xảy ra khi thêm hộ khẩu.");
+            }
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Vui lòng nhập đúng định dạng số.");
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Đã xảy ra lỗi không xác định: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+
+    // Hàm kiểm tra số thập phân chỉ có tối đa 2 chữ số sau dấu chấm
+    private boolean isValidDecimal(double number) {
+        String[] parts = Double.toString(number).split("\\.");
+        return parts.length < 2 || parts[1].length() <= 2;
+    }
+
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);

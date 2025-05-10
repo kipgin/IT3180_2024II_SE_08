@@ -1,101 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 
-<VBox alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" styleClass="content" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.AccountController">
-   <children>
-      <Label styleClass="content-title" text="XIN CHÀO, QUẢN TRỊ VIÊN" />
-            <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Tài khoản" />
+<BorderPane fx:id="rootLayout" prefHeight="700.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.AccountController">
 
-            <HBox styleClass="stats">
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Số Tài Khoản" />
-                    <Label fx:id="numberLabel" styleClass="stat-value" text="đang tải..." />
-                </VBox>
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Trạng thái" />
-                    <Label fx:id="activeLabel" styleClass="stat-value" text="Tài khoản được kích hoạt: đang tải..." />
-                    <Label fx:id="inactiveLabel" styleClass="stat-value" text="Tài khoản bị khóa: đang tải..." />
-                </VBox>
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Gần đây" />
-                    <Label styleClass="stat-value" text="0 tài khoản được thêm mới" />
-                </VBox>
-            </HBox>
-      <HBox prefHeight="40.0" prefWidth="200.0">
-         <children>
-      
-            <Label minWidth="-Infinity" prefHeight="18.0" prefWidth="113.0" styleClass="section-title" text="THỐNG KÊ" />
-            <VBox minWidth="-Infinity" prefHeight="40.0" prefWidth="110.0" styleClass="register-box">
-               <children>
-         
-                 <Button fx:id="registerButton" mnemonicParsing="false" onAction="#openRegisterWindow" styleClass="image-button">
-                     <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/img/addAcc.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Label text="Add account" />
-               </children>
-               <HBox.margin>
-                  <Insets left="800.0" />
-               </HBox.margin>
+    <!-- CENTER: Bảng tài khoản -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="10" styleClass="card">
+            <Label styleClass="card-title" text="Account List" />
+            <TableView fx:id="tableView" prefHeight="600" prefWidth="730">
+                <columns>
+                    <TableColumn fx:id="usernameColumn" prefWidth="100" text="Username" />
+                    <TableColumn fx:id="fullNameColumn" prefWidth="150" text="Full Name" />
+                    <TableColumn fx:id="roleColumn" prefWidth="70" text="Role" />
+                    <TableColumn fx:id="activeColumn" prefWidth="70" text="Active" />
+                    <TableColumn fx:id="createdAtColumn" prefWidth="150" text="Created At" />
+                    <TableColumn fx:id="updatedAtColumn" prefWidth="150" text="Updated At" />
+                    <TableColumn fx:id="actionColumn" prefWidth="100" text="Actions" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+    <!-- RIGHT: Bộ lọc + Biểu đồ + Nút thêm -->
+    <right>
+        <VBox alignment="TOP_CENTER" spacing="15" style="-fx-padding: 10 20 10 20;">
+            
+            <!-- Bộ lọc -->
+            <VBox spacing="10" styleClass="card">
+                <Label styleClass="card-title" text="Filter Accounts" />
+                <Label styleClass="filter-label" text="Role" />
+                <ComboBox fx:id="roleFilter" promptText="Choose role..." styleClass="filter-control">
+                <items>
+                         <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="ALL"/>
+                          <String fx:value="ADMIN" />
+                          <String fx:value="RESIDENT" />
+                         </FXCollections>
+                       </items>
+                 </ComboBox>
+
+                <Label styleClass="filter-label" text="Username" />
+                <TextField fx:id="searchField" promptText="Enter username..." styleClass="filter-control"/>
+
+                <Label styleClass="filter-label" text="Status" />
+                <ComboBox fx:id="activeFilter" promptText="Choose status..." styleClass="filter-control" >
+                <items>
+                         <FXCollections fx:factory="observableArrayList">
+                          <String fx:value="ALL"/>
+                          <String fx:value="Active" />
+                          <String fx:value="InActive" />
+                         </FXCollections>
+                       </items>
+                 </ComboBox>
+
+                <Button styleClass="primary-button" onAction="#applyFilter" text="Apply Filter" />
             </VBox>
-              
-            
-         </children>
-      </HBox>
-      <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1150.0" />
-            
-            
-      <VBox fx:id="vboxIcon" alignment="CENTER" prefHeight="180.0" prefWidth="100.0">
-         <children>
-                  
-            <Button fx:id="statisticsIcon" styleClass="icon-button">
-               <graphic>
-                  <ImageView fitHeight="43.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/img/statistics_icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </VBox>
-      
-      
-            
-      <VBox fx:id="statisticsTable" alignment="CENTER" spacing="10" visible="false">
-        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Bảng Thống Kê Tài Khoản" />
-         <ScrollPane fitToHeight="true" fitToWidth="true">
-            <content>
-              
-              <TableView fx:id="tableView" prefHeight="300" prefWidth="1000">
-                  <columns>
-                      <TableColumn fx:id="usernameColumn" text="Username" />
-                      <TableColumn fx:id="fullNameColumn" text="Full Name" />
-                      <TableColumn fx:id="roleColumn" text="Role" />
-                      <TableColumn fx:id="activeColumn" text="Active" />
-                      <TableColumn fx:id="createdAtColumn" text="Created at" />
-                      <TableColumn fx:id="updatedAtColumn" text="Updated at" />
-                      <TableColumn fx:id="actionColumn" text="Actions" />
-                  </columns>
-              </TableView>
-            </content>
-         </ScrollPane>
-    </VBox>
-   </children>
-</VBox>
+
+            <!-- Biểu đồ -->
+            <VBox alignment="CENTER" spacing="10" styleClass="card">
+                <Label styleClass="card-title" text="Account Statistics" />
+                <PieChart fx:id="rolePieChart" prefHeight="250" prefWidth="300" />
+            </VBox>
+
+            <!-- Nút tạo tài khoản -->
+            <VBox alignment="CENTER" styleClass="card">
+                <Button fx:id="registerButton" onAction="#openRegisterWindow" prefWidth="200" styleClass="main-button" text="➕ Add New Account" />
+            </VBox>
+
+        </VBox>
+    </right>
+</BorderPane>

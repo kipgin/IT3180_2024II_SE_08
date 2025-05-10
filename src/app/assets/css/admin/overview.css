@@ -1,9 +1,13 @@
 /* Áp dụng cho toàn bộ giao diện */
 .root {
-    -fx-background-color: #1c1c1c; /* Nền xám đậm */
+   
     -fx-padding: 20px;
 }
-
+.root-overview{
+	-fx-background-image: url("../../img/main.png");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
 /* Kiểu thẻ card */
 .card {
     -fx-background-color: #f0f0f0;
@@ -11,6 +15,14 @@
     -fx-background-radius: 10px;
     -fx-padding: 15px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.4), 8, 0, 3, 3);
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.card:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
 /* Tiêu đề trong card */
@@ -57,4 +69,73 @@
     -fx-border-style: solid;
     -fx-background-insets: 10px;
     -fx-padding: 5px;
+}
+
+
+.table-view {
+    -fx-background-color: #5b5b5b;
+    -fx-table-cell-border-color: transparent;
+    -fx-fixed-cell-size: 40px;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-pref-height: 265px;
+    -fx-pref-width: 400px;
+    -fx-border-color: #444;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+     -fx-border-width: 0.7;
+}
+
+.table-view .column-header-background {
+   -fx-background-color: #4e4e4e;
+}
+
+/* Header của bảng */
+.table-view .column-header {
+    -fx-background-color: #4e4e4e;
+    -fx-border-color: transparent;
+    -fx-alignment: center;
+}
+
+/* Label trong header */
+.table-view .column-header .label {
+    -fx-text-fill: #E0E0E0;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+.table-row-cell:first-child {
+    -fx-background-color: #ffd70022;
+}
+/* Cell nội dung */
+.table-view .table-cell {
+    -fx-text-fill: #404040;
+    -fx-alignment: center;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent transparent #5e5e5e transparent;
+    -fx-border-width: 0.4;
+    -fx-padding: 0px 0px;
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #7a7a7a;
+    -fx-scale-x: 1.005;
+    -fx-scale-y: 1.005;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.table-row-cell:filled:selected:hover {
+    -fx-background-color: #00BFFF; 
+}
+
+.table-row-cell:hover .table-cell {
+    -fx-text-fill: #ffffff;
+}
+
+/* Ẩn thanh trượt */
+.table-view .scroll-bar {
+    -fx-opacity: 0;
+    -fx-max-width: 0;
+    -fx-max-height: 0;
 }

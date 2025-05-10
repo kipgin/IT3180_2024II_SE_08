@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="app.controllers.admin.AccountInfoController">
+
+    
+    <left>
+        <VBox spacing="15" alignment="TOP_CENTER" styleClass="sidebar">
+            <VBox >
+                <ImageView fitWidth="80" fitHeight="80">
+                    <image>
+                        <Image url="@../../assets/img/user1.png" /> 
+                    </image>
+                </ImageView>
+                <Label fx:id="_usernameLabel" styleClass="sidebar-username"/>
+                <Label fx:id="emailLabel" text="hoangminhkhoi@gmail.com" styleClass="sidebar-email"/>
+            </VBox>
+            <Separator />
+            <VBox spacing="8" styleClass="sidebar-menu">
+                <Label text="Personal Information" styleClass="menu-active"/>
+                <Label text="Billing  Payments" />
+                <Label text="Order History" />
+                <Label text="Gift Cards" />
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="20"  styleClass="main-content">
+            <Label text="Personal Information" styleClass="main-title"/>
+
+            <GridPane hgap="20" vgap="15">
+                <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label fx:id="usernameLabel" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Full Name:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label fx:id="fullNameLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Role:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label fx:id="roleLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Created At:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Label fx:id="createdAtLabel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="Updated At:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label fx:id="updatedAtLabel" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                <Label text="Active:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <Label fx:id="activeLabel" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+                <Label text="Email:" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                <TextField fx:id="emailField" promptText="Enter your email" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+
+                <Button text="Update Email" onAction="#onUpdateEmail" GridPane.rowIndex="7" GridPane.columnSpan="2" styleClass="update-button"/>
+            </GridPane>
+        </VBox>
+    </center>
+</BorderPane>

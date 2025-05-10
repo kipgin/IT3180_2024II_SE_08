@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="app.controllers.admin.ResidentListController">
+
+    <VBox spacing="10" prefWidth="1030" layoutX="20" layoutY="20">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="⬅ Back" fx:id="backButton" styleClass="buttons"/>
+            <Label text="All Residents" styleClass="header-label" />
+        </HBox>
+
+        <HBox spacing="10">
+            <TextField fx:id="searchField" promptText="Search by name..." />
+            <Button text="Search" fx:id="searchButton" styleClass="buttons"/>
+        </HBox>
+
+        <TableView fx:id="residentTable" prefHeight="800" prefWidth="1030" styleClass="centered-table">
+   			 <columns>
+        	  	 <TableColumn fx:id="idColumn" text="ID" prefWidth="100" />
+       			 <TableColumn fx:id="nameColumn" text="Name" prefWidth="200" />
+       			 <TableColumn fx:id="genderColumn" text="Gender" prefWidth="150" />
+       			 <TableColumn fx:id="birthYearColumn" text="Birth Year" prefWidth="150" />
+       			 <TableColumn fx:id="statusColumn" text="Status" prefWidth="150" />
+       			 <TableColumn fx:id="householdColumn" text="Household ID" prefWidth="150" />
+       			 <TableColumn fx:id="actionColumn" text="Actions" prefWidth="130" />
+    		</columns>
+		</TableView>
+    </VBox>
+</AnchorPane>

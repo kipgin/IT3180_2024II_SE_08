@@ -1,17 +1,26 @@
 package app.controllers.admin;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +28,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import app.models.CharityName;
 import app.models.CharityRecord;
 import app.models.CharitySection;
+import app.models.Resident;
+import app.models.TopDonor;
 import app.services.ApiService;
 
 public class OverviewController {
@@ -30,10 +41,8 @@ public class OverviewController {
     private VBox weatherBox, mapBox, chartBox;
 
     @FXML
-    private Label weatherTitle, weatherInfo, Info;
+    private Label weatherTitle, tempInfo,humidityInfo,cloudyInfo, Info;
 
-    @FXML
-    private PieChart donationChart;
     
     @FXML
     private Label apartmentCount;
@@ -43,27 +52,59 @@ public class OverviewController {
 
     @FXML
     private Label paymentRate;
+    
+    @FXML
+    private TableView<TopDonor> donationTable;
+    @FXML private TableColumn<TopDonor, Number> rankColumn;
+    @FXML
+    private TableColumn<TopDonor, String> ownerColumn;
+    @FXML
+    private TableColumn<TopDonor, Number> donateColumn;
+
+    private void loadTop5Donors() {
+    	new Thread(() -> {
+            try {
+                Platform.runLater(() -> {
+                	                	                            	 
+                    List<CharityRecord> records = ApiService.getAllCharityRecords();                    
+                    // Tính tổng donate mỗi người
+                    List<TopDonor> topDonors = records.stream()
+                            .map(record -> {
+                                int totalDonate = record.getCharitySections().stream()
+                                        .mapToInt(CharitySection::getDonate)
+                                        .sum();
+                                return new TopDonor(0,record.getOwnerUserName(), totalDonate);
+                            })
+                            .sorted(Comparator.comparingInt(TopDonor::getTotalDonate).reversed())
+                            .limit(5)
+                            .collect(Collectors.toList());
+                    for(int i = 0; i < topDonors.size(); i++ ) {
+                    	topDonors.get(i).setRank(i+1);
+                    }
+                    // Hiển thị lên bảng
+                    ObservableList<TopDonor> observableList = FXCollections.observableArrayList(topDonors);
+                    donationTable.setItems(observableList);
+                });
+            } catch (Exception e) {
+                
+            }
+        }).start();
+       
+    }
 
     @FXML
     public void initialize() {
         loadWeatherData();  
-        loadDonationChart(); 
-        loadData();
+
+        donateColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getTotalDonate()) );
+        ownerColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getOwnerUserName()) );
+        rankColumn.setCellValueFactory(data -> new SimpleIntegerProperty(data.getValue().getRank()) );
+       
+        
+        loadTop5Donors();
+        
     }
     
-    private void loadData() {
-    	
-    	String text = String.format("🏊 Hồ bơi: Hoạt động từ 6h - 21h \n🏋️ Phòng Gym: Mở cửa 24/7 ");
-
-        Platform.runLater(() -> Info.setText(text));
-    	
-    	new Thread(() -> {
-    	    int result = ApiService.getNumberOfResidents();
-    	    Platform.runLater(() -> populationCount.setText(String.valueOf(result)));
-    	}).start();
-    
-
-    }
 
     private void loadWeatherData() {
         HttpClient client = HttpClient.newHttpClient();
@@ -77,7 +118,7 @@ public class OverviewController {
                 .thenAccept(this::parseWeatherData)
                 .exceptionally(e -> {
                     e.printStackTrace();
-                    Platform.runLater(() -> weatherInfo.setText("Lỗi tải dữ liệu!"));
+                    Platform.runLater(() -> tempInfo.setText("Lỗi tải dữ liệu!"));
                     return null;
                 });
     }
@@ -91,45 +132,24 @@ public class OverviewController {
             int humidity = rootNode.path("main").path("humidity").asInt();
             String weatherDesc = rootNode.path("weather").get(0).path("description").asText();
 
-            String weatherText = String.format("🌡 Nhiệt độ: %.1f°C\n💧 Độ ẩm: %d%%\n☁️ Trạng thái: %s",
-                    temperature, humidity, weatherDesc);
+            String tempText = String.format(" Nhiệt độ: %.1f°C",temperature);
 
-            Platform.runLater(() -> weatherInfo.setText(weatherText));
+            Platform.runLater(() -> tempInfo.setText(tempText));
+            
+            String humidityText = String.format(" Độ ẩm: %d%%", humidity);
+
+            Platform.runLater(() -> humidityInfo.setText(humidityText));
+            
+            String cloudyText = String.format(" Trạng thái: %s",weatherDesc);
+
+            Platform.runLater(() -> cloudyInfo.setText(cloudyText));
 
         } catch (Exception e) {
             e.printStackTrace();
-            Platform.runLater(() -> weatherInfo.setText("Lỗi xử lý dữ liệu!"));
+            Platform.runLater(() -> tempInfo.setText("Lỗi xử lý dữ liệu!"));
         }
     }
 
-    private void loadDonationChart() {
-        new Thread(() -> {
-            try {
-                List<CharityName> charityNames = ApiService.getAllCharityName();
-                List<CharityRecord> records = ApiService.getAllCharityRecords();
-
-                Map<String, Integer> donationMap = new HashMap<>();
-                for (CharityName charity : charityNames) {
-                    int totalAmount = records.stream()
-                        .flatMap(r -> r.getCharitySections().stream())
-                        .filter(s -> s.getName().equals(charity.getName()))
-                        .mapToInt(CharitySection::getDonate)
-                        .sum();
-                    donationMap.put(charity.getName(), totalAmount);
-                }
-
-                
-                Platform.runLater(() -> {
-                    donationChart.getData().clear(); 
-                    for (Map.Entry<String, Integer> entry : donationMap.entrySet()) {
-                        donationChart.getData().add(new PieChart.Data(entry.getKey(), entry.getValue()));
-                    }
-                });
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
+   
 
 }

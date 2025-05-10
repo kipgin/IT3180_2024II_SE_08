@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="cardBox" alignment="TOP_LEFT" prefHeight="180" prefWidth="260" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="app.controllers.admin.HouseholdCardController">
+
+    <Label fx:id="ownerLabel" styleClass="card-title" />
+    <Label fx:id="locationLabel" styleClass="card-content" />
+    <Label fx:id="statusLabel" styleClass="card-content" />
+    <Label fx:id="membersLabel" styleClass="card-content" />
+
+    <HBox spacing="10" styleClass="card-buttons">
+        <Button fx:id="detailBtn" styleClass="detail-button" >
+         <graphic>
+            <ImageView fitHeight="40.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/img/detail.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+        <Button fx:id="deleteBtn" styleClass="delete-button" >
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/img/bin.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+    </HBox>
+</VBox>

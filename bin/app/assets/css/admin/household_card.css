@@ -1,0 +1,52 @@
+#cardBox {
+    -fx-background-color: white;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+#cardBox:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.25), 12, 0, 0, 6);
+}
+
+/* Card nội dung */
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.card-content {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+}
+
+/* Các nút trong card */
+.card-buttons {
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 5 0 0 0;
+}
+
+.detail-button {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-text-fill: white;
+}
+
+.detail-button:hover {
+	-fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, #00ff99, 10, 0.6, 0, 0);
+}
+
+.delete-button {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-text-fill: white;
+}
+
+.delete-button:hover {
+	-fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, #ff0000, 10, 0.4, 0, 0);
+}

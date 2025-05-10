@@ -13,24 +13,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.CharityManagementController">
+<BorderPane prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.CharityManagementController">
    <center>
        <VBox spacing="10">
-        <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1150.0" />
+        <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1310.0" />
         <!-- Table and Add Button Container -->
         <HBox spacing="10">
             <Label styleClass="table-title" text="Danh sách khoản đóng góp" />
-            <Button  styleClass="add-button" onAction="#handleAddCharityButton" text="+ Thêm hộ gia đình mới" HBox.hgrow="ALWAYS">
+            <Button onAction="#handleAddCharityButton" styleClass="add-button" text="+ Thêm hộ gia đình mới" HBox.hgrow="ALWAYS">
                <HBox.margin>
-                  <Insets left="700.0" />
+                  <Insets left="910.0" />
                </HBox.margin></Button>
         </HBox>
          
         <TableView fx:id="tableView" styleClass="custom-table">
             <columns>
-                <TableColumn text="ID" fx:id="colId"/>
-                <TableColumn text="Tên Chủ Hộ" fx:id="colName"/>
-                <TableColumn text="Trạng Thái" fx:id="colAccomStatus"/>
+                <TableColumn fx:id="colId" text="ID" />
+                <TableColumn fx:id="colName" text="Tên Chủ Hộ" />
+                <TableColumn fx:id="colAccomStatus" text="Trạng Thái" />
                
             </columns>
         </TableView>
@@ -40,7 +40,7 @@
    <top>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-             <Label styleClass="content-title" text="XIN CHÀO, QUẢN TRỊ VIÊN" />
+             <Label styleClass="content-title" text="🤝 XIN CHÀO, QUẢN TRỊ VIÊN" />
             <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Khoản Đóng Góp" />
 
             <HBox styleClass="stats">
@@ -50,12 +50,12 @@
                     <Label styleClass="stat-value" text="Cập nhật đến ngày: 29/3/2025" />
                 </VBox>
                 
-                <BarChart fx:id="donationChart" title="Số tiền đóng góp theo các khoản" animated="true">
+                <BarChart fx:id="donationChart" animated="true" title="Số tiền đóng góp theo các khoản">
      <xAxis>
-        <NumberAxis fx:id="xAxis" label="Số Tiền (VND)"/>
+        <NumberAxis label="Số Tiền (VND)" fx:id="xAxis" />
     </xAxis>
     <yAxis>
-        <CategoryAxis fx:id="yAxis" label="Tên Khoản Đóng Góp"/>
+        <CategoryAxis fx:id="yAxis" label="Tên Khoản Đóng Góp" />
     </yAxis>
 </BarChart>
                
@@ -68,4 +68,7 @@
          </children>
       </VBox>
    </top>
+   <padding>
+      <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
 </BorderPane>

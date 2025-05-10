@@ -11,24 +11,50 @@ public class AddHouseholdFormController {
     private TextField ownerUserName;
 
     @FXML
-    private TextField numOfMembers;
+    private TextField buildingBlock;
+    
+    @FXML
+    private TextField floorNumber;
+    
+    @FXML
+    private TextField roomNumber;
+    
+    private boolean confirmed = false;
+    
+    public boolean isConfirmed() {
+        return confirmed;
+    }
 
     @FXML
     private void handleConfirmButton() {
     	
     	String owner = ownerUserName.getText();
+    	String block = buildingBlock.getText();
+    	int floor;
+    	String room = roomNumber.getText();
         int members;
         try {
-            members = Integer.parseInt(numOfMembers.getText());
+            floor = Integer.parseInt(floorNumber.getText());
         } catch (NumberFormatException e) {
-            showAlert("Lỗi", "Vui lòng nhập số hợp lệ cho số thành viên.");
+            showAlert("Lỗi", "Vui lòng nhập số hợp lệ số phòng.");
+            return;
+        }
+        
+        if(owner == "" || block == "" || room =="" || floor == 0) {
+        	showAlert("Lỗi", "Vui lòng nhập đầy đủ thông tin.");
+            return;
+        }
+        
+        if(floor < 0 || floor > 1000) {
+        	showAlert("Lỗi", "Nhập sai số phòng.");
             return;
         }
 
-        boolean success = ApiService.addHousehold(owner, members);
+        boolean success = ApiService.addHousehold(owner, block,floor,room);
 
         if (success) {
             showAlert("Thành công", "Thêm hộ khẩu thành công!");
+            confirmed = true;
             closeForm();
         } else {
             showAlert("Thất bại", "Thêm hộ khẩu thất bại!");

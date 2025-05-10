@@ -2,100 +2,71 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 
-<VBox alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1150.0" styleClass="content" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.ResidentController">
-   <children>
-      <Label styleClass="content-title" text="XIN CHÀO, QUẢN TRỊ VIÊN" />
-            <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Nhân Khẩu" />
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.ResidentController">
 
-            <HBox styleClass="stats">
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Số Nhân khẩu" />
-                    <Label fx:id="numberLabel" styleClass="stat-value" text="đang tải..." />
-                </VBox>
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Trạng thái" />
-                    <Label styleClass="stat-value" text="Tạm trú: 2" />
-                    <Label styleClass="stat-value" text="Tạm vắng: 1" />
-                </VBox>
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Gần đây" />
-                    <Label styleClass="stat-value" text="0 hộ được thêm mới" />
-                </VBox>
+    <!-- Top Header -->
+    <top>
+        <VBox spacing="16" style="-fx-background-color: #f4f4f4;">
+
+            <!-- Header Title and Add Button -->
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 15 20 7 20;">
+                <Label style="-fx-font-size: 24px; -fx-text-fill: #222; -fx-font-weight: bold;" text="🏠 Household Management" />
+                
             </HBox>
-      <HBox prefHeight="40.0" prefWidth="200.0">
-         <children>
-      
-            <Label minWidth="-Infinity" prefHeight="18.0" prefWidth="113.0" styleClass="section-title" text="THỐNG KÊ" />
-            <VBox minWidth="-Infinity" prefHeight="40.0" prefWidth="110.0" styleClass="register-box">
-               <children>
-         
-                 <Button fx:id="addHouseholdButton" onAction="#handleAddHouseholdButton" mnemonicParsing="false"  styleClass="image-button">
-                     <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../assets/img/addAcc.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
-                  <Label text="Add Household" />
-               </children>
-               <HBox.margin>
-                  <Insets left="800.0" />
-               </HBox.margin>
+
+            <!-- Filter Panel -->
+            <VBox spacing="12" style="-fx-padding: 10 20 10 20;" styleClass="filter-panel">
+                <Label style="-fx-font-size: 16px; -fx-text-fill: #444; -fx-font-weight: bold;" text="Search Filters" />
+                <HBox spacing="10">
+                    <TextField fx:id="searchField" promptText="🔍 Search by owner's name..." styleClass="filter-field" />
+                    <ComboBox fx:id="statusFilter" prefHeight="9.0" promptText="Filter by status" styleClass="combo-box" />
+                    <TextField fx:id="memberFilter" promptText="Min number of members..." styleClass="filter-field" />
+                    
+                    <Button fx:id="applyFilterBtn" styleClass="primary-button" text="Apply Filter" />
+                    <Button fx:id="clearFilterBtn" styleClass="danger-button" text="Clear Filters" />
+                </HBox>
+            <VBox.margin>
+               <Insets left="20.0" right="10.0" />
+            </VBox.margin>
             </VBox>
-              
-            
-         </children>
-      </HBox>
-      <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1150.0" />
-            
-            
-      <VBox fx:id="vboxIcon" alignment="CENTER" prefHeight="180.0" prefWidth="100.0">
-         <children>
-                  
-            <Button fx:id="statisticsIcon" styleClass="icon-button">
-               <graphic>
-                  <ImageView fitHeight="43.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../assets/img/statistics_icon.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-         </children>
-      </VBox>
-      
-      
-            
-      <VBox fx:id="statisticsTable" alignment="CENTER" spacing="10" visible="false">
-        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Bảng Thống Hộ khẩu" />
-         <ScrollPane fitToHeight="true" fitToWidth="true">
+
+            <!-- Divider -->
+            <Separator styleClass="divider-line" />
+
+            <!-- Statistics -->
+            <HBox spacing="20" style="-fx-padding: 0 20 0 20;">
+                <Label fx:id="totalHouseholdsLabel" styleClass="stat-label" text="Total households: 0" />
+                <Label fx:id="activeHouseholdsLabel" styleClass="stat-label" text="Currently living: 0" />
+                <Label fx:id="totalMembersLabel" styleClass="stat-label" text="Total members: 0" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="addHouseholdBtn" styleClass="primary-button" text="➕ Add New Household" />
+                <Button onAction="#openResidentList" styleClass="primary-button" text="Resident List" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Center Content -->
+    <center>
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" styleClass="scroll-pane">
             <content>
-              
-              <TableView fx:id="tableView" prefHeight="300" prefWidth="1000">
-                  <columns>
-                      <TableColumn fx:id="colId" text="ID" />
-                      <TableColumn fx:id="colOwner" text="Chủ hộ khẩu" />
-                      <TableColumn fx:id="colNumOfMembers" text="Số thành viên" />
-                      <TableColumn fx:id="colLocation" text="Vị trí" />
-                      <TableColumn fx:id="colStatus" text="Trạng thái" />
-                      <TableColumn fx:id="actionColumn" text="Actions" />
-                  
-                  </columns>
-              </TableView>
+                <FlowPane fx:id="cardContainer" hgap="20" prefWrapLength="1200" vgap="20">
+                    <padding>
+                        <Insets bottom="20.0" left="40.0" right="20.0" top="5.0" />
+                    </padding>
+                </FlowPane>
             </content>
-         </ScrollPane>
-    </VBox>
-   </children>
-</VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

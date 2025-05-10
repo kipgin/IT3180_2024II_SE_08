@@ -32,7 +32,7 @@ public class HouseholdDetailController {
     private TableView<Resident> residentTable;
 
     @FXML
-    private TableColumn<Resident, String> colId;
+    private TableColumn<Resident, Number> colId;
     
     @FXML
     private TableColumn<Resident, String> colName;
@@ -41,7 +41,7 @@ public class HouseholdDetailController {
     private TableColumn<Resident, String> colGender;
 
     @FXML
-    private TableColumn<Resident, String> colBirthYear;
+    private TableColumn<Resident, Number> colBirthYear;
 
     @FXML
     private TableColumn<Resident, String> colAccomStatus;
@@ -73,12 +73,12 @@ public class HouseholdDetailController {
         lblId.setText(String.valueOf(household.getId()));
         lblOwner.setText(household.getOwnerUsername());
         lblMembers.setText(String.valueOf(household.getNumOfMembers()));
-        lblLocation.setText(household.getCurrentLocation());
-        lblStatus.setText(household.getStatus());
+        lblLocation.setText(household.getBuildingBlock());
+        lblStatus.setText(household.getRoomNumber());
         
-        colId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getId()));
+        colId.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getId()));
         colName.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getName()));
-        colBirthYear.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getBirthYear()));
+        colBirthYear.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getBirthYear()));
         colAccomStatus.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getAccomStatus()));
         colGender.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getGender()));
 

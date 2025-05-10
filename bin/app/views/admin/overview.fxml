@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,41 +11,103 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane style="-fx-background-color: #cfcfcf;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.OverviewController">
+<AnchorPane styleClass="root-overview" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.OverviewController">
    
     <!-- Thời tiết -->
     <VBox fx:id="weatherBox" layoutX="20" layoutY="20" prefHeight="160" prefWidth="280" styleClass="card">
         <Label fx:id="weatherTitle" styleClass="title" text="Thời tiết Hà Nội" />
-        <Label fx:id="weatherInfo" styleClass="content" text="Đang tải..." />
+      <HBox prefHeight="25.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="23.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/img/temp.png" />
+               </image></ImageView>
+            <Label fx:id="tempInfo" style="-fx-font-size: 15px;" text="Đang tải..." />
+         </children>
+      </HBox>
+      <HBox prefHeight="25.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="23.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/img/humidity.png" />
+               </image></ImageView>
+            <Label fx:id="humidityInfo" style="-fx-font-size: 15px;" text="Đang tải..." />
+         </children>
+      </HBox>
+      <HBox prefHeight="25.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="23.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/img/cloudy.png" />
+               </image></ImageView>
+            <Label fx:id="cloudyInfo" style="-fx-font-size: 15px;" text="Đang tải..." />
+         </children>
+      </HBox>
     </VBox>
     
     <VBox layoutX="330" layoutY="20" prefHeight="160" prefWidth="330" styleClass="card">
         <Label styleClass="title" text="Tiện ích chung cư" />
-        <Label fx:id="Info" styleClass="content" text="🏊 Hồ bơi: Hoạt động từ 6h - 21h " />
+    
+        <HBox prefHeight="25.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="23.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/img/swimmer.png" />
+               </image></ImageView>
+            <Label style="-fx-font-size: 15px;" text=" Hồ bơi: Hoạt động từ 6h - 21h " />
+         </children>
+       </HBox>
+       <HBox prefHeight="25.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="23.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/img/gym.png" />
+               </image></ImageView>
+            <Label style="-fx-font-size: 15px;" text=" Phòng gym: Mở cửa 24/7 " />
+         </children>
+       </HBox>
+       <HBox prefHeight="25.0" prefWidth="200.0">
+         <children>
+            <ImageView fitHeight="23.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../assets/img/health-care.png" />
+               </image></ImageView>
+            <Label style="-fx-font-size: 15px;" text=" Phòng khám: Mở cửa 8h - 23h " />
+         </children>
+       </HBox>
 
     </VBox>
 
     <!-- Bản đồ -->
-    <VBox fx:id="mapBox" layoutX="700" layoutY="20" prefHeight="250" prefWidth="300" styleClass="card">
-        <Label styleClass="title" text="Bản đồ vị trí" />
-        <ImageView fitHeight="200.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../assets/img/map.png" />
-            </image>
-        </ImageView>
+    <VBox fx:id="mapBox" layoutX="710" layoutY="20" prefHeight="270" prefWidth="450" styleClass="card">
+        <Label styleClass="title" text="📌 Bản đồ vị trí" />
+      <ImageView fitHeight="225.0" fitWidth="410.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/img/map.png" />
+         </image>
+      </ImageView>
+       
     </VBox>
     
-    <!-- Biểu đồ thống kê -->
-    <VBox fx:id="chartBox" layoutX="700" layoutY="300" prefHeight="300" prefWidth="400"  styleClass="card">
-        <Label styleClass="title" text="Thống kê khoản đóng góp" />
-        <PieChart fx:id="donationChart" />
-    </VBox>
+   <!-- Bảng thống kê đóng góp -->
+<VBox fx:id="chartBox" layoutX="710" layoutY="330" prefHeight="325" prefWidth="450" styleClass="card">
+    <Label styleClass="title" text="💸 Top 5 Donors" />
+      <TableView fx:id="donationTable" layoutX="20" layoutY="20" prefWidth="400" prefHeight="360">
+        <columns>
+            <TableColumn fx:id="rankColumn" text="#" prefWidth="30"/>
+            <TableColumn fx:id="ownerColumn" text="Donor Name" prefWidth="192"/>
+            <TableColumn fx:id="donateColumn" text="Total Donated" prefWidth="192"/>
+        </columns>
+    </TableView>
+
+    
+</VBox>
 
     <!-- Pane chứa toàn bộ cây -->
     <Pane fx:id="treeContainer" layoutX="20" layoutY="200">
     <!-- Card cha (Tổng quan chung cư) -->
     <VBox fx:id="overviewBox" layoutX="140" layoutY="0" prefHeight="150" prefWidth="300" styleClass="card">
-        <Label styleClass="title" text="Chung cư Blue Moon" />
+        <Label styleClass="title" text="🌙 Chung cư Blue Moon" />
          <ImageView fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../../assets/img/building.jpg" />
@@ -54,12 +117,12 @@
 
     <!-- Dây nối từ card cha xuống các card con -->
    
-    <Line endX="170" endY="260" startX="300" startY="230" stroke="gray" strokeWidth="1.5" />
-    <Line endX="300" endY="260" startX="300" startY="230" stroke="gray" strokeWidth="1.5" />
-    <Line endX="430" endY="260" startX="300" startY="230" stroke="gray" strokeWidth="1.5" />
+    <Line endX="170" endY="270" startX="300" startY="240" stroke="gray" strokeWidth="1.5" />
+    <Line endX="300" endY="270" startX="300" startY="240" stroke="gray" strokeWidth="1.5" />
+    <Line endX="430" endY="270" startX="300" startY="240" stroke="gray" strokeWidth="1.5" />
 
     <!-- HBox chứa các card con -->
-    <HBox layoutX="20" layoutY="260" spacing="50">
+    <HBox layoutX="20" layoutY="270" spacing="50">
         <VBox fx:id="apartmentBox" prefHeight="90" prefWidth="150" styleClass="card">
             <Label styleClass="title" text="Số căn hộ" />
              <Label fx:id="apartmentCount" styleClass="content" text="Đang tải..." />

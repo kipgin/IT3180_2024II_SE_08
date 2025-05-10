@@ -11,7 +11,9 @@ public class User {
     private String updatedAt;
     private boolean active;
     
-    public User() {}
+    public User() {
+    	
+    }
     
     // Constructor
     public User(String username, String fullName, String password, String role, String createdAt, String updatedAt, boolean active) {

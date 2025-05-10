@@ -11,16 +11,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.FeeManagementController">
+<BorderPane prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.FeeManagementController">
    <center>
        <VBox spacing="10">
-        <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1150.0" />
+        <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1310.0" />
         <!-- Table and Add Button Container -->
         <HBox spacing="10">
             <Label styleClass="table-title" text="Danh sách khoản thu" />
-            <Button styleClass="add-button" onAction="#handleAddPaymentButton" text="+ Thêm hộ gia đình mới" HBox.hgrow="ALWAYS">
+            <Button onAction="#handleAddPaymentButton" styleClass="add-button" text="+ Thêm hộ gia đình mới" HBox.hgrow="ALWAYS">
                <HBox.margin>
-                  <Insets left="700.0" />
+                  <Insets left="960.0" />
                </HBox.margin></Button>
         </HBox>
          
@@ -41,7 +41,7 @@
    <top>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-             <Label styleClass="content-title" text="XIN CHÀO, QUẢN TRỊ VIÊN" />
+             <Label styleClass="content-title" text="💳 XIN CHÀO, QUẢN TRỊ VIÊN" />
             <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Khoản thu" />
 
             <HBox styleClass="stats">
@@ -59,4 +59,7 @@
          </children>
       </VBox>
    </top>
+   <padding>
+      <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
 </BorderPane>

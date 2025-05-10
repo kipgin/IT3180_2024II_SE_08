@@ -1,85 +1,261 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.DashBoardController">
     <top>
-        <HBox styleClass="header"> 
-        <Label styleClass="header-title" text="Quản Lý Chung Cư" />
-         <Pane HBox.hgrow="ALWAYS" />
-         <HBox prefHeight="30.0" prefWidth="200.0" styleClass="search-box">
-            <children>
-               <TextField fx:id="searchField" promptText="Tìm kiếm..." styleClass="search-field" />
-               <ImageView fitHeight="26.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="search-icon">
-                  <image>
-                     <Image url="@../../assets/img/find.png" />
-                  </image>
-               </ImageView>
-            </children>
-         </HBox>
-           
+        <HBox styleClass="header">
+         <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../assets/img/bluemoon.png" />
+            </image>
+            <HBox.margin>
+               <Insets right="10.0" />
+            </HBox.margin>
+         </ImageView> 
+            <Label styleClass="header-title" text="Apartment Management" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <HBox prefHeight="26.0" prefWidth="210.0" spacing="0" styleClass="search-box">
+                <children>
+                    <TextField fx:id="searchField" prefHeight="30.0" prefWidth="200.0" promptText="Search..." styleClass="search-field" />
+                    <ImageView fitHeight="10.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" styleClass="search-icon">
+                        <image>
+                            <Image url="@../../assets/img/search.png" />
+                        </image>
+                    </ImageView>
+                </children>
+            </HBox>
             
-            
-            <Button fx:id="logoutButton" onAction="#handleLogout" styleClass="logout-button" text="Đăng Xuất" />
+            <Button fx:id="helpButton" styleClass="icon-button">
+                <graphic>
+                    
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/help.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="notifyButton" styleClass="icon-button">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/notify.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <MenuButton fx:id="settingsButton" popupSide="bottom" styleClass="icon-button">
+    			<graphic>
+       			 <ImageView fitHeight="20.0" fitWidth="20.0">
+      			      <image>
+      			          <Image url="@../../assets/img/setting.png" />
+      			      </image>
+      			  </ImageView>
+    			</graphic>
+
+   			 <items>
+     			   <MenuItem fx:id="fullscreenBtn" text=" Full Screen">
+       			     <graphic>
+         			       <ImageView fitHeight="18" fitWidth="18">
+         			           <image>
+          			              <Image url="@../../assets/img/full-screen.png" />
+          			          </image>
+          			      </ImageView>
+         			   </graphic>
+       			 </MenuItem>
+
+        <MenuItem fx:id="reloadBtn" text=" Reload">
+            <graphic>
+                <ImageView fitHeight="18" fitWidth="18">
+                    <image>
+                        <Image url="@../../assets/img/reload.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </MenuItem>
+    </items>
+</MenuButton>
+
+   <MenuButton fx:id="profileMenuButton" popupSide="bottom" styleClass="profile-button" text="Admin">
+    <graphic>
+        <ImageView fitHeight="20.0" fitWidth="20.0">
+            <image>
+                <Image url="@../../assets/img/profile.png" />
+            </image>
+        </ImageView>
+    </graphic>
+    <items>
+        <MenuItem onAction="#handleAccountInfoButton" text=" Account Info">
+            <graphic>
+                <ImageView fitHeight="18" fitWidth="18">
+                    <image>
+                        <Image url="@../../assets/img/information.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </MenuItem>
+        <MenuItem onAction="#handleChangePasswordButton" text=" Change Password">
+            <graphic>
+                <ImageView fitHeight="18" fitWidth="18">
+                    <image>
+                        <Image url="@../../assets/img/reset-password.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </MenuItem>
+        <MenuItem onAction="#handleLogout" text=" Logout">
+            <graphic>
+                <ImageView fitHeight="18" fitWidth="18">
+                    <image>
+                        <Image url="@../../assets/img/logout.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </MenuItem>
+    </items>
+</MenuButton>
+  
+               
         </HBox>
     </top>
     <left>
-        <VBox styleClass="sidebar">
-            <Label styleClass="sidebar-title" text="DASHBOARD" />
-            <Button fx:id="overviewButton" onAction="#handleOverviewButton" styleClass="sidebar-button" text="Tổng Quan" />
-            <Button fx:id="accountButton" onAction="#handleAccountButton" styleClass="sidebar-button" text="Quản Lý Tài Khoản" />
-            <Button fx:id="residentButton" onAction="#handleResidentButton" styleClass="sidebar-button" text="Quản Lý Nhân Khẩu" />
-             <Button fx:id="feeButton" onAction="#handleFeeButton" styleClass="sidebar-button" text="Quản Lý Khoản thu" />
-            <Button fx:id="charityButton" onAction="#handleCharityButton" styleClass="sidebar-button" text="Quản lý Đóng Góp" />
-            
-            <Button styleClass="sidebar-button" text="Thống Kê" />
-
-            <Separator styleClass="separator" />
-
-            <Label styleClass="sidebar-title" text="TÀI KHOẢN" />
-            <Button fx:id="changePasswordButton" onAction="#handleChangePasswordButton" styleClass="sidebar-button" text="Đổi Mật Khẩu" />
-            
-            <Separator styleClass="separator" />
-
-            <Label styleClass="sidebar-title" text="EXTRAS" />
-           
-            <Button styleClass="sidebar-button" text="Hỗ Trợ" />
-           
+        <VBox prefHeight="188.0" prefWidth="150.0" styleClass="sidebar">
+            <Button fx:id="overviewButton" onAction="#handleOverviewButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Dashboard">
+                <graphic>
+                   <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/dashboard.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="accountButton" onAction="#handleAccountButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Account">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/account.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="residentButton" onAction="#handleResidentButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Resident">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/user.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="feeButton" onAction="#handleFeeButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Payment">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/payment.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="charityButton" onAction="#handleCharityButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Charity">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/donate.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="notificationButton" onAction="#handleNotificationButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Notifications">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/notify.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="complaintsButton" onAction="#handleResidentButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Complaint">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/complaint.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Button fx:id="settingButton" onAction="#handleResidentButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Settings">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../../assets/img/setting.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+         <Pane fx:id="spacer" VBox.vgrow="ALWAYS" />
+         <VBox alignment="CENTER_LEFT" spacing="5.0" styleClass="user-section" >
+            <children>
+               
+                     <HBox prefHeight="45.0" prefWidth="200.0">
+                  <children>
+                     <ImageView fitHeight="30.0" fitWidth="30.0">
+                  	<image>
+                      	<Image url="@../../assets/img/people.png" />
+                 		 </image>
+             		 </ImageView>
+                     <VBox prefHeight="100.0" prefWidth="100.0">
+                        <children>
+                           	<Label fx:id="usernameLabel" styleClass="username-label" text="H M K" />
+                  			<Label fx:id="roleLabel" styleClass="role-label" text="Role: Admin" />
+                        </children>
+                     </VBox>
+                  </children>
+               </HBox>
+                  
+          <Button fx:id="logoutButton" onAction="#handleLogout" prefHeight="30.0" prefWidth="160.0" styleClass="logout-button" text="   Logout">
+              <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                      <image>
+                          <Image url="@../../assets/img/power.png" />
+                      </image>
+                  </ImageView>
+              </graphic>
+          </Button>
+            </children>
+         </VBox>
+     
+    
+    
+    <padding>
+        <Insets left="10.0" top="10.0" />
+    </padding>
         </VBox>
     </left>
     <center>
-        <VBox styleClass="content">
-            <Label styleClass="content-title" text="XIN CHÀO, QUẢN TRỊ VIÊN" />
-            <Label styleClass="content-subtitle" text="Bạn đang ở trong chế độ Quản Lý Chung Cư" />
-
-            <HBox styleClass="stats">
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Số Cư Dân" />
-                    <Label styleClass="stat-value" text="500" />
-                </VBox>
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Doanh Thu Tháng" />
-                    <Label styleClass="stat-value" text="50,000,000 VND" />
-                </VBox>
-                <VBox styleClass="stat-box">
-                    <Label styleClass="stat-title" text="Phí Dịch Vụ" />
-                    <Label styleClass="stat-value" text="10,000,000 VND" />
-                </VBox>
-            </HBox>
-
-            <Label styleClass="section-title" text="THỐNG KÊ" />
-            <HBox styleClass="charts">
-                <!-- Charts can be added here -->
-            </HBox>
-        </VBox>
+        
     </center>
+   <bottom>
+       <HBox fx:id="footer" alignment="CENTER_LEFT" spacing="20" styleClass="footer">
+      
+    <Label fx:id="versionLabel" text="🏢 Blue Moon Apartment System © 2025" />
+    <Label fx:id="statusLabel" text="Ready" />
+    
+    <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+    
+    <Label fx:id="clockLabel" text="00:00:00 01-01-1970" />
+    </HBox>
+   </bottom>
 </BorderPane>

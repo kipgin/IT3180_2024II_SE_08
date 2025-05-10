@@ -2,6 +2,7 @@ package app.controllers.admin;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -126,14 +127,14 @@ public class CharityManagementController {
 
 	            TableColumn<CharityRecord, Void> addColumn = new TableColumn<>();
 	            addColumn.setMinWidth(40);
-	            Button addButton = new Button("+");
+	            Button addButton = new Button("➕");
 	            addButton.setOnAction(event -> handleAddCharityNameButton());
 	            addColumn.setGraphic(addButton);
 	            tableView.getColumns().add(addColumn);
 
 	            TableColumn<CharityRecord, Void> delColumn = new TableColumn<>();
 	            delColumn.setMinWidth(40);
-	            Button delButton = new Button("-");
+	            Button delButton = new Button("❌");
 	            delButton.setOnAction(event -> handleDelCharityNameButton());
 	            delColumn.setGraphic(delButton);
 	            tableView.getColumns().add(delColumn);

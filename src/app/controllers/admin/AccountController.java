@@ -3,23 +3,27 @@ package app.controllers.admin;
 import javafx.application.Platform;
 
 
-
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import app.controllers.DashboardControllable;
 import app.models.User;
@@ -27,17 +31,13 @@ import app.services.ApiService;
 
 public class AccountController implements DashboardControllable{
 
-    @FXML
-    private VBox vboxIcon;
-    
+	@FXML
+    private BorderPane rootLayout;
+	
     @FXML
     private Button registerButton;
 
-    @FXML
-    private Button statisticsIcon;
 
-    @FXML
-    private VBox statisticsTable;
 
     @FXML
     private TableView<User> tableView;
@@ -61,16 +61,45 @@ public class AccountController implements DashboardControllable{
     private TableColumn<User, String> updatedAtColumn;
     @FXML
     private TableColumn<User, Void> actionColumn;
+    
     @FXML
-    private Label numberLabel,activeLabel,inactiveLabel;
+    private PieChart rolePieChart;
+    
+    @FXML
+    private ComboBox<String> roleFilter;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private ComboBox<String> activeFilter;
+
+    @FXML
+    private void applyFilter() {
+        String selectedRole = roleFilter.getValue();
+        String searchText = searchField.getText().toLowerCase();
+        String selectedStatus = activeFilter.getValue();
+
+        // Giả sử bạn có danh sách tất cả tài khoản
+        List<User> allUsers = ApiService.getAllUsers();
+
+        // Lọc tài khoản theo các tiêu chí
+        List<User> filteredUsers = allUsers.stream()
+            .filter(user -> (selectedRole == null || selectedRole.equals("ALL") || user.getRole().equals(selectedRole)))
+            .filter(user -> (selectedStatus == null || selectedStatus.equals("ALL") || user.isActive() == (selectedStatus.equals("Active"))))
+            .filter(user -> (searchText.isEmpty() || user.getUsername().toLowerCase().contains(searchText)))
+            .collect(Collectors.toList());
+
+        // Hiển thị dữ liệu đã lọc lên bảng
+        ObservableList<User> filteredData = FXCollections.observableArrayList(filteredUsers);
+        tableView.setItems(filteredData);
+    }
+    
 
     //private final ApiService userService = new ApiService();
 
     @FXML
     public void initialize() {
-        statisticsTable.setVisible(false);
+       
 
-        statisticsIcon.setOnAction(event -> showStatistics());
 
         usernameColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getUsername()));
         fullNameColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getFullName()));
@@ -80,47 +109,92 @@ public class AccountController implements DashboardControllable{
         updatedAtColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getUpdatedAt().toString()));
         actionColumn.setCellFactory(param -> new TableCell<User, Void>() {
             private final Button deleteButton = new Button();
-            {   
-            	//System.out.println(getClass().getResource("/app/assets/img/find.png").toString());
+            private final Button editButton = new Button();
+            private final HBox buttonContainer = new HBox(10); 
+
+            {
+                // ICON delete
                 ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/app/assets/img/delete.png").toString()));
                 deleteIcon.setFitHeight(20);
                 deleteIcon.setFitWidth(20);
                 deleteButton.setGraphic(deleteIcon);
-                deleteButton.getStyleClass().add("icon-button");
-                
+                deleteButton.getStyleClass().add("icon-button-delete");
+
+                // ICON edit
+                ImageView editIcon = new ImageView(new Image(getClass().getResource("/app/assets/img/edit.png").toString()));
+                editIcon.setFitHeight(20);
+                editIcon.setFitWidth(20);
+                editButton.setGraphic(editIcon);
+                editButton.getStyleClass().add("icon-button-account");
+
+                // Hành động xóa
                 deleteButton.setOnAction(event -> {
                     User data = getTableView().getItems().get(getIndex());
-                    
+
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Xác nhận xóa");
                     alert.setHeaderText("Bạn có chắc chắn muốn xóa?");
                     alert.setContentText("Người dùng: " + data.getUsername());
-                    // Xử lý kết quả từ hộp thoại
+
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
-                       ApiService.delUser(data);
-                       showStatistics();
+                        ApiService.delUser(data);
+                        showStatistics(); 
                     }
                 });
+
+                // Hành động sửa
+                editButton.setOnAction(event -> {
+                    User data = getTableView().getItems().get(getIndex());
+                    openEditDialog(data); 
+                });
+
+                buttonContainer.setAlignment(Pos.CENTER);
+                buttonContainer.getChildren().addAll(editButton, deleteButton);
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : deleteButton);
+                setGraphic(empty ? null : buttonContainer);
             }
         });
         
+        activeColumn.setCellFactory(column -> new TableCell<User, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    Label dot = new Label("●");
+                    dot.getStyleClass().add(item.equalsIgnoreCase("Active") ? "status-dot-green" : "status-dot-red");
+
+                    Label label = new Label(item);
+                    label.setGraphic(dot);
+                    label.setContentDisplay(ContentDisplay.LEFT);
+                    label.getStyleClass().add("status-pill");
+
+                    setGraphic(label);
+                    setAlignment(Pos.CENTER);
+                }
+            }
+        });
+
+
         
-        usernameColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));   
-        fullNameColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1)); 
+        
+        usernameColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.12));   
+        fullNameColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.15)); 
         roleColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
         activeColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));  
-        createdAtColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.25)); 
-        updatedAtColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.25));
+        createdAtColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.20)); 
+        updatedAtColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.20));
         actionColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
+        
     
-    
+        showStatistics();
     }
     
     private DashBoardController dashboardController;
@@ -129,23 +203,23 @@ public class AccountController implements DashboardControllable{
         this.dashboardController = controller;
     }
 
-    private void showStatistics() {
-        vboxIcon.setVisible(false);
-        vboxIcon.setManaged(false);
-        statisticsTable.setVisible(true);
-        statisticsTable.setManaged(true);
-
+    public void showStatistics() {
+   
         new Thread(() -> {
             try {
                 List<User> users = ApiService.getAllUsers();
                 Platform.runLater(() -> {
-                	numberLabel.setText(String.valueOf(users.size()));
-                	int CntActive = 0;
-                	for(User user:users) {
-                		if(user.isActive()) CntActive++;
-                	}
-                	activeLabel.setText("Tài khoản được kích hoạt: " + String.valueOf(CntActive));
-                	inactiveLabel.setText("Tài khoản bị khóa: " + String.valueOf(users.size()-CntActive));
+                	
+                	Platform.runLater(() -> {
+                		long CntActive = 0;
+                    	for(User user:users) {
+                    		if(user.isActive()) CntActive++;
+                    	}
+                        rolePieChart.getData().clear();
+                        rolePieChart.getData().add(new PieChart.Data("Active", CntActive));
+                        rolePieChart.getData().add(new PieChart.Data("Inactive", users.size() - CntActive));
+                    });
+              
                     ObservableList<User> data = FXCollections.observableArrayList(users);
                     tableView.setItems(data);
                 });
@@ -166,8 +240,30 @@ public class AccountController implements DashboardControllable{
     @FXML
     private void openRegisterWindow() {
     	
-        dashboardController.loadFXML("/app/views/admin/register.fxml","/app/assets/css/admin/register.css");
+        
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/admin/register.fxml"));
+            AnchorPane registerWindow = loader.load();
+            registerWindow.getStylesheets().add(getClass().getResource("/app/assets/css/admin/register.css").toExternalForm());
+
+            // Thêm cửa sổ vào layout chính
+            rootLayout.getChildren().add(registerWindow);
+            
+            // Gọi phương thức khởi tạo từ controller của register.fxml
+            RegisterController registerController = loader.getController();
+            registerController.setAccountController(this);
+            registerController.initialize(); // Bắt đầu hiệu ứng Slide-in
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
        
     }
+    
+    @FXML
+    private void openEditDialog(User user) {
+    	EditAccountController.showEditDialog(user, this);
+    }
+    
 }
 

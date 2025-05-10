@@ -22,8 +22,8 @@ public class Resident {
     }
 
     // Getters and Setters
-    public String getId() {
-        return String.valueOf(id);
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
@@ -46,8 +46,8 @@ public class Resident {
         this.gender = gender;
     }
 
-    public String getBirthYear() {
-        return String.valueOf(birthYear);
+    public int getBirthYear() {
+        return birthYear;
     }
 
     public void setBirthYear(int birthYear) {
@@ -62,8 +62,8 @@ public class Resident {
         this.accomStatus = accomStatus;
     }
 
-    public String getHouseholdId() {
-        return String.valueOf(householdId);
+    public int getHouseholdId() {
+        return householdId;
     }
 
     public void setHouseholdId(int householdId) {

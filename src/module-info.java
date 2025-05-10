@@ -4,7 +4,12 @@ module IT3180_2024II_SE_08 {
     requires javafx.fxml;
     requires javafx.base;
     requires javafx.graphics;
+    
+ 
+    requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.annotation;
+    
     requires java.base;
 
     opens app.models to com.fasterxml.jackson.databind;
@@ -13,6 +18,8 @@ module IT3180_2024II_SE_08 {
     opens app.controllers.resident to javafx.fxml;
     opens app.views.resident to javafx.fxml;
     opens app.assets.img to javafx.fxml, javafx.graphics;
+
+    opens app.services to com.fasterxml.jackson.databind;
 
     exports app;
 }

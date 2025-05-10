@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane styleClass="roots" prefHeight="700.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.NotificationController">
+   <VBox prefHeight="680.0" prefWidth="1310.0" >
+      <children>
+      
+          <VBox prefHeight="680.0" spacing="10" styleClass="container">
+      
+              <!-- Tiêu đề -->
+              <HBox alignment="CENTER_LEFT" spacing="10" styleClass="wrapper">
+                  <Label prefHeight="40.0" styleClass="title" text="📢 List Notification">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin></Label>
+              </HBox>
+      
+              <!-- Tổng số và thanh tìm kiếm -->
+              <HBox alignment="CENTER_LEFT" spacing="20">
+                  <Label fx:id="totalLabel" styleClass="subtitle" text="188 Notification">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin></Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="searchField" promptText="🔍 Search by Name Product" styleClass="search-field">
+                  <padding>
+                     <Insets right="20.0" />
+                  </padding>
+                  <HBox.margin>
+                     <Insets right="20.0" />
+                  </HBox.margin></TextField>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+              </HBox>
+      
+             <HBox alignment="CENTER_LEFT" spacing="30" styleClass="tab-header">
+      
+          <!-- All tab -->
+          <HBox fx:id="onTabAll" alignment="CENTER_LEFT" onMouseClicked="#onTabAll" spacing="5" styleClass="tab" HBox.hgrow="ALWAYS">
+              <Label styleClass="tab-count" text="20">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Label>
+              <Label styleClass="tab-label" text="All" />
+                  <padding>
+                     <Insets bottom="7.0" />
+                  </padding>
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+        		  </HBox>
+      
+         		 <!-- Archive tab -->
+         	 <HBox fx:id="onTabSent" alignment="CENTER_LEFT" onMouseClicked="#onTabSent" spacing="5" styleClass="tab" HBox.hgrow="ALWAYS">
+          	    <Label styleClass="tab-count" text="10" />
+          	    <Label styleClass="tab-label" text="Sent" />
+           	       <padding>
+           	          <Insets bottom="7.0" left="5.0" />
+          	        </padding>
+         	 </HBox>
+      
+         	 <!-- Favorite tab -->
+         	 <HBox fx:id="onTabReceived" alignment="CENTER_LEFT" onMouseClicked="#onTabReceived" spacing="5" styleClass="tab" HBox.hgrow="ALWAYS">
+           	   <Label styleClass="tab-count" text="17" />
+           	   <Label styleClass="tab-label" text="Received" />
+            	      <padding>
+           	          <Insets bottom="7.0" left="5.0" />
+          	        </padding>
+         	 </HBox>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+      
+      	</HBox>
+      
+              
+              <ListView fx:id="notificationListView" styleClass="list-view" VBox.vgrow="ALWAYS">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding></ListView>
+          </VBox>
+      </children>
+      <padding>
+         <Insets left="25.0" top="20.0" />
+      </padding>
+   </VBox>
+</AnchorPane>

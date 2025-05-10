@@ -1,0 +1,44 @@
+.edit-account-pane {
+    -fx-padding: 0;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d0d0;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2);
+}
+
+.title-label {
+    -fx-font-size: 22px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+.field-label {
+    -fx-font-size: 15px;
+    -fx-text-fill: #555;
+}
+
+.text-field, .combo-box {
+    -fx-pref-width: 300;
+    -fx-font-size: 13px;
+}
+
+.checkbox {
+    -fx-font-size: 15px;
+}
+
+.save-button {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 5;
+}
+
+.cancel-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 5;
+}

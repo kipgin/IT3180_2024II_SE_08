@@ -5,8 +5,9 @@ public class Household {
 	    private int id;
 	    private String ownerUsername;
 	    private int numOfMembers;
-	    private String currentLocation;
-	    private String status;
+	    private String buildingBlock;
+	    private int floor;
+	    private String roomNumber;
 
 	    // Getters and Setters
 	    public String getId() { return String.valueOf(id); }
@@ -17,10 +18,24 @@ public class Household {
 
 	    public String getNumOfMembers() { return String.valueOf(numOfMembers); }
 	    public void setNumOfMembers(int numOfMembers) { this.numOfMembers = numOfMembers; }
+		public String getBuildingBlock() {
+			return buildingBlock;
+		}
+		public void setBuildingBlock(String buildingBlock) {
+			this.buildingBlock = buildingBlock;
+		}
+		public int getFloor() {
+			return floor;
+		}
+		public void setFloor(int floor) {
+			this.floor = floor;
+		}
+		public String getRoomNumber() {
+			return roomNumber;
+		}
+		public void setRoomNumber(String roomNumber) {
+			this.roomNumber = roomNumber;
+		}
 
-	    public String getCurrentLocation() { return currentLocation; }
-	    public void setCurrentLocation(String currentLocation) { this.currentLocation = currentLocation; }
-
-	    public String getStatus() { return status; }
-	    public void setStatus(String status) { this.status = status; }
+	   
 }

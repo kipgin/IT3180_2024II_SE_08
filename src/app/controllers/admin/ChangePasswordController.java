@@ -1,6 +1,7 @@
 package app.controllers.admin;
 
 import app.models.User;
+
 import app.services.ApiService;
 import javafx.animation.*;
 import javafx.fxml.FXML;
@@ -27,9 +28,9 @@ public class ChangePasswordController {
     private ImageView dinoImageView;
 
     // Kích thước của mỗi frame trong sprite sheet
-    private static final int FRAME_WIDTH = 300;  // Điều chỉnh theo ảnh của bạn
+    private static final int FRAME_WIDTH = 300; 
     private static final int FRAME_HEIGHT = 358;
-    private static final int FRAME_COUNT = 6;   // Tổng số frame
+    private static final int FRAME_COUNT = 6;   
     private static final int SPRITE_SHEET_WIDTH = FRAME_WIDTH * FRAME_COUNT;
 
     private boolean isOldPasswordVisible = false;
@@ -43,7 +44,7 @@ public class ChangePasswordController {
     
     @FXML
     public void initialize() {
-        startDinoAnimation();
+        //startDinoAnimation();
         txtOldPasswordVisible.setManaged(false);
         txtNewPasswordVisible.setManaged(false);
         txtConfirmPasswordVisible.setManaged(false);
@@ -61,7 +62,7 @@ public class ChangePasswordController {
         dinoAnimation.play();
         
         // Animation chạy ngang màn hình
-        TranslateTransition dinoRun = new TranslateTransition(Duration.seconds(12), dinoImageView);
+        TranslateTransition dinoRun = new TranslateTransition(Duration.seconds(18), dinoImageView);
         dinoRun.setFromX(0);
         dinoRun.setToX(1100);
         dinoRun.setCycleCount(TranslateTransition.INDEFINITE);
