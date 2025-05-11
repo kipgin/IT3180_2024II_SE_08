@@ -3,6 +3,8 @@ package com.example.BTL_CNPM.charity.service;
 import com.example.BTL_CNPM.charity.model.Charity;
 import com.example.BTL_CNPM.charity.model.CharityName;
 import com.example.BTL_CNPM.charity.repository.CharityNameRepository;
+
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +20,22 @@ public class CharityNameService {
         return charityNameRepository.existsById(id);
     }
 
-    public boolean existsByName(String name){
-        return charityNameRepository.existsByName(name);
+    public boolean existsByName(CharityName charityName){
+        if(charityName == null || charityName.getName()==null || charityName.getName().isEmpty()){
+            return false;
+        }
+        return charityNameRepository.existsByName(charityName.getName());
     }
 
     public CharityName findById(Integer id){
         return charityNameRepository.findById(id).orElse(null);
     }
 
-    public CharityName findByName(String name){
-        return charityNameRepository.findByName(name).orElse(null);
+    public CharityName findByName(CharityName charityName){
+        if(charityName == null || charityName.getName()==null || charityName.getName().isEmpty()){
+            return null;
+        }
+        return charityNameRepository.findByName(charityName.getName()).orElse(null);
     }
 
     public List<CharityName> findAll(){
@@ -35,12 +43,15 @@ public class CharityNameService {
     }
 
     //put
-    public boolean update(String newName, String name){
-        if(charityNameRepository.existsByName(newName) || !charityNameRepository.existsByName(name)){
+    //khong nen dung, tot nhat la xoa xong tao cai moi , chu khong nen update nhu nay
+    @Transactional
+    public boolean update(CharityName newCharityName, CharityName charityName){
+        if(newCharityName==null || charityName ==null|| newCharityName.getName() == null || newCharityName.getName().isEmpty() || charityName.getName() == null || charityName.getName().isEmpty()){
             return false;
         }
-        CharityName existsOne =charityNameRepository.findByName(name).orElse(null);
-        existsOne.setName(newName);
+        String name = newCharityName.getName();
+        CharityName existsOne =charityNameRepository.findByName(charityName.getName()).orElse(null);
+        existsOne.setName(name);
         charityNameRepository.save(existsOne);
         return true;
     }
@@ -54,6 +65,7 @@ public class CharityNameService {
     }
 
     //delete
+    @Transactional
     public boolean deleteById(Integer id){
         if(charityNameRepository.existsById(id)){
             charityNameRepository.deleteById(id);
@@ -64,15 +76,22 @@ public class CharityNameService {
 
 
     // ham charityNameRepository.deleteByName(name) dang bi loi
-    public boolean deleteByName(String name){
-        CharityName charityName =charityNameRepository.findByName(name).orElse(null);
-        if(charityName == null){
+    @Transactional
+    public boolean deleteByName(CharityName charityName){
+        if(charityName == null || charityName.getName()==null || charityName.getName().isEmpty()){
             return false;
         }
-        charityNameRepository.deleteById(charityName.getId());
+        String name=charityName.getName();
+        CharityName charityName1 =findByName(charityName);
+        if(charityName1 == null){
+            return false;
+        }
+        charityNameRepository.deleteByName(name);
         return true;
     }
 
+    //ko nen dung ham nay
+    @Transactional
     public void deleteAll(){
         charityNameRepository.deleteAll();
     }

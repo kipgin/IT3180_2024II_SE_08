@@ -1,9 +1,12 @@
 package com.example.BTL_CNPM.charity.controller;
 
 import com.example.BTL_CNPM.charity.model.Charity;
+import com.example.BTL_CNPM.charity.model.CharityName;
 import com.example.BTL_CNPM.charity.model.CharitySection;
 import com.example.BTL_CNPM.charity.repository.CharityRepository;
 import com.example.BTL_CNPM.charity.service.CharityService;
+
+import com.example.BTL_CNPM.resident.model.AccomStatus;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,15 +62,21 @@ public class CharityController {
     }
 
 
-    @GetMapping("/get-section-from-ownerusername/{sectionName}/{ownerUserName}")
-    public CharitySection findCharitySectionFromOwnerUserName(@PathVariable("sectionName") String sectionName,@PathVariable("ownerUserName") String ownerUserName){
-        return charityService.findCharitySectionFromOwnerUserName(sectionName,ownerUserName);
+    @GetMapping("/get-section-from-ownerusername/{ownerUserName}")
+    public CharitySection findCharitySectionFromOwnerUserName(@RequestBody CharityName charityName, @PathVariable("ownerUserName") String ownerUserName){
+        return charityService.findCharitySectionFromOwnerUserName(charityName,ownerUserName);
+    }
+
+
+    @PutMapping("/update-charity/{ownerusername}/{accomStatus}")
+    public boolean updateCharity(@PathVariable("ownerusername") String ownerUserName, @PathVariable AccomStatus accomStatus){
+        return charityService.updateCharity(ownerUserName,accomStatus);
     }
 
     //update bi loi phan setCharitySections
-    @PutMapping("/update/{ownerUserName}/{charityName}/{money}")
-    public boolean update(@PathVariable("ownerUserName")String ownerUserName,@PathVariable("charityName")String charityName,@PathVariable("money") Integer money) throws MessagingException {
-        return charityService.update(ownerUserName,charityName,money);
+    @PutMapping("/update-section-of-charity/{ownerUserName}/{money}")
+    public boolean updateSectionOfCharity(@PathVariable("ownerUserName")String ownerUserName,@RequestBody CharityName charityName,@PathVariable("money") Integer money) throws MessagingException {
+        return charityService.updateSectionOfCharity(ownerUserName,charityName,money);
     }
 
     @PostMapping("/add-section-to-ownerusername/{ownerUserName}")
@@ -102,8 +111,8 @@ public class CharityController {
     public boolean deleteByOwnerUserName(@PathVariable("ownerUserName") String ownerUserName){
         return charityService.deleteByOwnerUsername(ownerUserName);
     }
-    @DeleteMapping("/delete-section-of-ownerusername/{ownerusername}/{name}")
-    public boolean deleteSectionOfOwnerUserName(@PathVariable("ownerusername") String ownerUserName, @PathVariable("name") String name){
-        return charityService.deleteSectionByOwnerUserName(ownerUserName,name);
+    @DeleteMapping("/delete-section-of-ownerusername/{ownerusername}")
+    public boolean deleteSectionOfOwnerUserName(@PathVariable("ownerusername") String ownerUserName, @RequestBody CharityName charityName){
+        return charityService.deleteSectionByOwnerUserName(ownerUserName,charityName);
     }
 }

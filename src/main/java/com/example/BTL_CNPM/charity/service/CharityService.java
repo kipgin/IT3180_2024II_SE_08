@@ -8,8 +8,11 @@ import com.example.BTL_CNPM.charity.repository.CharityNameRepository;
 import com.example.BTL_CNPM.charity.repository.CharityRepository;
 import com.example.BTL_CNPM.charity.repository.CharitySectionRepository;
 import com.example.BTL_CNPM.gmail.EmailSender;
+import com.example.BTL_CNPM.gmail.model.users.UsersGmail;
+import com.example.BTL_CNPM.gmail.repository.UsersGmailRepository;
 import com.example.BTL_CNPM.household.model.Household;
 import com.example.BTL_CNPM.household.repository.HouseholdRepository;
+import com.example.BTL_CNPM.resident.model.AccomStatus;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,9 @@ public class CharityService {
 
     @Autowired
     private HouseholdRepository householdRepository;
+
+    @Autowired
+    private UsersGmailRepository usersGmailRepository;
 
 //    @Autowired
 //    private HouseholdRepository householdRepository;
@@ -83,10 +89,11 @@ public class CharityService {
     }
 
     @Transactional
-    public boolean deleteSectionByOwnerUserName(String ownerUserName, String name){
-        if(!charityRepository.existsByOwnerUserName(ownerUserName)){
+    public boolean deleteSectionByOwnerUserName(String ownerUserName, CharityName charityName){
+        if(!charityRepository.existsByOwnerUserName(ownerUserName) || charityName==null){
             return false;
         }
+        String name=charityName.getName();
         Charity charity=charityRepository.findByOwnerUserName(ownerUserName).orElse(null);
         List<CharitySection> list =charity.getCharitySections();
         if(list.isEmpty()){
@@ -111,12 +118,25 @@ public class CharityService {
 
     //update bi loi phan setCharitySections
     @Transactional
-    public boolean update(String ownerUserName, String charityName, Integer money) throws MessagingException {
-        if(!charityRepository.existsByOwnerUserName(ownerUserName)){
+    public boolean updateCharity(String ownerUsername, AccomStatus accomStatus){
+        if(ownerUsername == null || ownerUsername.isEmpty() || !charityRepository.existsByOwnerUserName(ownerUsername) ){
             return false;
         }
+        Charity tempCharity = findByOwnerUserName(ownerUsername);
+        tempCharity.setAccomStatus(accomStatus);
+        charityRepository.save(tempCharity);
+        return true;
+    }
+
+
+    @Transactional
+    public boolean updateSectionOfCharity(String ownerUserName,CharityName charityName,Integer money) throws MessagingException {
+        if(!charityRepository.existsByOwnerUserName(ownerUserName) || charityName == null || charityName.getName() == null || charityName.getName().isEmpty()){
+            return false;
+        }
+        String name=charityName.getName();
         Charity existOne = charityRepository.findByOwnerUserName(ownerUserName).orElse(null);
-        //existOne.setCharitySections(charity.getCharitySections());
+//        existOne.setCharitySections(charity.getCharitySections());
         List<CharitySection> list = existOne.getCharitySections();
         if(list.isEmpty()){
             return false;
@@ -126,21 +146,24 @@ public class CharityService {
         }
 
         Boolean flag=false;
-        for(int i =0 ; i < list.size() ; i++){
-            if(list.get(i).getName().equals(charityName)){
-                CharitySection charitySection = list.get(i);
-                charitySection.setDonate(charitySection.getDonate()+money);
-                Integer fee=charitySection.getDonate();
+        for(CharitySection section : list){
+            if(section.getName().equals(name)){
+                section.setDonate(section.getDonate()+money);
+                Integer fee=section.getDonate();
                 EmailSender emailSender = new EmailSender("caohuythinh@gmail.com","plop alwz udsz opmu");
                 LocalDateTime paidTime = LocalDateTime.now();
                 String subject="Xác nhận đóng góp vào lúc:  " + paidTime.toString();
-                String body="Số tiền cư dân vừa nộp là: "+ money.toString() + " VND." +"\n"
+                String body="Số tiền cư dân vừa đóng góp là: "+ money.toString() + " VND." +"\n"
                         + "Hình thức thanh toán: Tiền mặt."+"\n"
-                        +"Tên quỹ đóng góp: "+ charitySection.getName() +"."+"\n"
+                        +"Tên quỹ đóng góp: "+ name +"."+"\n"
                         +"Tổng số tiền hộ cư dân đã ủng hộ cho quỹ là: " + fee.toString() + " VND."+"\n"
                         +"Chúc cư dân một ngày tốt lành!";
 
                 flag=true;
+                UsersGmail userEmail = usersGmailRepository.findByUsername(ownerUserName).orElse(null);
+                if(userEmail != null){
+                    emailSender.sendEmail(userEmail.getEmail(),subject,body);
+                }
                 break;
             }
         }
@@ -151,7 +174,11 @@ public class CharityService {
         return true;
     }
 
-    public CharitySection findCharitySectionFromOwnerUserName(String sectionName,String ownerUserName){
+    public CharitySection findCharitySectionFromOwnerUserName(CharityName charityName,String ownerUserName){
+        if(charityName == null || charityName.getName() == null || charityName.getName().isEmpty()){
+            return null;
+        }
+        String sectionName=charityName.getName();
         if(sectionName == null || ownerUserName == null){
             return null;
         }
@@ -172,7 +199,7 @@ public class CharityService {
     }
 
     public boolean addSectionToOwnerUserName(CharitySection charitySection, String ownerUserName){
-        if(ownerUserName == null || charitySection == null || charitySection.getName()==null){
+        if(ownerUserName == null || ownerUserName.isEmpty() || charitySection == null || charitySection.getName()==null || charitySection.getName().isEmpty()){
             return false;
         }
         if(!charityNameRepository.existsByName(charitySection.getName())){

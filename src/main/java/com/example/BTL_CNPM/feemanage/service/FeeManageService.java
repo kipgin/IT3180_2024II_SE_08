@@ -60,7 +60,11 @@ public class FeeManageService {
         return feeManageRepository.existsByOwnerUserName(ownerUserName);
     }
 
-    public boolean checkSectionOfOwnerUserName(String ownerUserName , String name){
+    public boolean checkSectionOfOwnerUserName(String ownerUserName , FeeSection feeSection){
+        if(feeSection==null || feeSection.getName().isEmpty()){
+            return false;
+        }
+        String name=feeSection.getName();
         if(ownerUserName == null || ownerUserName.isEmpty() || name == null || name.isEmpty()){
             return false;
         }
@@ -80,7 +84,11 @@ public class FeeManageService {
         return false;
     }
 
-    public FeeSection findSectionByOwnerUserName(String ownerUserName,String name){
+    public FeeSection findSectionByOwnerUserName(String ownerUserName,FeeSection feeSection){
+        if(feeSection== null || feeSection.getName().isEmpty()){
+            return null;
+        }
+        String name = feeSection.getName();
         if(ownerUserName == null || ownerUserName.isEmpty() || name == null || name.isEmpty()){
             return null;
         }
@@ -159,11 +167,13 @@ public class FeeManageService {
     }
 
     @Transactional
-    public boolean updateSectionOfFeeManage(String ownerUserName,String name, Double blockUsed){
-        if(ownerUserName == null || ownerUserName.isEmpty() || name == null || name.isEmpty()){
+    public boolean updateSectionOfFeeManage(String ownerUserName,FeeSection feeSection){
+        if(ownerUserName == null || ownerUserName.isEmpty() || feeSection == null || feeSection.getName().isEmpty()){
             return false;
         }
-        if(!feeManageRepository.existsByOwnerUserName(ownerUserName) || !feeNameRepository.existsByName(name) || !checkSectionOfOwnerUserName(ownerUserName,name)){
+        String name=feeSection.getName();
+        Double blockUsed=feeSection.getBlockUsed();
+        if(!feeManageRepository.existsByOwnerUserName(ownerUserName) || !feeNameRepository.existsByName(name) || !checkSectionOfOwnerUserName(ownerUserName,feeSection)){
             return false;
         }
 //        if(!checkSectionOfOwnerUserName(ownerUserName,name)){
@@ -173,9 +183,9 @@ public class FeeManageService {
         if(feeManage == null || feeManage.getFeeSections().isEmpty() ){
             return false;
         }
-        for(FeeSection feeSection : feeManage.getFeeSections()){
-            if(feeSection.getName().equals(name)){
-                feeSection.setBlockUsed(blockUsed);
+        for(FeeSection feeSection1 : feeManage.getFeeSections()){
+            if(feeSection1.getName().equals(name)){
+                feeSection1.setBlockUsed(blockUsed);
                 feeManageRepository.save(feeManage);
                 //feeManage.updateTotalFee();
                 return true;
@@ -305,19 +315,20 @@ public class FeeManageService {
     }
 
     @Transactional
-    public boolean deleteSectionOfFeeManage(String ownerUserName,String name){
-        if(ownerUserName == null || ownerUserName.isEmpty() || name == null || name.isEmpty() || !feeNameRepository.existsByName(name)){
+    public boolean deleteSectionOfFeeManage(String ownerUserName,FeeSection feeSection){
+        if(ownerUserName == null || ownerUserName.isEmpty() || feeSection == null || feeSection.getName().isEmpty()){
             return false;
         }
+        String name=feeSection.getName();
         FeeManage feeManage = getByOwnerUserName(ownerUserName);
         if(feeManage == null || feeManage.getFeeSections().isEmpty()){
             return false;
         }
-        for(FeeSection feeSection : feeManage.getFeeSections()){
-            if(feeSection.getName().equals(name)){
-                feeSection.setFeeManage(null);
-                feeSection.setFeeName(null);
-                feeManage.getFeeSections().remove(feeSection);
+        for(FeeSection feeSection1 : feeManage.getFeeSections()){
+            if(feeSection1.getName().equals(name)){
+                feeSection1.setFeeManage(null);
+                feeSection1.setFeeName(null);
+                feeManage.getFeeSections().remove(feeSection1);
                 //thuc ra k can cai nay, tai vi da co orphanRemoval = true
 //                feeSection.setFeeManage(null);
                 feeManageRepository.save(feeManage);
@@ -351,14 +362,14 @@ public class FeeManageService {
     }
 
     public boolean addSectionOfFeeManage(String ownerUserName,FeeSection feeSection){
-        if(ownerUserName == null || ownerUserName.isEmpty() || !feeManageRepository.existsByOwnerUserName(ownerUserName) || feeSection == null || feeSection.getName() == null || feeSection.getName().isEmpty()){
+        if(ownerUserName == null || ownerUserName.isEmpty() || !feeManageRepository.existsByOwnerUserName(ownerUserName) || feeSection == null || feeSection.getName().isEmpty()){
             return false;
         }
         if(!feeNameRepository.existsByName(feeSection.getName())){
             return false;
         }
         FeeManage feeManage = getByOwnerUserName(ownerUserName);
-        if(this.findSectionByOwnerUserName(ownerUserName, feeSection.getName()) != null){
+        if(this.findSectionByOwnerUserName(ownerUserName, feeSection) != null){
             return false;
         }
         feeSection.setFeeName(feeNameRepository.findByName(feeSection.getName()).orElse(null));

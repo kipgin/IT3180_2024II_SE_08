@@ -15,10 +15,10 @@ public class FeeSection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false,unique = false)
+    @Column(nullable = true,unique = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Double blockUsed;
 
     @ManyToOne

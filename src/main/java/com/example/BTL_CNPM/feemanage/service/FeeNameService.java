@@ -3,6 +3,7 @@ package com.example.BTL_CNPM.feemanage.service;
 import com.example.BTL_CNPM.feemanage.model.FeeManage;
 import com.example.BTL_CNPM.feemanage.model.FeeName;
 import com.example.BTL_CNPM.feemanage.repository.FeeNameRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,30 +19,38 @@ public class FeeNameService {
         return feeNameRepository.existsById(id);
     }
 
-    public boolean existsByName(String name){
-        return feeNameRepository.existsByName(name);
+    public boolean existsByName(FeeName feeName){
+        if(feeName == null || feeName.getName() == null || feeName.getName().isEmpty()){
+            return false;
+        }
+        return feeNameRepository.existsByName(feeName.getName());
     }
 
     public FeeName findById(Integer id){
         return feeNameRepository.findById(id).orElse(null);
     }
 
-    public FeeName findByName(String name){
-        return  feeNameRepository.findByName(name).orElse(null);
+    public FeeName findByName(FeeName feeName){
+        if(feeName == null || feeName.getName() == null || feeName.getName().isEmpty()){
+            return null;
+        }
+        return  feeNameRepository.findByName(feeName.getName()).orElse(null);
     }
 
     public List<FeeName> findAll(){
         return feeNameRepository.findAll();
     }
 
-    public boolean update(String name,String block, Double moneyPerBlock){
-        if(!feeNameRepository.existsByName(name)){
+    @Transactional
+    public boolean update(FeeName feeName, Double moneyPerBlock){
+        if(feeName == null || feeName.getName() == null || feeName.getName().isEmpty() || !feeNameRepository.existsByName(feeName.getName()) || feeName.getBlock() ==null || feeName.getBlock().isEmpty()){
             return false;
         }
-        FeeName feeName = feeNameRepository.findByName(name).orElse(null);
-        feeName.setBlock(block);
-        feeName.setMoneyPerBlock(moneyPerBlock);
-        feeNameRepository.save(feeName);
+        String name=feeName.getName();
+        FeeName feeName1 = feeNameRepository.findByName(name).orElse(null);
+        feeName1.setBlock(feeName.getBlock());
+        feeName1.setMoneyPerBlock(moneyPerBlock);
+        feeNameRepository.save(feeName1);
         return true;
     }
 
@@ -53,6 +62,7 @@ public class FeeNameService {
         return true;
     }
 
+    @Transactional
     public boolean deleteById(Integer id){
         if(!feeNameRepository.existsById(id)){
             return false;
@@ -61,14 +71,21 @@ public class FeeNameService {
         return true;
     }
 
-    public boolean deleteByName(String name){
+    @Transactional
+    public boolean deleteByName(FeeName feeName){
+        if(feeName == null || feeName.getName() == null || feeName.getName().isEmpty()){
+            return false;
+        }
+        String name=feeName.getName();
         if(!feeNameRepository.existsByName(name)){
             return false;
         }
+//        System.out.println("ham delete by name");
         feeNameRepository.deleteByName(name);
         return true;
     }
 
+    @Transactional
     public void deleteAll(){
         feeNameRepository.deleteAll();
     }

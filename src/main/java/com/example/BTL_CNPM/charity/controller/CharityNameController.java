@@ -19,9 +19,9 @@ public class CharityNameController {
         return charityNameService.existsById(id);
     }
 
-    @GetMapping("/check-name/{name}")
-    public boolean existsByName(@PathVariable("name") String name){
-        return charityNameService.existsByName(name);
+    @GetMapping("/check-name")
+    public boolean existsByName(@RequestBody CharityName charityName){
+        return charityNameService.existsByName(charityName);
     }
 
     @GetMapping("/get-id/{id}")
@@ -29,9 +29,9 @@ public class CharityNameController {
         return charityNameService.findById(id);
     }
 
-    @GetMapping("/get-name/{name}")
-    public CharityName findByName(@PathVariable("name") String name){
-        return charityNameService.findByName(name);
+    @GetMapping("/get-name")
+    public CharityName findByName(@RequestBody CharityName charityName){
+        return charityNameService.findByName(charityName);
     }
 
     @GetMapping("/get-all")
@@ -40,9 +40,10 @@ public class CharityNameController {
     }
 
     //put
-    @PutMapping("/update/{newName}/{name}")
-    public boolean update(@PathVariable("newName") String newName,@PathVariable("name") String name){
-        return charityNameService.update(newName,name);
+    // khong nen dung, rat nguy hiem
+    @PutMapping("/update")
+    public boolean update(@RequestBody CharityName newCharityName,@RequestBody CharityName charityName){
+        return charityNameService.update(newCharityName,charityName);
     }
     //create
     @PostMapping("/create")
@@ -58,9 +59,9 @@ public class CharityNameController {
 
     //khong hieu sao cho nay khong dung duoc @PathVariable cho name
 
-    @DeleteMapping("/delete-name/{name}")
-    public boolean deleteByName(@PathVariable("name") String name){
-        return charityNameService.deleteByName(name);
+    @DeleteMapping("/delete-name")
+    public boolean deleteByName(@RequestBody CharityName charityName){
+        return charityNameService.deleteByName(charityName);
     }
 
     @DeleteMapping("/delete-all")

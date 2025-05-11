@@ -22,9 +22,9 @@ public class FeeNameController {
         return feeNameService.existsById(id);
     }
 
-    @GetMapping("/check-name/{name}")
-    public boolean existsByName(@PathVariable("name") String name){
-        return feeNameService.existsByName(name);
+    @GetMapping("/check-name")
+    public boolean existsByName(@RequestBody FeeName feeName){
+        return feeNameService.existsByName(feeName);
     }
 
     @GetMapping("/get-id/{id}")
@@ -32,9 +32,9 @@ public class FeeNameController {
         return feeNameService.findById(id);
     }
 
-    @GetMapping("/get-name/{name}")
-    public FeeName findByName(@PathVariable("name") String name){
-        return feeNameService.findByName(name);
+    @GetMapping("/get-name")
+    public FeeName findByName(@RequestBody FeeName feeName){
+        return feeNameService.findByName(feeName);
     }
 
     @GetMapping("/get-all")
@@ -43,9 +43,9 @@ public class FeeNameController {
     }
 
     //put
-    @PutMapping("/update/{name}/{detail}/{moneyperblock}")
-    public boolean update(@PathVariable("name") String name,@PathVariable("detail") String detail,@PathVariable("moneyperblock") Double moneyPerBlock){
-        return feeNameService.update(name,detail,moneyPerBlock);
+    @PutMapping("/update/{moneyperblock}")
+    public boolean update(@RequestBody FeeName feeName,@PathVariable("moneyperblock") Double moneyPerBlock){
+        return feeNameService.update(feeName,moneyPerBlock);
     }
     //create
     @PostMapping("/create")
@@ -61,9 +61,9 @@ public class FeeNameController {
 
     //khong hieu sao cho nay khong dung duoc @PathVariable cho name
 
-    @DeleteMapping("/delete-name/{name}")
-    public boolean deleteByName(@PathVariable("name") String name){
-        return feeNameService.deleteByName(name);
+    @DeleteMapping("/delete-name")
+    public boolean deleteByName(@RequestBody FeeName feeName){
+        return feeNameService.deleteByName(feeName);
     }
 
     @DeleteMapping("/delete-all")

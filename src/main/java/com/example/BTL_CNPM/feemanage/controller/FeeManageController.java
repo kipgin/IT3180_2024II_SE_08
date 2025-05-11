@@ -28,9 +28,9 @@ public class FeeManageController {
         return feeManageService.existsByOwnerUserName(ownerUserName);
     }
 
-    @GetMapping("/check-section-of-ownerusername/{ownerusername}/{name}")
-    public boolean checkSectionOfOwnerUserName(@PathVariable("ownerusername") String ownerUserName ,@PathVariable("name") String name){
-        return feeManageService.checkSectionOfOwnerUserName(ownerUserName,name);
+    @GetMapping("/check-section-of-ownerusername/{ownerusername}")
+    public boolean checkSectionOfOwnerUserName(@PathVariable("ownerusername") String ownerUserName ,@RequestBody FeeSection feeSection){
+        return feeManageService.checkSectionOfOwnerUserName(ownerUserName,feeSection);
     }
 
     @GetMapping("/get-all")
@@ -48,9 +48,9 @@ public class FeeManageController {
         return feeManageService.getByOwnerUserName(ownerUserName);
     }
 
-    @GetMapping("/get-section-by-ownerusername/{ownerusername}/{name}")
-    public FeeSection findSectionByOwnerUserName(@PathVariable("ownerusername") String ownerUserName,@PathVariable("name") String name){
-        return feeManageService.findSectionByOwnerUserName(ownerUserName,name);
+    @GetMapping("/get-section-by-ownerusername/{ownerusername}")
+    public FeeSection findSectionByOwnerUserName(@PathVariable("ownerusername") String ownerUserName,@RequestBody FeeSection feeSection){
+        return feeManageService.findSectionByOwnerUserName(ownerUserName,feeSection);
     }
 
     @PutMapping("/update-id/{id}")
@@ -63,9 +63,9 @@ public class FeeManageController {
         return feeManageService.updateByOwnerUserName(ownerUserName,feeManage);
     }
 
-    @PutMapping("/update-section-of-ownerusername/{ownerusername}/{name}/{blockused}")
-    public boolean updateSectionOfFeeManage(@PathVariable("ownerusername") String ownerUserName,@PathVariable("name") String name,@PathVariable("blockused") Double blockUsed){
-        return feeManageService.updateSectionOfFeeManage(ownerUserName,name,blockUsed);
+    @PutMapping("/update-section-of-ownerusername/{ownerusername}")
+    public boolean updateSectionOfFeeManage(@PathVariable("ownerusername") String ownerUserName,@RequestBody FeeSection feeSection){
+        return feeManageService.updateSectionOfFeeManage(ownerUserName,feeSection);
     }
 
     //cap nhat hang thang
@@ -103,9 +103,9 @@ public class FeeManageController {
         return feeManageService.deleteByOwnerUserName(ownerUserName);
     }
 
-    @DeleteMapping("/delete-section-of-feemanage/{ownerusername}/{name}")
-    public boolean deleteSectionOfFeeManage(@PathVariable("ownerusername") String ownerUserName,@PathVariable("name") String name){
-        return feeManageService.deleteSectionOfFeeManage(ownerUserName,name);
+    @DeleteMapping("/delete-section-of-feemanage/{ownerusername}")
+    public boolean deleteSectionOfFeeManage(@PathVariable("ownerusername") String ownerUserName,@RequestBody FeeSection feeSection){
+        return feeManageService.deleteSectionOfFeeManage(ownerUserName,feeSection);
     }
 
     @DeleteMapping("/delete-all")
