@@ -10,6 +10,9 @@ import com.example.BTL_CNPM.gmail.repository.UsersGmailRepository;
 import com.example.BTL_CNPM.household.repository.HouseholdRepository;
 import com.example.BTL_CNPM.household.service.HouseholdService;
 import com.example.BTL_CNPM.household.service.impl.HouseholdServiceImpl;
+import com.example.BTL_CNPM.logfeesection.LogFeeSection;
+import com.example.BTL_CNPM.logfeetable.model.LogFeeTable;
+import com.example.BTL_CNPM.logfeetable.service.LogFeeTableService;
 import com.example.BTL_CNPM.resident.model.AccomStatus;
 import com.example.BTL_CNPM.feemanage.model.FeeManage;
 import com.example.BTL_CNPM.feemanage.repository.FeeManageRepository;
@@ -47,6 +50,9 @@ public class FeeManageService {
 
     @Autowired
     private UsersGmailRepository usersGmailRepository;
+
+    @Autowired
+    private LogFeeTableService logFeeTableService;
 
 
     public boolean existsById(Integer id){
@@ -277,6 +283,19 @@ public class FeeManageService {
             feeSection.setBlockUsed((double) 0);
         }
         emailSender.sendEmail(email.getEmail(), subject, body);
+
+        String logFee = "Vào lúc: "+paidTime.toString() +", "+"hộ cư dân với username: " + feeManage.getOwnerUserName() + " đã thanh toán: "
+                        +fee.toString()+ " dành cho phí bắt buộc tháng này.";
+        if(feeManage.getTotalFee()==0){
+            logFee = logFee + " Hộ cư dân đã thanh toán đủ.";
+        }
+        else{
+            logFee= logFee +" Hộ cư dân còn " + feeManage.getTotalFee().toString() +" chưa được thanh toán.";
+        }
+//        LogFeeTable logFeeTable = logFeeTableService.findByOwnerUserName(ownerUserName);
+        LogFeeSection logFeeSection = new LogFeeSection();
+        logFeeSection.setLogName(logFee);
+        logFeeTableService.createSectionOfTable(ownerUserName,logFeeSection);
 
         feeManageRepository.save(feeManage);
         return true;

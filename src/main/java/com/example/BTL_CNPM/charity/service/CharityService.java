@@ -12,6 +12,8 @@ import com.example.BTL_CNPM.gmail.model.users.UsersGmail;
 import com.example.BTL_CNPM.gmail.repository.UsersGmailRepository;
 import com.example.BTL_CNPM.household.model.Household;
 import com.example.BTL_CNPM.household.repository.HouseholdRepository;
+import com.example.BTL_CNPM.logcharitysection.LogCharitySection;
+import com.example.BTL_CNPM.logcharitytable.LogCharityTableService;
 import com.example.BTL_CNPM.resident.model.AccomStatus;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
@@ -40,6 +42,9 @@ public class CharityService {
 
     @Autowired
     private UsersGmailRepository usersGmailRepository;
+
+    @Autowired
+    private LogCharityTableService logCharityTableService;
 
 //    @Autowired
 //    private HouseholdRepository householdRepository;
@@ -164,6 +169,11 @@ public class CharityService {
                 if(userEmail != null){
                     emailSender.sendEmail(userEmail.getEmail(),subject,body);
                 }
+                String logCharity= "Vào lúc: " + paidTime.toString()+" , hộ cư dân với username:"+ ownerUserName+ " đã ủng hộ "
+                        + money.toString() + " VND " +"cho quỹ "+ name +".";
+                LogCharitySection logCharitySection = new LogCharitySection();
+                logCharitySection.setName(logCharity);
+                logCharityTableService.addSectionToTable(ownerUserName,logCharitySection);
                 break;
             }
         }
