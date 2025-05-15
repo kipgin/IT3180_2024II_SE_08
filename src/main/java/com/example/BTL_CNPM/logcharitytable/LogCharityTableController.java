@@ -66,7 +66,7 @@ public class LogCharityTableController {
         return logCharityTableService.deleteByOwnerUserName(ownerUserName);
     }
 
-    @DeleteMapping("/delete-section-of-table/{ownerusername}/{id}")
+    @PostMapping("/delete-section-of-table/{ownerusername}/{id}")
     public boolean deleteSectionOfTable(@PathVariable("ownerusername") String ownerUserName,@PathVariable("id") Integer id){
         return logCharityTableService.deleteSectionOfTable(ownerUserName,id);
     }

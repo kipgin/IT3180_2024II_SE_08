@@ -61,7 +61,7 @@ public class FeeNameController {
 
     //khong hieu sao cho nay khong dung duoc @PathVariable cho name
 
-    @DeleteMapping("/delete-name")
+    @PostMapping("/delete-name")
     public boolean deleteByName(@RequestBody FeeName feeName){
         return feeNameService.deleteByName(feeName);
     }

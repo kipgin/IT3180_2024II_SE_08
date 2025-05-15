@@ -52,6 +52,11 @@ public class LogFeeTableController {
         return logFeeTableService.deleteByOwnerUserName(ownerUserName);
     }
 
+    @PostMapping("/delete-section-of-table/{ownerusername}/{id}")
+    public boolean deleteSectionOfTable(@PathVariable("ownerusername") String ownerUserName,@PathVariable("id") Integer id){
+        return logFeeTableService.deleteSectionOfTable(ownerUserName,id);
+    }
+
     @DeleteMapping("delete-all")
     public void deleteAll(){
         logFeeTableService.deleteAll();

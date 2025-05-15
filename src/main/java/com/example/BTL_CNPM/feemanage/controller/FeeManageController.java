@@ -103,7 +103,7 @@ public class FeeManageController {
         return feeManageService.deleteByOwnerUserName(ownerUserName);
     }
 
-    @DeleteMapping("/delete-section-of-feemanage/{ownerusername}")
+    @PostMapping("/delete-section-of-feemanage/{ownerusername}")
     public boolean deleteSectionOfFeeManage(@PathVariable("ownerusername") String ownerUserName,@RequestBody FeeSection feeSection){
         return feeManageService.deleteSectionOfFeeManage(ownerUserName,feeSection);
     }
