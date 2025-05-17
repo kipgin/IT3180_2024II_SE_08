@@ -59,7 +59,7 @@ public class CharityNameController {
 
     //khong hieu sao cho nay khong dung duoc @PathVariable cho name
 
-    @DeleteMapping("/delete-name")
+    @PostMapping("/delete-name")
     public boolean deleteByName(@RequestBody CharityName charityName){
         return charityNameService.deleteByName(charityName);
     }

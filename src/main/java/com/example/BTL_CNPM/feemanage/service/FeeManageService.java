@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.BTL_CNPM.gmail.*;
 
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -285,12 +286,12 @@ public class FeeManageService {
         emailSender.sendEmail(email.getEmail(), subject, body);
 
         String logFee = "Vào lúc: "+paidTime.toString() +", "+"hộ cư dân với username: " + feeManage.getOwnerUserName() + " đã thanh toán: "
-                        +fee.toString()+ " dành cho phí bắt buộc tháng này.";
+                        +fee.toString()+ " VND"+ " dành cho phí bắt buộc tháng này.";
         if(feeManage.getTotalFee()==0){
             logFee = logFee + " Hộ cư dân đã thanh toán đủ.";
         }
         else{
-            logFee= logFee +" Hộ cư dân còn " + feeManage.getTotalFee().toString() +" chưa được thanh toán.";
+            logFee= logFee +" Hộ cư dân còn " + feeManage.getTotalFee().toString() +" VND" +" chưa được thanh toán.";
         }
 //        LogFeeTable logFeeTable = logFeeTableService.findByOwnerUserName(ownerUserName);
         LogFeeSection logFeeSection = new LogFeeSection();
@@ -396,6 +397,7 @@ public class FeeManageService {
         feeManageRepository.save(feeManage);
         return true;
     }
+
 
 
 }
