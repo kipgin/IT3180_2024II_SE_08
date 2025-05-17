@@ -98,11 +98,15 @@ public class DashBoardController {
             Parent root = loader.load();
             
             Stage stage = (Stage) mainBorderPane.getScene().getWindow();
+            stage.setResizable(true);
             Scene scene = new Scene(root,450,450);
             scene.getStylesheets().add(getClass().getResource("/app/assets/css/admin/style.css").toExternalForm());
-            stage.setScene(scene);
+            stage.setScene(scene); 
+            stage.sizeToScene();
             stage.setX(500);
             stage.setY(150);
+            stage.setResizable(false);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -176,6 +180,8 @@ public class DashBoardController {
     public void handleResidentList() {
     	 loadFXML("/app/views/admin/resident_list.fxml","/app/assets/css/admin/resident_list.css");
     }
+    
+    
 
     // Phương thức để load FXML và đặt vào center
     public void loadFXML(String fxmlFile,String cssFile) {
@@ -196,6 +202,10 @@ public class DashBoardController {
             
             if (controller instanceof AccountInfoController) {
                 ((AccountInfoController) controller).setUser(user);
+            }
+            
+            if (controller instanceof NotificationController) {
+                ((NotificationController) controller).setUser(user);
             }
             
             

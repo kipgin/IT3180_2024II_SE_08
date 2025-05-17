@@ -1,5 +1,6 @@
 package app.controllers.admin;
 
+import app.models.FeeRecord;
 import app.models.PaymentRecord;
 import app.services.ApiService;
 import javafx.fxml.FXML;
@@ -17,13 +18,13 @@ public class ReceiptDialogController {
     @FXML
     private TextField txtPayment;
 
-    private PaymentRecord paymentRecord;
+    private FeeRecord feeRecord;
     private boolean confirmed = false;
 
-    public void setPaymentRecord(PaymentRecord paymentRecord) {
-        this.paymentRecord = paymentRecord;
-        lblOwner.setText(paymentRecord.getOwnerUserName());
-        lblTotalFee.setText(String.valueOf(paymentRecord.getTotalFee()));
+    public void setPaymentRecord(FeeRecord feeRecord) {
+        this.feeRecord = feeRecord;
+        lblOwner.setText(feeRecord.getOwnerUserName());
+        lblTotalFee.setText(String.valueOf(feeRecord.getTotalFee()));
     }
 
     public boolean isConfirmed() {
@@ -41,10 +42,9 @@ public class ReceiptDialogController {
                 return;
             }
 
-            double updatedFee = totalFee - payment;
-            paymentRecord.setTotalFee(updatedFee);
             
-            ApiService.updatePayment(paymentRecord);
+            
+            ApiService.paidFee(lblOwner.getText(), payment);
 
             showAlert("Thanh toán thành công!");
             confirmed = true;

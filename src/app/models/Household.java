@@ -10,13 +10,13 @@ public class Household {
 	    private String roomNumber;
 
 	    // Getters and Setters
-	    public String getId() { return String.valueOf(id); }
+	    public int getId() { return id; }
 	    public void setId(int id) { this.id = id; }
 
 	    public String getOwnerUsername() { return ownerUsername; }
 	    public void setOwnerUsername(String ownerUserName) { this.ownerUsername = ownerUserName; }
 
-	    public String getNumOfMembers() { return String.valueOf(numOfMembers); }
+	    public int getNumOfMembers() { return numOfMembers; }
 	    public void setNumOfMembers(int numOfMembers) { this.numOfMembers = numOfMembers; }
 		public String getBuildingBlock() {
 			return buildingBlock;

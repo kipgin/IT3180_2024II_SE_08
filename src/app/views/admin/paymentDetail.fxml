@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_LEFT" spacing="15" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.PaymentDetailController">
+
+    <!-- Tiêu đề chính -->
+    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="💳 Household Details" />
+
+    <!-- Thông tin hộ -->
+    <GridPane hgap="10" vgap="10">
+        <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label fx:id="lblId" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <Label text="Owner:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <Label fx:id="lblOwner" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <Label fx:id="lblStatus" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Total Fee:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <Label fx:id="lblTotalFee" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+        <Label text="Paid:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <Label fx:id="lblPaid" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+    <!-- Label Section -->
+    <Label style="-fx-font-weight: bold;" text="📋 Fee Sections:" />
+
+    <!-- TableView hiển thị loại phí -->
+    <TableView fx:id="feeSectionTable" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="colFeeName" text="Fee Name" />
+            <TableColumn fx:id="colBlockUsed" text="Block Used" />
+           
+            <TableColumn fx:id="colActions" text="Actions" />
+        </columns>
+    </TableView>
+
+    <!-- Nút thêm loại phí mới -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+      <ComboBox fx:id="feeTypeCombo" prefWidth="150.0" promptText="Fee Name" />
+      <TextField fx:id="txtBlockUsed" prefWidth="70.0" promptText="Block Used" />
+        <Button onAction="#handleAddFee" text="➕ Add Fee" />
+      <Button onAction="#handleUpdateFee" text="🔄 Update Fee" />
+    </HBox>
+
+    <!-- Nút đóng -->
+    <Button alignment="CENTER_RIGHT" onAction="#handleClose" text="Close" />
+</VBox>

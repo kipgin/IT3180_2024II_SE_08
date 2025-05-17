@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<StackPane fx:id="rootPane" xmlns:fx="http://javafx.com/fxml" fx:controller="app.controllers.admin.AddNotificationController">
+    <!-- Main Dashboard Placeholder -->
+    <AnchorPane fx:id="mainContent">
+        <!-- Replace with actual dashboard -->
+        <Label text="Dashboard content here..." layoutX="20" layoutY="20" />
+
+        <!-- Button to show modal -->
+        <Button text="+ Tạo thông báo" layoutX="600" layoutY="20" onAction="#showForm" />
+    </AnchorPane>
+
+    <!-- Modal Overlay -->
+    <AnchorPane fx:id="overlay" visible="false" styleClass="overlay">
+        <VBox fx:id="notificationForm" alignment="TOP_LEFT" spacing="10" maxWidth="600" styleClass="form-box">
+            <Label text="Thư mới" styleClass="form-header" />
+
+            <TextField fx:id="toField" promptText="Đến" />
+            <TextField fx:id="subjectField" promptText="Tiêu đề" />
+            <TextArea fx:id="bodyArea" promptText="Nội dung" prefRowCount="8" />
+
+            <HBox alignment="CENTER_RIGHT" spacing="10">
+                <Button text="Gửi" onAction="#sendNotification" />
+                <Button text="Hủy" onAction="#closeForm" />
+            </HBox>
+        </VBox>
+    </AnchorPane>
+</StackPane>

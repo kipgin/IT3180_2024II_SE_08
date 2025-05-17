@@ -89,7 +89,7 @@
     </items>
 </MenuButton>
 
-   <MenuButton fx:id="profileMenuButton" popupSide="bottom" styleClass="profile-button" text="Admin">
+   <MenuButton fx:id="profileMenuButton" popupSide="bottom" styleClass="profile-button" text=" Admin">
     <graphic>
         <ImageView fitHeight="20.0" fitWidth="20.0">
             <image>
@@ -187,16 +187,8 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="complaintsButton" onAction="#handleResidentButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Complaint">
-                <graphic>
-                    <ImageView fitHeight="20.0" fitWidth="20.0">
-                        <image>
-                            <Image url="@../../assets/img/complaint.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Button fx:id="settingButton" onAction="#handleResidentButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Settings">
+            
+            <Button fx:id="settingButton" onAction="#handleChangePasswordButton" prefHeight="28.0" prefWidth="160.0" styleClass="sidebar-button" text="   Settings">
                 <graphic>
                     <ImageView fitHeight="20.0" fitWidth="20.0">
                         <image>

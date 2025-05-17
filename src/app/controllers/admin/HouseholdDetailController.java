@@ -94,7 +94,7 @@ public class HouseholdDetailController {
     		FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/admin/add_resident.fxml"));
     		Parent root = loader.load();
     		Object controller = loader.getController();
-    		((AddResidentController) controller).setIdHousehold(Integer.parseInt(household.getId()));
+    		((AddResidentController) controller).setIdHousehold(household.getId());
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/app/assets/css/admin/add_resident.css").toExternalForm());
             Stage stage = new Stage();

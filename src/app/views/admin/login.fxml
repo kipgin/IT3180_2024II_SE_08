@@ -30,7 +30,7 @@
             <TextField fx:id="visiblePasswordField" promptText="Password" managed="false" visible="false" prefWidth="185.0" />
             <ImageView fx:id="togglePassword" fitHeight="20" fitWidth="20" preserveRatio="true" styleClass="password-toggle-icon">
                 <image>
-                    <Image url="@../../assets/img/eye_closed.png" />
+                    <Image url="@../../assets/img/eye_open.png" />
                 </image>
             </ImageView>
         </HBox>
@@ -46,6 +46,7 @@
             <Label text="Don't have an account?" styleClass="secondary-label"/>
             <Hyperlink text="Register" styleClass="custom-link"/>
         </HBox>
+        <Label fx:id="lblErrorMessage" styleClass="error-label" text=""/>
     </VBox>
 
     <!-- Quên mật khẩu -->
@@ -97,6 +98,7 @@
     <Hyperlink text="← Back to Login"
                onAction="#showLoginForm"
                styleClass="custom-link"/>
+    
     </VBox>
 
 </StackPane>

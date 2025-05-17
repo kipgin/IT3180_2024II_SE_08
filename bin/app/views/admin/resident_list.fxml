@@ -3,9 +3,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="app.controllers.admin.ResidentListController">
+<AnchorPane prefHeight="680.0" xmlns:fx="http://javafx.com/fxml" fx:controller="app.controllers.admin.ResidentListController">
 
-    <VBox spacing="10" prefWidth="1030" layoutX="20" layoutY="20">
+    <VBox spacing="10"  prefHeight="680.0" prefWidth="1030" layoutX="20" layoutY="20">
         <HBox spacing="10" alignment="CENTER_LEFT">
             <Button text="⬅ Back" fx:id="backButton" styleClass="buttons"/>
             <Label text="All Residents" styleClass="header-label" />

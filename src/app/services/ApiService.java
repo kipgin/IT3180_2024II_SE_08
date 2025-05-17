@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -13,6 +14,8 @@ import java.util.List;
 
 import app.models.CharityName;
 import app.models.CharityRecord;
+import app.models.FeeName;
+import app.models.FeeRecord;
 import app.models.Household;
 import app.models.Mail;
 import app.models.Notification;
@@ -49,10 +52,10 @@ public class ApiService {
 	        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 	        
 	       
-	        if (response.body().equals("false")) {
-	            return null;
-	        }
-	        return "true";
+//	        if (response.body().equals("false")) {
+//	            return ";
+//	        }
+	        return response.body();
 	        
 //	        JsonNode responseJson = objectMapper.readTree(response.body());
 //	        return responseJson.has("token") ? responseJson.get("token").asText() : null;
@@ -396,8 +399,8 @@ public class ApiService {
 	            return null;
 	        }
 	    }
-	    
-	    public static List<PaymentRecord> getAllPayments() {
+	    // payment
+	    public static List<FeeRecord> getAllPayments() {
 	        try {
 	        	HttpClient client = HttpClient.newHttpClient();
 	            HttpRequest request = HttpRequest.newBuilder()
@@ -412,15 +415,89 @@ public class ApiService {
 	            }
 
 	            ObjectMapper mapper = new ObjectMapper();
-	            return mapper.readValue(response.body(), new TypeReference<List<PaymentRecord>>() {});
+	            return mapper.readValue(response.body(), new TypeReference<List<FeeRecord>>() {});
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return null;
 	        }
 	    }
 	    
-	    public static boolean addPaymentRecord(double area, double serviceFeePerSquare, double totalFee, String ownerUserName, String accom_status) {
+	    public static List<FeeName> getAllFeename() {
 	        try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feename/get-all"))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch charitys: " + response.statusCode());
+	            }
+
+	            ObjectMapper mapper = new ObjectMapper();
+	            return mapper.readValue(response.body(), new TypeReference<List<FeeName>>() {});
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+	    
+	    public static boolean addFeeName(String name, String block, double moneyPerBlock) {
+	        try {                           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("name", name);
+	            jsonNode.put("block", block);
+	            jsonNode.put("moneyPerBlock", moneyPerBlock);
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feename/create"))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean delFeeName(String name) {
+	        try {
+	        	
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	           
+	            jsonNode.put("name", name);
+	      
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feename/delete-name" ))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    
+	    
+	    public static boolean addPaymentRecord(double area, double serviceFeePerSquare, double totalFee, String ownerUserName, String accom_status) {
+	        try {                           
 	            ObjectMapper objectMapper = new ObjectMapper();
 	            ObjectNode jsonNode = objectMapper.createObjectNode();
 	            jsonNode.put("area", area);
@@ -438,6 +515,130 @@ public class ApiService {
 	                    .build();
 
 	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean createFeeManage(String ownerUserName, String accom_status) {
+	        try {
+	        	
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("ownerUserName", ownerUserName);
+	            jsonNode.put("accom_status", accom_status);
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/add"))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	                
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean addFeeSection(String username, String name, double blockUsed) {
+	        try {                           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("name", name);
+	            jsonNode.put("blockUsed", blockUsed);
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/add-section-of-feemanage/" + username))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean updateFeeSection(String username, String name, double blockUsed) {
+	        try {                           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("name", name);
+	            jsonNode.put("blockUsed", blockUsed);
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/update-section-of-ownerusername/" + username))
+	                    .header("Content-Type", "application/json")
+	                    .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean delFeeSection(String username, String name) {
+	        try {                           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            jsonNode.put("name", name);
+	            
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/delete-section-of-feemanage/" + username))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean paidFee(String username,double fee) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/payfeenormal-ownerusername/" + username + "/" + fee ) ) 
+	                    .header("Content-Type", "application/json")
+	                    .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            
+	            
 	            return (response.statusCode() == 200 && response.body().equals("true")) ;
 	        } catch (Exception e) {
 	            e.printStackTrace();
@@ -474,6 +675,55 @@ public class ApiService {
 	            return false;
 	        }
 	    }
+	    
+	    public static FeeRecord getFeeRecord(String username) {
+	        try {
+	        	HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/get-one-ownerusername/" + username))
+	                    .GET()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+	            if (response.statusCode() != 200) {
+	                throw new RuntimeException("Failed to fetch residents: " + response.statusCode());
+	            }
+
+	            ObjectMapper mapper = new ObjectMapper();
+	            return mapper.readValue(response.body(), FeeRecord.class);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+	    
+	    public static boolean delFeeRecord(String username) {
+	        try {
+	        	
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	           
+	           
+	      
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/delete-name/" + username))
+	                    .header("Content-Type", "application/json")
+	                    .DELETE()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    // Charity
 	    
 	    public static List<CharityName> getAllCharityName(){
 	    	try {
@@ -519,22 +769,52 @@ public class ApiService {
 	        }
 	    }
 	    
-	    public static boolean updateCharitySection(String username, String charityName, int donate) {
+	    public static boolean addCharitySection(String username, String charityName, int donate) {
 	        try {
 	            ObjectMapper objectMapper = new ObjectMapper();
 	            ObjectNode jsonNode = objectMapper.createObjectNode();
-	            jsonNode.put("name", charityName);
+	            
+	            jsonNode.put("name", charityName);	
 	            jsonNode.put("donate", donate);
 	            
 	            String requestBody = objectMapper.writeValueAsString(jsonNode);
 
 	            HttpClient client = HttpClient.newHttpClient();
 	            HttpRequest request = HttpRequest.newBuilder()
-	                    .uri(URI.create(BASE_URL + "/charity/add-section-to-ownerusername/" + username ) )
+	                    .uri(URI.create(BASE_URL + "/charity/add-section-to-ownerusername/" + username) )
 	                    .header("Content-Type", "application/json")
 	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
 	                    .build();
 
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            System.out.println("Response Code: " + response.statusCode());
+	            System.out.println("Response Body: " + response.body());
+	            
+	            return (response.statusCode() == 200 && response.body().equals("true")) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean updateCharitySection(String username, String charityName, int donate) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	             
+	            jsonNode.put("name", charityName);	
+	           
+	         
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charity/update-section-of-charity/" + username + "/" + donate) )
+	                    .header("Content-Type", "application/json")
+	                    .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+                
 	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 	            System.out.println("Response Code: " + response.statusCode());
 	            System.out.println("Response Body: " + response.body());
@@ -606,9 +886,9 @@ public class ApiService {
 
 	            HttpClient client = HttpClient.newHttpClient();
 	            HttpRequest request = HttpRequest.newBuilder()
-	                    .uri(URI.create(BASE_URL + "/charityname/delete-name/" + donateName))
+	                    .uri(URI.create(BASE_URL + "/charityname/delete-name" ))
 	                    .header("Content-Type", "application/json")
-	                    .DELETE()
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
 	                    .build();
 
 	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -663,6 +943,88 @@ public class ApiService {
 		            return null;
 		        }
 		    }
+	    
+	    public static  List<Notification> getUserNotifications(String username)  {
+			 try {
+			    HttpClient client = HttpClient.newHttpClient();
+		        HttpRequest request = HttpRequest.newBuilder()
+		                .uri(URI.create(BASE_URL + "/api/notifications/user/" + username))
+		                .GET()
+		                .build();
+
+		        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+		        if (response.statusCode() != 200) {
+		            throw new RuntimeException("Failed to fetch users: " + response.statusCode());
+		        }
+
+		        ObjectMapper mapper = new ObjectMapper();
+		        return mapper.readValue(response.body(), new TypeReference<List<Notification>>() {});
+			    } catch (Exception e) {
+		            e.printStackTrace();
+		            return null;
+		        }
+		    }
+	    
+	    public static  List<Notification> getGeneralNotifications()  {
+			 try {
+			    HttpClient client = HttpClient.newHttpClient();
+		        HttpRequest request = HttpRequest.newBuilder()
+		                .uri(URI.create(BASE_URL + "/api/notifications/general"))
+		                .GET()
+		                .build();
+
+		        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+		        if (response.statusCode() != 200) {
+		            throw new RuntimeException("Failed to fetch users: " + response.statusCode());
+		        }
+
+		        ObjectMapper mapper = new ObjectMapper();
+		        return mapper.readValue(response.body(), new TypeReference<List<Notification>>() {});
+			    } catch (Exception e) {
+		            e.printStackTrace();
+		            return null;
+		        }
+		    }
+	    
+	    public static boolean sendNotification(String senderId, String title, String content, String type, String receiverId) {
+	        try {
+	            System.out.print(senderId + " " + title + " " + content + " " + type + " " + receiverId);
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            if(type.equals("GENERAL")) {
+	            	jsonNode.put("senderId", senderId);
+	            	jsonNode.put("title", title);
+	            	jsonNode.put("content", content);
+	            	jsonNode.put("type", type);
+	            } else {
+	            	jsonNode.put("senderId", senderId);
+	            	jsonNode.put("title", title);
+	            	jsonNode.put("content", content);
+	            	jsonNode.put("type", type);
+	            	jsonNode.put("receiverId", receiverId);
+	            }
+	            
+	      
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/api/notifications"))
+	                    .header("Content-Type", "application/json")
+	                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    
 	    
 	    // Quên mật khẩu
 	    

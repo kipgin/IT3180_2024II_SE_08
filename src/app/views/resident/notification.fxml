@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.NotificationController">
+    <!-- Màn hình chính -->
+    <AnchorPane fx:id="mainPane">
+        <VBox prefHeight="680.0" prefWidth="1310.0">
+            <children>
+                <!-- Nội dung hiện tại được giữ nguyên -->
+                <!-- Copy từ code bạn gửi trước đó -->
+                <VBox prefHeight="680.0" spacing="10" styleClass="container">
+                    <!-- Tiêu đề -->
+              <HBox alignment="CENTER_LEFT" spacing="10" styleClass="wrapper">
+                  <Label prefHeight="40.0" styleClass="title" text="📢 List Notification">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin></Label>
+              </HBox>
+      
+              <!-- Tổng số và thanh tìm kiếm -->
+              <HBox alignment="CENTER_LEFT" spacing="20">
+                  <Label fx:id="totalLabel" styleClass="subtitle" text="188 Notification">
+                  <HBox.margin>
+                     <Insets left="10.0" />
+                  </HBox.margin></Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="searchField" promptText="🔍 Search by Name Product" styleClass="search-field">
+                  
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin></TextField>
+               
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+              </HBox>
+      
+             <HBox alignment="CENTER_LEFT" spacing="30" styleClass="tab-header">
+      
+          <!-- All tab -->
+          <HBox fx:id="onTabAll" alignment="CENTER_LEFT" onMouseClicked="#onTabAll" spacing="5" styleClass="tab" HBox.hgrow="ALWAYS">
+              <Label styleClass="tab-count" text="20">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin></Label>
+              <Label styleClass="tab-label" text="All" />
+                  <padding>
+                     <Insets bottom="7.0" />
+                  </padding>
+                  <HBox.margin>
+                     <Insets />
+                  </HBox.margin>
+        		  </HBox>
+      
+         		 <!-- Archive tab -->
+         	 <HBox fx:id="onTabSent" alignment="CENTER_LEFT" onMouseClicked="#onTabSent" spacing="5" styleClass="tab" HBox.hgrow="ALWAYS">
+          	    <Label styleClass="tab-count" text="10" />
+          	    <Label styleClass="tab-label" text="Sent" />
+           	       <padding>
+           	          <Insets bottom="7.0" left="5.0" />
+          	        </padding>
+         	 </HBox>
+      
+         	 <!-- Favorite tab -->
+         	 <HBox fx:id="onTabReceived" alignment="CENTER_LEFT" onMouseClicked="#onTabReceived" spacing="5" styleClass="tab" HBox.hgrow="ALWAYS">
+           	   <Label styleClass="tab-count" text="17" />
+           	   <Label styleClass="tab-label" text="Received" />
+            	      <padding>
+           	          <Insets bottom="7.0" left="5.0" />
+          	        </padding>
+         	 </HBox>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+      
+      	</HBox>
+      
+              
+              <ListView fx:id="notificationListView" styleClass="list-view" VBox.vgrow="ALWAYS">
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding></ListView>
+
+                </VBox>
+            </children>
+            <padding>
+                <Insets left="25.0" top="20.0" />
+            </padding>
+        </VBox>
+    </AnchorPane>
+
+    <!-- Modal tạo thông báo -->
+    <AnchorPane fx:id="modalPane" visible="false" styleClass="modal-overlay" prefWidth="900.0" prefHeight="500.0" >
+    <VBox styleClass="email-modal" spacing="10" layoutX="300" layoutY="150">
+
+    <!-- Tiêu đề modal -->
+    <Label text="Tạo thông báo mới" styleClass="email-header" />
+
+   
+    
+
+	<HBox spacing="20">
+    	    <RadioButton fx:id="sendToAllRadio" text="Gửi đến tất cả" onAction="#handleSendToAll" selected="true"/>
+			<RadioButton fx:id="sendToOneRadio" text="Gửi đến một người" onAction="#handleSendToOne"/>
+	</HBox>
+
+    <!-- Các trường To, CC, BCC -->
+    <VBox fx:id="recipientFields" spacing="10" visible="false" managed="false">
+        <!-- To -->
+        <HBox spacing="10">
+            <Label text="Đến" styleClass="email-label"/>
+            <TextField fx:id="toField" promptText="Tên người nhận hoặc nhóm" styleClass="email-textfield" />
+        </HBox>
+
+        <!-- CC & BCC -->
+        <HBox spacing="10">
+            <Label text="Cc" styleClass="email-label"/>
+            <TextField fx:id="ccField" promptText="Cc" styleClass="email-textfield" />
+            <Label text="Bcc" styleClass="email-label"/>
+            <TextField fx:id="bccField" promptText="Bcc" styleClass="email-textfield" />
+        </HBox>
+    </VBox>
+
+    <!-- Subject -->
+    <HBox spacing="10">
+        <Label text="Tiêu đề" styleClass="email-label"/>
+        <TextField fx:id="titleField" promptText="Tiêu đề thông báo" styleClass="email-textfield" />
+    </HBox>
+
+    <!-- Nội dung -->
+    <TextArea fx:id="contentField" promptText="Nhập nội dung thông báo..." prefHeight="200" wrapText="true" />
+
+    <!-- Nút gửi -->
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button text="Hủy" onAction="#cancelNewNotification" styleClass="btn-cancel" />
+        <Button text="Gửi" onAction="#sendNewNotification" styleClass="btn-send" />
+    </HBox>
+
+</VBox>
+</AnchorPane>
+</StackPane>

@@ -29,12 +29,14 @@
             <VBox spacing="12" style="-fx-padding: 10 20 10 20;" styleClass="filter-panel">
                 <Label style="-fx-font-size: 16px; -fx-text-fill: #444; -fx-font-weight: bold;" text="Search Filters" />
                 <HBox spacing="10">
-                    <TextField fx:id="searchField" promptText="🔍 Search by owner's name..." styleClass="filter-field" />
-                    <ComboBox fx:id="statusFilter" prefHeight="9.0" promptText="Filter by status" styleClass="combo-box" />
-                    <TextField fx:id="memberFilter" promptText="Min number of members..." styleClass="filter-field" />
-                    
-                    <Button fx:id="applyFilterBtn" styleClass="primary-button" text="Apply Filter" />
-                    <Button fx:id="clearFilterBtn" styleClass="danger-button" text="Clear Filters" />
+                   <TextField fx:id="usernameField" promptText="🔍 Search by owner's username" styleClass="filter-field"/>
+    <ComboBox fx:id="blockFilter" promptText="Block" styleClass="combo-box"/>
+    <TextField fx:id="floorField" promptText="Floor" styleClass="filter-field"/>
+    <TextField fx:id="roomField" promptText="Room number" styleClass="filter-field"/>
+    <TextField fx:id="memberFilter" promptText="Min members" styleClass="filter-field"/>
+
+    <Button fx:id="applyFilterBtn" text="Apply Filter" onAction="#onApplyFilter" styleClass="primary-button"/>
+    <Button fx:id="clearFilterBtn" text="Clear Filters" onAction="#onClearFilter" styleClass="danger-button"/>
                 </HBox>
             <VBox.margin>
                <Insets left="20.0" right="10.0" />

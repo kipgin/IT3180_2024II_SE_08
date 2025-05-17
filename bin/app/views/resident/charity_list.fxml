@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="890.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.resident.CharityListController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.resident.CharityListController">
    <center>
        <VBox spacing="10">
        
@@ -25,7 +25,7 @@
         </HBox>
           <Rectangle arcHeight="1.0" arcWidth="1.0" fill="DODGERBLUE" height="1.0" stroke="BLACK" strokeType="INSIDE" width="1150.0" />
          
-        <TableView fx:id="tableView" styleClass="custom-table">
+        <TableView fx:id="tableView" styleClass="custom-table" prefHeight="600.0">
             <columns>
                 <TableColumn fx:id="colId" text="ID" />
                 <TableColumn fx:id="colName" text="Tên Chủ Hộ" />

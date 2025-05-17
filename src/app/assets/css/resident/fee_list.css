@@ -1,98 +1,190 @@
-.content {
-	 -fx-border-size: 3px;
-     -fx-padding: 0px; 
-    -fx-spacing: 20px;
+#rootLayout {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: linear-gradient(to bottom right, #7e7e7e, #cfcfcf);
+    -fx-border-radius: 10;
+    -fx-padding: 10;
 }
 
-.content-title {
-    -fx-text-fill: #2c3e50;
-    -fx-font-size: 22px;
-    -fx-font-weight: bold;
-}
-
-.content-subtitle {
-    -fx-text-fill: #7f8c8d;
-    -fx-font-size: 16px;
-}
-
-/* Stats */
-.stats {
-    -fx-spacing: 16px;
-}
-
-.stat-box {
+.wrapper {
+    -fx-font-family: "Segoe UI", sans-serif;
     -fx-background-color: white;
-    -fx-padding: 20px;
-    -fx-spacing: 10px;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-padding: 10;
 }
 
-.stat-title {
-    -fx-text-fill: #7f8c8d;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
+.table-view {
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    
+    -fx-border-color: #dcdcdc;
 }
 
-.stat-value {
-    -fx-text-fill: #2c3e50;
-    -fx-font-size: 13px;
+.table-view .column-header {
+    -fx-background-color: #666666;
     
 }
 
-/* Định dạng tiêu đề danh sách */
-.table-title {
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-
-/* Định dạng nút Thêm hộ gia đình */
-.add-button {
-    -fx-background-color: #007bff;
+.table-view .column-header .label {
+	-fx-background-color: transparent;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 8px 16px;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 4);
-    -fx-cursor: hand;
-}
-.add-button:hover {
-    -fx-background-color: #0056b3;
-}
-
-/* Định dạng bảng */
-.custom-table {
-    -fx-border-color: #ccc;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-background-color: #f9f9f9;
-}
-.table-view .column-header-background {
-    -fx-background-color: linear-gradient(to bottom, #f0f0f0, #dcdcdc);
-}
-.table-view .column-header {
     -fx-font-weight: bold;
-    -fx-padding: 10px;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER;
+    
 }
 
-/* Định dạng container của bảng và nút */
-.hbox-container {
-    -fx-alignment: center-left;
+.table-row-cell:filled:selected, 
+.table-row-cell:selected .table-cell {
+    -fx-background-color: #d6f0ff;
+    -fx-text-fill: black;
+}
+
+.table-cell {
+    -fx-alignment: CENTER;
+    -fx-height: 50;
+    -fx-font-size: 15px;
+}
+
+.sidePanel {
+    -fx-background-color: linear-gradient(to bottom right, #f0f9ff, #d0ecff);
+    -fx-padding: 15;
     -fx-spacing: 10;
-    -fx-padding: 10 0 10 10;
-    -fx-background-color: #ffffff;
-    -fx-border-radius: 8px 8px 0 0;
-    -fx-background-radius: 8px 8px 0 0;
-    -fx-border-color: #ccc;
-    -fx-border-width: 1px;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-color: #dfe6e9;
 }
 
-/* Áp dụng hiệu ứng mềm mại */
-.shadow-pane {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 4);
-    -fx-background-color: #ffffff;
-    -fx-background-radius: 8px;
+
+.titled-pane > .title {
+    -fx-background-color: linear-gradient(to right, #2980b9, #2980b9,#2c3e50);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8 8 0 0;
+    -fx-padding: 8 12;
+    -fx-font-size: 14px;
+}
+.titled-pane {
+   
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    
+}
+
+.titled-pane > .content {
+    -fx-padding: 6 10;
+    -fx-text-fill: black;
+    -fx-font-weight: normal;
+    -fx-background-color: #ecf0f1;
+    -fx-background-radius: 0 0 8 8;
+}
+
+
+.text-field, .combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 6 10;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, #3498db, 4, 0.2, 0, 0);
+}
+
+
+.button {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 10 16;
+    -fx-font-size: 13px;
+}
+
+.button:hover {
+    -fx-background-color: #2ecc71;
+}
+
+.status-pill-green {
+    -fx-padding: 3 10 3 10;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-color: #28a745; 
+    -fx-border-width: 1;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333; 
+    -fx-alignment: center;
+    -fx-spacing: 5;
+    -fx-content-display: left;
+}
+
+.status-pill-red {
+    -fx-padding: 3 10 3 10;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-border-color: #dc3545; 
+    -fx-border-width: 1;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333; 
+    -fx-alignment: center;
+    -fx-spacing: 5;
+    -fx-content-display: left;
+}
+
+.status-dot-green {
+    -fx-text-fill: #28a745; 
+    -fx-font-size: 10px;
+}
+
+.status-dot-red {
+    -fx-text-fill: #dc3545; 
+    -fx-font-size: 10px;
+}
+.input-field {
+    -fx-pref-width: 200;
+    -fx-pref-height: 30; 
+    -fx-padding: 5;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-size: 13px;
+}
+
+
+.combo-box {
+    -fx-padding: 0;
+    -fx-pref-height: 30;
+}
+
+
+.combo-box .text-field {
+    -fx-pref-height: 30;
+    -fx-background-color: transparent;
+}
+
+.button-add {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+    -fx-padding: 5 15;
+}
+
+.button-add:hover {
+    -fx-background-color: #218838;
+}
+
+.icon-button-delete {
+    -fx-background-color: transparent;
     -fx-padding: 10px;
+    -fx-text-fill: white;
+}
+
+.icon-button-delete:hover {
+	-fx-background-color: transparent;
+    -fx-effect: dropshadow(gaussian, #ff0000, 10, 0.4, 0, 0);
 }

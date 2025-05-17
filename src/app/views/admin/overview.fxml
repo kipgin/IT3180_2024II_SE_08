@@ -14,7 +14,7 @@
 <AnchorPane styleClass="root-overview" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.OverviewController">
    
     <!-- Thời tiết -->
-    <VBox fx:id="weatherBox" layoutX="20" layoutY="20" prefHeight="160" prefWidth="280" styleClass="card">
+    <VBox fx:id="weatherBox" layoutX="60" layoutY="20" prefHeight="160" prefWidth="280" styleClass="card">
         <Label fx:id="weatherTitle" styleClass="title" text="Thời tiết Hà Nội" />
       <HBox prefHeight="25.0" prefWidth="200.0">
          <children>
@@ -45,7 +45,7 @@
       </HBox>
     </VBox>
     
-    <VBox layoutX="330" layoutY="20" prefHeight="160" prefWidth="330" styleClass="card">
+    <VBox layoutX="370" layoutY="20" prefHeight="160" prefWidth="330" styleClass="card">
         <Label styleClass="title" text="Tiện ích chung cư" />
     
         <HBox prefHeight="25.0" prefWidth="200.0">
@@ -79,7 +79,7 @@
     </VBox>
 
     <!-- Bản đồ -->
-    <VBox fx:id="mapBox" layoutX="710" layoutY="20" prefHeight="270" prefWidth="450" styleClass="card">
+    <VBox fx:id="mapBox" layoutX="770" layoutY="20" prefHeight="270" prefWidth="450" styleClass="card">
         <Label styleClass="title" text="📌 Bản đồ vị trí" />
       <ImageView fitHeight="225.0" fitWidth="410.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -90,7 +90,7 @@
     </VBox>
     
    <!-- Bảng thống kê đóng góp -->
-<VBox fx:id="chartBox" layoutX="710" layoutY="330" prefHeight="325" prefWidth="450" styleClass="card">
+<VBox fx:id="chartBox" layoutX="770" layoutY="330" prefHeight="325" prefWidth="450" styleClass="card">
     <Label styleClass="title" text="💸 Top 5 Donors" />
       <TableView fx:id="donationTable" layoutX="20" layoutY="20" prefWidth="400" prefHeight="360">
         <columns>
@@ -104,9 +104,9 @@
 </VBox>
 
     <!-- Pane chứa toàn bộ cây -->
-    <Pane fx:id="treeContainer" layoutX="20" layoutY="200">
+    <Pane fx:id="treeContainer" layoutX="40" layoutY="200">
     <!-- Card cha (Tổng quan chung cư) -->
-    <VBox fx:id="overviewBox" layoutX="140" layoutY="0" prefHeight="150" prefWidth="300" styleClass="card">
+    <VBox fx:id="overviewBox" layoutX="160" layoutY="0" prefHeight="150" prefWidth="300" styleClass="card">
         <Label styleClass="title" text="🌙 Chung cư Blue Moon" />
          <ImageView fitHeight="200.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -117,25 +117,25 @@
 
     <!-- Dây nối từ card cha xuống các card con -->
    
-    <Line endX="170" endY="270" startX="300" startY="240" stroke="gray" strokeWidth="1.5" />
-    <Line endX="300" endY="270" startX="300" startY="240" stroke="gray" strokeWidth="1.5" />
-    <Line endX="430" endY="270" startX="300" startY="240" stroke="gray" strokeWidth="1.5" />
+    <Line endX="190" endY="270" startX="320" startY="240" stroke="gray" strokeWidth="1.5" />
+    <Line endX="320" endY="270" startX="320" startY="240" stroke="gray" strokeWidth="1.5" />
+    <Line endX="450" endY="270" startX="320" startY="240" stroke="gray" strokeWidth="1.5" />
 
     <!-- HBox chứa các card con -->
-    <HBox layoutX="20" layoutY="270" spacing="50">
+    <HBox layoutX="40" layoutY="270" spacing="50">
         <VBox fx:id="apartmentBox" prefHeight="90" prefWidth="150" styleClass="card">
             <Label styleClass="title" text="Số căn hộ" />
-             <Label fx:id="apartmentCount" styleClass="content" text="Đang tải..." />
+             <Label fx:id="apartmentCount" styleClass="content" text="101" />
         </VBox>
 
         <VBox fx:id="populationBox" prefHeight="90" prefWidth="150" styleClass="card">
             <Label styleClass="title" text="Số nhân khẩu" />
-             <Label fx:id="populationCount" styleClass="content" text="Đang tải..." />
+             <Label fx:id="populationCount" styleClass="content" text="404" />
         </VBox>
 
         <VBox fx:id="paymentRateBox" prefHeight="90" prefWidth="200" styleClass="card">
             <Label styleClass="title" text="Hộ đã đóng phí (%)" />
-            <Label fx:id="paymentRate" styleClass="content" text="Đang tải..." />
+            <Label fx:id="paymentRate" styleClass="content" text="66%" />
         </VBox>
     </HBox>
 </Pane>

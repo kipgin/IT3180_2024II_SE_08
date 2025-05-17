@@ -128,10 +128,18 @@ body {
     -fx-background-color: #555555;
 }
 
-/* Nút Admin */
+
+.profile-button .label{
+   
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    
+}
+
 .profile-button {
-    -fx-background-color: rgba(128, 128, 128, 0.5); /* xám mờ */
-    -fx-text-fill: white !important;
+    -fx-background-color: rgba(128, 128, 128, 0.5); 
+    -fx-text-fill: red;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-background-radius: 10px;
@@ -139,9 +147,8 @@ body {
     -fx-graphic-text-gap: 5px;
 }
 
-/* Hover nút Admin */
 .profile-button:hover {
-    -fx-background-color: rgba(180, 180, 180, 0.4); /* xám sáng hơn */
+    -fx-background-color: rgba(180, 180, 180, 0.4); 
     -fx-cursor: hand;
 }
 
@@ -154,18 +161,20 @@ body {
 
 /* Menu xổ xuống */
 .context-menu {
+	-fx-text-fill: black;
     -fx-background-color: white;
     -fx-background-radius: 10px;
     -fx-padding: 10 0 10 0;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.1, 0, 4);
 }
 
-/* Các mục trong menu */
-.menu-item {
-    -fx-text-fill: black;
+.menu-item{
     -fx-font-size: 14px;
     -fx-padding: 10 5 10 10;
     -fx-background-radius: 5px;
+}
+.menu-item .label {
+	-fx-text-fill: black;
 }
 
 /* Hover từng mục */

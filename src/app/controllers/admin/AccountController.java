@@ -78,7 +78,7 @@ public class AccountController implements DashboardControllable{
         String searchText = searchField.getText().toLowerCase();
         String selectedStatus = activeFilter.getValue();
 
-        // Giả sử bạn có danh sách tất cả tài khoản
+        
         List<User> allUsers = ApiService.getAllUsers();
 
         // Lọc tài khoản theo các tiêu chí

@@ -50,7 +50,7 @@ public class DonationDialogController {
                 return;
             }
             confirmed = true;
-           
+            ApiService.addCharitySection(record.getOwnerUserName(),charityName.getName() , amount);
             ApiService.updateCharitySection(record.getOwnerUserName(),charityName.getName() , amount);
             
             ((Stage) amountField.getScene().getWindow()).close();

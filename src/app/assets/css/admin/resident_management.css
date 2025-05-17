@@ -39,14 +39,28 @@
    =============================== */
 .filter-field,
 .combo-box {
+	-fx-pref-width: 160;
+    -fx-pref-height: 40; 
     -fx-background-color: #ffffff;
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
-    -fx-padding: 8 10;
+    
     -fx-font-size: 13px;
     -fx-border-color: #aaaaaa;
     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);
 }
+
+.combo-box {
+    -fx-padding: 0;
+    -fx-pref-height: 40;
+}
+
+
+.combo-box .text-field {
+    -fx-pref-height: 30;
+    -fx-background-color: transparent;
+}
+
 
 .combo-box:hover,
 .filter-field:hover {

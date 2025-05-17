@@ -10,18 +10,22 @@ import javafx.event.ActionEvent;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import app.models.User;
 import app.services.ApiService;
@@ -63,6 +67,8 @@ public class LoginController {
     @FXML private TextField verifyCodeField;
     @FXML private PasswordField newPasswordField, confirmPasswordField;
     @FXML private Button sendResetButton, verifyCodeButton, resetPasswordButton;
+    @FXML private Label lblErrorMessage;
+   
 
     @FXML
     private void showForgotPasswordForm() {
@@ -116,6 +122,8 @@ public class LoginController {
         togglePassword.setOnMouseClicked(e -> togglePasswordVisibility());
         
         
+        
+        
     }
     
     private void togglePasswordVisibility() {
@@ -128,7 +136,7 @@ public class LoginController {
             passwordField.setVisible(false);
             passwordField.setManaged(false);
 
-            togglePassword.setImage(new Image(getClass().getResource("/app/assets/img/eye_open.png").toExternalForm()));
+            togglePassword.setImage(new Image(getClass().getResource("/app/assets/img/eye_closed.png").toExternalForm()));
         } else {
             visiblePasswordField.setVisible(false);
             visiblePasswordField.setManaged(false);
@@ -136,7 +144,7 @@ public class LoginController {
             passwordField.setVisible(true);
             passwordField.setManaged(true);
 
-            togglePassword.setImage(new Image(getClass().getResource("/app/assets/img/eye_closed.png").toExternalForm()));
+            togglePassword.setImage(new Image(getClass().getResource("/app/assets/img/eye_open.png").toExternalForm()));
         }
     }
 
@@ -145,30 +153,49 @@ public class LoginController {
     private void handleLogin(ActionEvent e) throws Exception {
         String username = emailField.getText();
         String password = passwordField.getText();
-        
-      
-        if (ApiService.login(username, password) == "true") {
+        if(username.isEmpty() || password.isEmpty()) {
+        	lblErrorMessage.setText("Vui lòng nhập đầy đủ thông tin!");
+            lblErrorMessage.setStyle("-fx-text-fill: red; -fx-font-size: 14px; -fx-font-weight: bold;");
+            
+            return ;
+        }
+        boolean isLogin = ApiService.login(username, password).equals("true");
+        if (isLogin) {
+        	lblErrorMessage.setText("Password updated successfully!");
+            lblErrorMessage.setStyle("-fx-text-fill: green; -fx-font-size:15");
         	User user = ApiService.getUserByUsername(username);
         	if(user.getRole().equals("ADMIN"))
                openAdminMainScreen(user); 
         	else openResidentMainScreen(user);
         } else {
-            System.out.println("Login failed");
+        	lblErrorMessage.setText("Tài khoản hoặc mật khẩu không chính xác!");
+            lblErrorMessage.setStyle("-fx-text-fill: red;-fx-font-size:14px; -fx-font-weight: bold;");
         }
+       
     }
 
     private void openAdminMainScreen(User user) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/admin/dashboard.fxml"));
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/views/admin/dashboard.fxml"));
             Parent root = loader.load();
-            Object controller = loader.getController();
-            ((DashBoardController) controller).setUser(user);
+
+            DashBoardController controller = loader.getController();
+            controller.setUser(user);
+
             Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setResizable(true);
             Scene scene = new Scene(root,1350,750);
             scene.getStylesheets().add(getClass().getResource("/app/assets/css/admin/dashboard.css").toExternalForm());
-            stage.setScene(scene);
-            stage.setMaximized(true);
+
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/app/assets/img/logo.png")));
+            stage.setScene(scene);
+            
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            stage.setX(screenBounds.getMinX());
+            stage.setY(screenBounds.getMinY());
+            stage.setWidth(screenBounds.getWidth());
+            stage.setHeight(screenBounds.getHeight());
+            stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -180,11 +207,20 @@ public class LoginController {
             Object controller = loader.getController();
             ((app.controllers.resident.DashBoardController) controller).setUser(user);
             Stage stage = (Stage) loginButton.getScene().getWindow();
-            Scene scene = new Scene(root,1350,750);
+            stage.setResizable(true);
+            Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("/app/assets/css/resident/dashboard.css").toExternalForm());
             stage.setScene(scene);
-            stage.setMaximized(true);
+            
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/app/assets/img/logo.png")));
+            
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            stage.setX(screenBounds.getMinX());
+            stage.setY(screenBounds.getMinY());
+            stage.setWidth(screenBounds.getWidth());
+            stage.setHeight(screenBounds.getHeight());
+            
+            stage.setResizable(false);
         } catch (IOException e) {
             e.printStackTrace();
         }
