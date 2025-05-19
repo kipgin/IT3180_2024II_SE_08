@@ -42,7 +42,7 @@ public class LogFeeTableService {
     }
 
     public boolean createSectionOfTable(String ownerUserName, LogFeeSection logFeeSection){
-        if(ownerUserName==null || ownerUserName.isEmpty() || logFeeSection == null || logFeeSection.getLogName().isEmpty()){
+        if(ownerUserName==null || ownerUserName.isEmpty() || logFeeSection == null ){
             return false;
         }
         LogFeeTable logFeeTable = findByOwnerUserName(ownerUserName);

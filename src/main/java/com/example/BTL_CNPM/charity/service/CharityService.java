@@ -13,6 +13,7 @@ import com.example.BTL_CNPM.gmail.repository.UsersGmailRepository;
 import com.example.BTL_CNPM.household.model.Household;
 import com.example.BTL_CNPM.household.repository.HouseholdRepository;
 import com.example.BTL_CNPM.logcharitysection.LogCharitySection;
+import com.example.BTL_CNPM.logcharitysection.LogCharitySectionRepository;
 import com.example.BTL_CNPM.logcharitytable.LogCharityTableService;
 import com.example.BTL_CNPM.resident.model.AccomStatus;
 import jakarta.mail.MessagingException;
@@ -45,6 +46,9 @@ public class CharityService {
 
     @Autowired
     private LogCharityTableService logCharityTableService;
+
+    @Autowired
+    private LogCharitySectionRepository logCharitySectionRepository;
 
 //    @Autowired
 //    private HouseholdRepository householdRepository;
@@ -169,11 +173,12 @@ public class CharityService {
                 if(userEmail != null){
                     emailSender.sendEmail(userEmail.getEmail(),subject,body);
                 }
-                String logCharity= "Vào lúc: " + paidTime.toString()+" , hộ cư dân với username:"+ ownerUserName+ " đã ủng hộ "
-                        + money.toString() + " VND " +"cho quỹ "+ name +".";
                 LogCharitySection logCharitySection = new LogCharitySection();
-                logCharitySection.setName(logCharity);
-                logCharityTableService.addSectionToTable(ownerUserName,logCharitySection);
+                logCharitySection.setName(name);
+                logCharitySection.setDonateMoney(money);
+                logCharitySection.setLogCharityTable(logCharityTableService.findByOwnerUserName(ownerUserName));
+//                logCharityTableService.addSectionToTable(ownerUserName,logCharitySection);
+                logCharitySectionRepository.save(logCharitySection);
                 break;
             }
         }

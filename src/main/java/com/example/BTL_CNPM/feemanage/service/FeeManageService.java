@@ -11,6 +11,7 @@ import com.example.BTL_CNPM.household.repository.HouseholdRepository;
 import com.example.BTL_CNPM.household.service.HouseholdService;
 import com.example.BTL_CNPM.household.service.impl.HouseholdServiceImpl;
 import com.example.BTL_CNPM.logfeesection.LogFeeSection;
+import com.example.BTL_CNPM.logfeesection.LogFeeSectionRepository;
 import com.example.BTL_CNPM.logfeetable.model.LogFeeTable;
 import com.example.BTL_CNPM.logfeetable.service.LogFeeTableService;
 import com.example.BTL_CNPM.resident.model.AccomStatus;
@@ -54,6 +55,9 @@ public class FeeManageService {
 
     @Autowired
     private LogFeeTableService logFeeTableService;
+
+    @Autowired
+    private LogFeeSectionRepository logFeeSectionRepository;
 
 
     public boolean existsById(Integer id){
@@ -293,9 +297,14 @@ public class FeeManageService {
         else{
             logFee= logFee +" Hộ cư dân còn " + feeManage.getTotalFee().toString() +" VND" +" chưa được thanh toán.";
         }
-//        LogFeeTable logFeeTable = logFeeTableService.findByOwnerUserName(ownerUserName);
+        LogFeeTable logFeeTable = logFeeTableService.findByOwnerUserName(ownerUserName);
+
         LogFeeSection logFeeSection = new LogFeeSection();
-        logFeeSection.setLogName(logFee);
+        logFeeSection.setFeePaid(fee);
+        logFeeSection.setLogFeeTable(logFeeTableService.findByOwnerUserName(ownerUserName));
+        logFeeSection.setPaid(feeManage.getPaid());
+        logFeeSection.setLogFeeTable(logFeeTable);
+        logFeeSectionRepository.save(logFeeSection);
         logFeeTableService.createSectionOfTable(ownerUserName,logFeeSection);
 
         feeManageRepository.save(feeManage);

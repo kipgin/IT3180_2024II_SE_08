@@ -60,8 +60,7 @@ public class LogCharityTable {
     }
 
     public void add(LogCharitySection logCharitySection){
-        this.logCharitySections.add(logCharitySection);
         logCharitySection.setLogCharityTable(this);
-
+        this.logCharitySections.add(logCharitySection);
     }
 }

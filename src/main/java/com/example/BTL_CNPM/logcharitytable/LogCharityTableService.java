@@ -65,7 +65,7 @@ public class LogCharityTableService {
             return false;
         }
         logCharityTable.add(logCharitySection);
-        logCharityTable.getLogCharitySections().add(logCharitySection);
+//        logCharityTable.getLogCharitySections().add(logCharitySection);
         logCharityTableRepository.save(logCharityTable);
         return true;
     }

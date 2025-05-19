@@ -29,6 +29,7 @@ public class LogFeeSectionController {
         return logFeeSectionService.deleteById(id);
     }
 
+
     @DeleteMapping("/delete-all")
     public void deleteAll(){
         logFeeSectionService.deleteAll();

@@ -6,10 +6,12 @@ import com.example.BTL_CNPM.charity.service.CharitySectionService;
 import com.example.BTL_CNPM.logcharitysection.LogCharitySection;
 import com.example.BTL_CNPM.logcharitysection.LogCharitySectionService;
 import com.example.BTL_CNPM.logcharitytable.LogCharityTable;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -72,62 +76,88 @@ public class CharitySectionController {
         return charitySectionService.findOneOfOwnerByName(name,ownerUserName);
     }
 
-    @GetMapping("/export-all-charity-logs-csv")
-    public void exportAllCharityLogs(HttpServletResponse response) throws IOException {
-        response.setContentType("text/csv; charset=UTF-8");
-        String filename = "log_allcharity_" + ".csv";
-        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
-
-        List<LogCharitySection> logs= logCharitySectionService.findAll();
-        try (OutputStream outputStream = response.getOutputStream();
-             OutputStreamWriter osw = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
-             PrintWriter writer = new PrintWriter(osw)) {
-
-            writer.write('\uFEFF');
-            writer.println("STT,Ghi chú");
-
-            int stt = 1;
-            for (LogCharitySection log : logs) {
-
-                writer.printf(
-                        "%d,%s%n",
-                        stt++,
-                        log.getName()
-                );
-            }
-        }
-    }
+//    @GetMapping("/export-all-charity-logs-csv")
+//    public void exportAllCharityLogs(HttpServletResponse response) throws IOException {
+//        response.setContentType("text/csv; charset=UTF-8");
+//        String filename = "log_allcharity_" + ".csv";
+//        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+//
+//        List<LogCharitySection> logs= logCharitySectionService.findAll();
+//        try (OutputStream outputStream = response.getOutputStream();
+//             OutputStreamWriter osw = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8);
+//             PrintWriter writer = new PrintWriter(osw)) {
+//
+//            writer.write('\uFEFF');
+//            writer.println("STT,Ghi chú");
+//
+//            int stt = 1;
+//            for (LogCharitySection log : logs) {
+//
+//                writer.printf(
+//                        "%d,%s%n",
+//                        stt++,
+//                        log.getName()
+//                );
+//            }
+//        }
+//    }
 
     @GetMapping("/export-all-charity-logs-xlsx")
     public void exportToXlsx(HttpServletResponse response) throws IOException {
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=charity-history_all.xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        String filename = "log_charity_all.docx";
+        response.setHeader("Content-Disposition", "attachment; filename=" + filename);
 
-        List<LogCharitySection> logs = logCharitySectionService.findAll();
+        List<LogCharitySection> logs =logCharitySectionService.findAll();
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet("Tất cả lịch sử đóng góp");
+        try (XWPFDocument document = new XWPFDocument()) {
+
+            XWPFParagraph title = document.createParagraph();
+            title.setAlignment(ParagraphAlignment.CENTER);
+            XWPFRun titleRun = title.createRun();
+            titleRun.setText("BẢNG THỐNG KÊ LỊCH SỬ ĐÓNG GÓP CỦA TẤT CẢ  HỘ CƯ DÂN");
+            titleRun.setBold(true);
+            titleRun.setFontSize(16);
+            titleRun.setFontFamily("Times New Roman");
+
+            document.createParagraph().createRun().addBreak(); // dong trong
+
+            XWPFParagraph intro = document.createParagraph();
+            XWPFRun introRun = intro.createRun();
+            introRun.setFontSize(12);
+            introRun.setText("Số 1, Đại Cồ Việt, quận Hai Bà Trưng");
+            introRun.addBreak();
+            introRun.setText("Ngày xuất bảng: " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+            introRun.addBreak();
+
+            XWPFTable table = document.createTable();
+            table.setWidth("100%");
 
 
-        Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("STT");
-        headerRow.createCell(1).setCellValue("Ghi chú");
+            XWPFTableRow headerRow = table.getRow(0);
+            headerRow.getCell(0).setText("STT");
+            headerRow.addNewTableCell().setText("Thời gian đóng góp");
+            headerRow.addNewTableCell().setText("Tên quỹ đóng góp");
+            headerRow.addNewTableCell().setText("Số tiền đã đóng góp (VND)");
+            headerRow.addNewTableCell().setText("Username chủ hộ");
 
-        int rowNum = 1;
-        for (int i = 0; i < logs.size(); i++) {
-            LogCharitySection log = logs.get(i);
-            Row row = sheet.createRow(rowNum++);
+            // data
+            int stt = 1;
+            for (LogCharitySection log : logs) {
+                XWPFTableRow row = table.createRow();
+                row.getCell(0).setText(String.valueOf(stt++));
+                row.getCell(1).setText(log.getTimeCreate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                row.getCell(2).setText(log.getName());
+                row.getCell(3).setText(log.getDonateMoney().toString());
+                row.getCell(4).setText(log.getLogCharityTable().getOwnerUserName());
+            }
 
-            row.createCell(0).setCellValue(i + 1);
-            row.createCell(1).setCellValue(log.getName());
+
+            // in ra cai response
+            try (ServletOutputStream out = response.getOutputStream()) {
+                document.write(out);
+            }
         }
-
-        for (int i = 0; i < 5; i++) {
-            sheet.autoSizeColumn(i);
-        }
-
-        workbook.write(response.getOutputStream());
-        workbook.close();
     }
     //thuc chat la de cong tien
     @PutMapping("/update/{ownerUserName}")

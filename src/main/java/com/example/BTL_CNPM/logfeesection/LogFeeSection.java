@@ -6,17 +6,27 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jdk.jfr.Timestamp;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
+
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 @Table(name="logfeesection")
 public class LogFeeSection {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer id;
+    private Integer id;
+
+    @CreationTimestamp
+    private LocalDateTime timeCreate;
 
     @Column(nullable = false)
-    public String logName;
+    private Boolean paid;
 
+    @Column(nullable = false)
+    private Double FeePaid;
 
     @ManyToOne
     @JoinColumn(name="logfeetable_id",nullable = true)
@@ -24,13 +34,13 @@ public class LogFeeSection {
     public LogFeeTable logFeeTable;
 
 
-    public LogFeeSection(LogFeeTable logFeeTable, String logName) {
+    public LogFeeSection(LogFeeTable logFeeTable, LocalDateTime timeCreate) {
         this.logFeeTable = logFeeTable;
-        this.logName = logName;
+        this.timeCreate= timeCreate;
     }
 
-    public LogFeeSection(String logName) {
-        this.logName = logName;
+    public LogFeeSection(LocalDateTime timeCreate) {
+        this.timeCreate=timeCreate;
     }
 
     public LogFeeSection(){
@@ -45,12 +55,12 @@ public class LogFeeSection {
         this.id = id;
     }
 
-    public String getLogName() {
-        return logName;
+    public LocalDateTime getTimeCreate() {
+        return timeCreate;
     }
 
-    public void setLogName(String logName) {
-        this.logName = logName;
+    public void setTimeCreate(LocalDateTime timeCreate) {
+        this.timeCreate = timeCreate;
     }
 
     public LogFeeTable getLogFeeTable() {
@@ -59,5 +69,21 @@ public class LogFeeSection {
 
     public void setLogFeeTable(LogFeeTable logFeeTable) {
         this.logFeeTable = logFeeTable;
+    }
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
+
+    public Double getFeePaid() {
+        return FeePaid;
+    }
+
+    public void setFeePaid(Double feePaid) {
+        FeePaid = feePaid;
     }
 }

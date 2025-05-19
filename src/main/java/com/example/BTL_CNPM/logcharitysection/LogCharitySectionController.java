@@ -30,6 +30,14 @@ public class LogCharitySectionController {
         return logCharitySectionService.findAll();
     }
 
+    @GetMapping("/debug")
+    public void debug(){
+        List<LogCharitySection> logs = logCharitySectionService.findAll();
+        for(int i = 0 ; i < logs.size() ;i++){
+            System.out.println(logs.get(i).getLogCharityTable());
+        }
+    }
+
     @PutMapping("/update-by-id/{id}")
     public boolean updateById(@PathVariable("id") Integer id, LogCharitySection logCharitySection){
         return logCharitySectionService.updateById(id, logCharitySection);
