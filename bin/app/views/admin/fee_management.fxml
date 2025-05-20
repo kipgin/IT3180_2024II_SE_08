@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootLayout" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1"
-            fx:controller="app.controllers.admin.FeeManagementController">
+<AnchorPane fx:id="rootLayout" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.admin.FeeManagementController">
     <HBox spacing="10" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
         <!-- Table Section -->
-        <VBox styleClass="wrapper" spacing="10" HBox.hgrow="ALWAYS">
-            <Label style="-fx-font-size: 24px; -fx-text-fill: #222; -fx-font-weight: bold;" text="💳 Fee Management"/>
+        <VBox spacing="10" styleClass="wrapper" HBox.hgrow="ALWAYS">
+            <!-- Header with Export Button -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label style="-fx-font-size: 24px; -fx-text-fill: #222; -fx-font-weight: bold;" text="💳 Fee Management" />
+                <Button onAction="#exportAll" styleClass="button-export" text="📁 Export All Fee Logs" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="600.0" />
+               </HBox.margin></Button>
+            </HBox>
 
             <!-- Table -->
             <TableView fx:id="tableView" prefHeight="500">
                 <columns>
-                    <TableColumn fx:id="colHouseholdId" text="Household ID"/>
-                    <TableColumn fx:id="colOwner" text="Owner"/>
-                    <TableColumn fx:id="colStatus" text="Fee Type"/>
-                    <TableColumn fx:id="colTotalFee" text="Amount"/>
-                    <TableColumn fx:id="colPaid" text="Paid"/>
-                    <TableColumn fx:id="colAction" text="Actions"/>
+                    <TableColumn fx:id="colHouseholdId" text="Household ID" />
+                    <TableColumn fx:id="colOwner" text="Owner" />
+                    <TableColumn fx:id="colStatus" text="Fee Type" />
+                    <TableColumn fx:id="colTotalFee" text="Amount" />
+                    <TableColumn fx:id="colPaid" text="Paid" />
+                    <TableColumn fx:id="colAction" text="Actions" />
                 </columns>
             </TableView>
 
             <!-- Add New Household Fee -->
             <VBox spacing="5" style="-fx-background-color: #f8f8f8; -fx-padding: 10; -fx-border-color: #ccc; -fx-border-radius: 5; -fx-background-radius: 5;">
-                <Label style="-fx-font-weight: bold; -fx-font-size: 12;" text="➕ Add New Household Fee"/>
+                <Label style="-fx-font-weight: bold; -fx-font-size: 12;" text="➕ Add New Household Fee" />
                 <HBox spacing="10">
-                    <TextField fx:id="addOwnerField" promptText="Owner Name" styleClass="input-field"/>
-                    <ComboBox fx:id="addStatusCombo" promptText="Status" styleClass="input-field"/>
-                    <Button fx:id="btnAddHouseholdFee" text="Add" styleClass="button-add"/>
+                    <TextField fx:id="addOwnerField" promptText="Owner Name" styleClass="input-field" />
+                    <ComboBox fx:id="addStatusCombo" promptText="Status" styleClass="input-field" />
+                    <Button fx:id="btnAddHouseholdFee" styleClass="button-add" text="Add" />
                 </HBox>
             </VBox>
         </VBox>
@@ -40,27 +56,26 @@
             <!-- Filter Section -->
             <TitledPane expanded="true" text="Filter Fees">
                 <VBox spacing="5">
-                   
-                    <Label text="Status"/>
+                    <Label text="Status" />
                     <ComboBox fx:id="statusCombo" promptText="Status" />
-                    <Label text="Owner Name"/>
-                    <TextField fx:id="ownerField" promptText="Enter name..."/>
-                    <Button fx:id="btnApplyFilter" styleClass="button-add" text="Apply Filter"/>
+                    <Label text="Owner Name" />
+                    <TextField fx:id="ownerField" promptText="Enter name..." />
+                    <Button fx:id="btnApplyFilter" styleClass="button-add" text="Apply Filter" />
                 </VBox>
             </TitledPane>
 
             <!-- Current Fee Types -->
             <TitledPane expanded="true" text="Current Fee Types">
-                <ListView fx:id="feeTypeList" prefHeight="170"/>
+                <ListView fx:id="feeTypeList" prefHeight="170" />
             </TitledPane>
 
             <!-- Add Fee Type -->
             <TitledPane expanded="true" text="Add Fee Type">
                 <VBox spacing="5">
-                    <TextField fx:id="newFeeTypeField" promptText="New Fee Type"/>
-                    <TextField fx:id="newAmountField" promptText="Amount"/>
-                    <TextField fx:id="newUnitField" promptText="Unit"/>
-                    <Button fx:id="btnAddFeeType" styleClass="button-add" text="Add Fee Type"/>
+                    <TextField fx:id="newFeeTypeField" promptText="New Fee Type" />
+                    <TextField fx:id="newAmountField" promptText="Amount" />
+                    <TextField fx:id="newUnitField" promptText="Unit" />
+                    <Button fx:id="btnAddFeeType" styleClass="button-add" text="Add Fee Type" />
                 </VBox>
             </TitledPane>
         </VBox>

@@ -117,6 +117,16 @@ public class PaymentDetailController {
         colBlockUsed.prefWidthProperty().bind(feeSectionTable.widthProperty().multiply(0.35)); 
         colActions.prefWidthProperty().bind(feeSectionTable.widthProperty().multiply(0.3));
     }
+    
+    @FXML
+    private void updateFee() {
+    	String name = lblOwner.getText();
+    	double newAmount = ApiService.updateFee(name);
+    	if(newAmount != 0) {
+    		confirmed = true;
+    		lblTotalFee.setText(String.valueOf(newAmount));
+    	}
+    }
 
     @FXML
     private void handleAddFee() {

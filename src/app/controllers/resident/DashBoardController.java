@@ -201,6 +201,10 @@ public class DashBoardController {
                 ((HouseholdDetailController) controller).setUser(user);
             }
             
+            if (controller instanceof FeeListController) {
+                ((FeeListController) controller).setUser(user);
+            }
+            
             
             
             content.getStylesheets().add(getClass().getResource(cssFile).toExternalForm());

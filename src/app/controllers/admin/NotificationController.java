@@ -206,7 +206,7 @@ public class NotificationController  {
                 }
                 if(isSent) {
                 	showSuccess("Đã gửi thông báo đến " + recipient + ".");
-                	loadNotifications("sent");
+                	onTabSent();
                 } else {
                 	showError("Vui lòng gửi lại");
                 }

@@ -93,4 +93,13 @@
     -fx-text-fill: black;
     
 }
+.image-button {
+	 -fx-background-color: transparent;
+}
+
+.image-button:hover {
+	 -fx-background-color: transparent;
+	 -fx-effect: dropshadow(gaussian, #00A2E8, 10, 0.4, 0, 0);
+	 -fx-cursor: hand;
+}
 

@@ -188,3 +188,16 @@
 	-fx-background-color: transparent;
     -fx-effect: dropshadow(gaussian, #ff0000, 10, 0.4, 0, 0);
 }
+
+.button-export {
+    -fx-background-color: #009ADC;
+    -fx-text-fill: white;
+    -fx-padding: 6 12;
+    -fx-font-size: 12px;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+.button-export:hover {
+    -fx-background-color: #005DA0;
+}

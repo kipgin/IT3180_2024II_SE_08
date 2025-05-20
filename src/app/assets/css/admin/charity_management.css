@@ -121,3 +121,29 @@
     -fx-background-radius: 8px;
     -fx-padding: 10px;
 }
+
+.export-button {
+    -fx-background-color: transparent; 
+    -fx-border-color: #2196F3;        
+    -fx-border-width: 2;
+    -fx-text-fill: #1565C0;           
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;              
+    -fx-padding: 8 16;
+    -fx-cursor: hand;
+    -fx-effect: none;                  
+    -fx-graphic-text-gap: 8px;
+    -fx-alignment: CENTER;
+    -fx-transition: all 0.3s ease;
+}
+
+.export-button:hover {
+    -fx-scale-x: 1.03;                  
+    -fx-scale-y: 1.03;
+    -fx-text-fill: #42A5F5;             
+    -fx-border-color: #42A5F5;          
+}
+
+
+

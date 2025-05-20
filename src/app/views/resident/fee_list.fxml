@@ -19,6 +19,7 @@
                     <TableColumn fx:id="colStatus" text="Fee Type"/>
                     <TableColumn fx:id="colTotalFee" text="Amount"/>
                     <TableColumn fx:id="colPaid" text="Paid"/>
+                    <TableColumn fx:id="colAction" text="Action"/>
                     
                 </columns>
             </TableView>

@@ -1,5 +1,6 @@
 package app.models;
 
+import app.services.ApiService;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -60,13 +61,13 @@ public class NotificationCell extends ListCell<Notification> {
         contentLabel.setMaxWidth(950);
         contentLabel.getStyleClass().add("notification-content");
 
-        // Thời gian (căn phải)
+        // Thời gian
         timeLabel = new Label();
         timeLabel.getStyleClass().add("notification-time");
         HBox timeBox = new HBox(timeLabel);
         timeBox.setAlignment(Pos.CENTER);
 
-        // Box nội dung và thời gian
+        // nội dung
         contentBox = new VBox(4, titleLabel, contentLabel);
         contentBox.setPrefWidth(950);
         HBox centerBox = new HBox(4, contentBox, timeBox);
@@ -80,7 +81,14 @@ public class NotificationCell extends ListCell<Notification> {
         deleteButton.setGraphic(deleteIcon);
         
         deleteButton.getStyleClass().add("notification-delete");
-        deleteButton.setOnAction(e -> getListView().getItems().remove(getItem()));
+        deleteButton.setOnAction(e -> {
+            getListView().getItems().remove(getItem());
+            Notification record = getItem();
+            System.out.print(record.getId());
+            //boolean isDelete = ApiService.delNotification(record);
+            
+        }
+        );
 
         // Root layout
         root = new HBox(10, statusDot, starWrapper, centerBox, deleteButton);

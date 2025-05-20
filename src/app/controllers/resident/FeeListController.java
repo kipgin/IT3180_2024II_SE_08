@@ -25,7 +25,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,6 +45,14 @@ public class FeeListController  {
     @FXML private TableColumn<FeeRecord, Number> colTotalFee;
     @FXML private TableColumn<FeeRecord, String> colPaid;
     @FXML private TableColumn<FeeRecord, String> colAction;
+    
+    
+   
+    private User user;
+    public void setUser(User user) {
+    	this.user = user;
+    	
+    }
 
     @FXML
     public void initialize() {
@@ -80,12 +91,65 @@ public class FeeListController  {
             }
         });
         
+        colAction.setCellFactory(col -> new TableCell<>() {
+            private final HBox actionBox = new HBox(10);
 
-        colHouseholdId.prefWidthProperty().bind(tableView.widthProperty().multiply(0.19));
-        colOwner.prefWidthProperty().bind(tableView.widthProperty().multiply(0.24));
-        colStatus.prefWidthProperty().bind(tableView.widthProperty().multiply(0.19));
-        colTotalFee.prefWidthProperty().bind(tableView.widthProperty().multiply(0.17));
-        colPaid.prefWidthProperty().bind(tableView.widthProperty().multiply(0.21));
+            {
+                actionBox.setAlignment(Pos.CENTER);
+                
+                ImageView iconQR = createIcon("/app/assets/img/qr.png");
+
+                HBox boxQR = wrapIcon(iconQR, "Nộp phí trực tuyến");
+    
+                boxQR.setOnMouseClicked(e -> openQR());
+                
+                actionBox.getChildren().addAll(boxQR);
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                
+                if (empty || !getTableView().getItems().get(getIndex()).getOwnerUserName().equals(user.getUsername())) {
+                    setGraphic(null);
+                } else {
+                	setGraphic(actionBox);
+                }
+            }
+
+            private ImageView createIcon(String path) {
+                ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(path)));
+                icon.setFitWidth(18);
+                icon.setFitHeight(18);
+                return icon;
+            }
+
+            private HBox wrapIcon(ImageView icon, String tooltipText) {
+            	
+            	HBox box = new HBox(icon);
+                box.setAlignment(Pos.CENTER);
+                box.setPadding(new Insets(5));
+                box.setCursor(Cursor.HAND);
+                box.getStyleClass().add("action-icon");
+
+                Tooltip tooltip = new Tooltip(tooltipText);
+                tooltip.setShowDelay(Duration.millis(200));       
+                tooltip.setHideDelay(Duration.millis(100));       
+                tooltip.setShowDuration(Duration.seconds(10));    
+                Tooltip.install(box, tooltip);
+                
+                return box;
+            }
+        });
+
+        
+
+        colHouseholdId.prefWidthProperty().bind(tableView.widthProperty().multiply(0.17));
+        colOwner.prefWidthProperty().bind(tableView.widthProperty().multiply(0.22));
+        colStatus.prefWidthProperty().bind(tableView.widthProperty().multiply(0.17));
+        colTotalFee.prefWidthProperty().bind(tableView.widthProperty().multiply(0.15));
+        colPaid.prefWidthProperty().bind(tableView.widthProperty().multiply(0.19));
+        colAction.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
         
     }
 
@@ -103,7 +167,45 @@ public class FeeListController  {
         }).start();
     }
 
+    public void openQR() {
+    	    
+    	   
+    	    ImageView qrView = createIcon("/app/assets/img/qr_code.png");
+    	    qrView.setFitWidth(200);
+    	    qrView.setPreserveRatio(true);
 
+    	   
+    	    Label title = new Label("Hướng dẫn nộp phí");
+    	    title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+    	    Label line1 = new Label("Quét mã QR để chuyển khoản.");
+    	    Label line2 = new Label("Nội dung chuyển khoản:");
+    	    Label line3 = new Label("Tòa + Số phòng + Tên chủ hộ (không dấu)");
+    	    Label example = new Label("Ví dụ: toaA_203_NGUYENVANA");
+    	    example.setStyle("-fx-font-style: italic; -fx-text-fill: #2980b9;");
+
+    	    VBox instructionBox = new VBox(5, line1, line2, line3, example);
+    	    instructionBox.setAlignment(Pos.CENTER_LEFT);
+
+    	    VBox root = new VBox(20, title, qrView, instructionBox);
+    	    root.setPadding(new Insets(20));
+    	    root.setAlignment(Pos.CENTER);
+
+    	    Stage popup = new Stage();
+    	    popup.initModality(Modality.APPLICATION_MODAL);
+    	    popup.setTitle("Nộp phí online");
+    	    popup.setScene(new Scene(root, 400, 400));
+    	    popup.showAndWait();
+    	
+
+    }
+    
+    private ImageView createIcon(String path) {
+        ImageView icon = new ImageView(new Image(getClass().getResourceAsStream(path)));
+        icon.setFitWidth(200);
+        icon.setFitHeight(280);
+        return icon;
+    }
 
     private void showError(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -3,6 +3,7 @@ package app.controllers.admin;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -29,9 +30,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javafx.event.ActionEvent;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 public class CharityManagementController {
 
@@ -58,6 +65,9 @@ public class CharityManagementController {
 	    private NumberAxis xAxis;
 	    @FXML
 	    private CategoryAxis yAxis;
+	    @FXML private ComboBox<String> comboHousehold;
+	    @FXML private Button btnExportAll;
+	    @FXML private Button btnExportSingle;
 	    
 	
 
@@ -254,6 +264,131 @@ public class CharityManagementController {
 		        }
 		    }
 		 
+		 @FXML
+		 private void handleExportAll(ActionEvent event) {
+			 
+			 Stage stage = (Stage ) tableView.getScene().getWindow();
+			 
+		     
+		         
+		         try {
+		    	        
+		    	        FileChooser fileChooser = new FileChooser();
+		    	        fileChooser.setTitle("Chọn nơi lưu file");
+		    	        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("DOCX files", "*.docx"));
+		    	        fileChooser.setInitialFileName("All_Donation"  + ".docx");
+
+		    	        File file = fileChooser.showSaveDialog(stage);
+		    	        if (file == null) {
+		    	            showAlert("Đã huỷ xuất file", Alert.AlertType.INFORMATION);
+		    	            return;
+		    	        }
+
+		    	        boolean isExport;
+		    	        try (FileOutputStream out = new FileOutputStream(file)) {
+		    	            isExport = ApiService.exportAllCharity(out);
+		    	        }
+
+		    	        if (isExport) {
+		    	            showAlert("Xuất file thành công!", Alert.AlertType.INFORMATION);
+
+		    	            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+		    	            confirm.setTitle("Mở file");
+		    	            confirm.setHeaderText("Bạn có muốn mở file ngay bây giờ?");
+		    	            Optional<ButtonType> result = confirm.showAndWait();
+		    	            if (result.isPresent() && result.get() == ButtonType.OK) {
+		    	            	if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+		    	            	    try {
+		    	            	        Desktop.getDesktop().open(file);
+		    	            	    } catch (IOException e) {
+		    	            	        e.printStackTrace();
+		    	            	        showAlert("Không thể mở file: " + e.getMessage(), Alert.AlertType.ERROR);
+		    	            	    }
+		    	            	}
+		    	            }
+		    	        } else {
+		    	            showAlert("Xuất file thất bại.", Alert.AlertType.ERROR);
+		    	        }
+
+		    	    } catch (Exception e) {
+		    	        e.printStackTrace();
+		    	        showAlert("Đã xảy ra lỗi: " + e.getMessage(), Alert.AlertType.ERROR);
+		    	    }
+		     } 
+		 
+
+		 @FXML
+		 private void handleExportSelected(ActionEvent event) {
+		     Stage stage = (Stage) tableView.getScene().getWindow();
+		     CharityRecord record = tableView.getSelectionModel().getSelectedItem();
+
+		     if (record == null) {
+		         showAlert("Vui lòng chọn một hộ gia đình để xuất.", Alert.AlertType.WARNING);
+		         return;
+		     }
+
+		     try {
+		         FileChooser fileChooser = new FileChooser();
+		         fileChooser.setTitle("Chọn nơi lưu file");
+		         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("DOCX files", "*.docx"));
+		         fileChooser.setInitialFileName("Donation_" + record.getOwnerUserName() + ".docx");
+
+		         File file = fileChooser.showSaveDialog(stage);
+		         if (file == null) {
+		             showAlert("Đã huỷ xuất file", Alert.AlertType.INFORMATION);
+		             return;
+		         }
+
+		         boolean isExport = false;
+		         FileOutputStream out = null;
+		         try {
+		             out = new FileOutputStream(file);
+		             isExport = ApiService.exportCharityLog(record.getOwnerUserName(), out);
+		             out.flush();
+		         } finally {
+		             if (out != null) out.close();
+		         }
+
+		         // Kiểm tra nếu file bị rỗng
+		         if (file.length() == 0) {
+		             showAlert("File được tạo nhưng không có nội dung. Vui lòng kiểm tra lại API hoặc dữ liệu.", Alert.AlertType.WARNING);
+		             return;
+		         }
+
+		         if (isExport) {
+		             showAlert("Xuất file thành công!", Alert.AlertType.INFORMATION);
+
+		             Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+		             confirm.setTitle("Mở file");
+		             confirm.setHeaderText("Bạn có muốn mở file ngay bây giờ?");
+		             Optional<ButtonType> result = confirm.showAndWait();
+		             if (result.isPresent() && result.get() == ButtonType.OK) {
+		                 if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+		                     try {
+		                         Desktop.getDesktop().open(file);
+		                     } catch (IOException e) {
+		                         e.printStackTrace();
+		                         showAlert("Không thể mở file: " + e.getMessage(), Alert.AlertType.ERROR);
+		                     }
+		                 }
+		             }
+		         } else {
+		             showAlert("Xuất file thất bại. Hãy kiểm tra lại dữ liệu hoặc thử lại sau.", Alert.AlertType.ERROR);
+		         }
+
+		     } catch (Exception e) {
+		         e.printStackTrace();
+		         showAlert("Đã xảy ra lỗi: " + e.getMessage(), Alert.AlertType.ERROR);
+		     }
+		 }
+
+		 private void showAlert(String message, Alert.AlertType type) {
+		        Alert alert = new Alert(type);
+		        alert.setTitle("Thông báo");
+		        alert.setHeaderText(null);
+		        alert.setContentText(message);
+		        alert.showAndWait();
+		    }
 		 
 		 
 		 

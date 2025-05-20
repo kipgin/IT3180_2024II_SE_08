@@ -5,12 +5,14 @@ module IT3180_2024II_SE_08 {
     requires javafx.base;
     requires javafx.graphics;
     
+    
  
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.annotation;
     
     requires java.base;
+	requires java.desktop;
 
     opens app.models to com.fasterxml.jackson.databind;
     opens app.controllers.admin to javafx.fxml;

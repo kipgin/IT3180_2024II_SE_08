@@ -1,6 +1,7 @@
 package app.controllers.admin;
 
 import app.controllers.DashboardControllable;
+
 import app.models.FeeName;
 import app.models.FeeRecord;
 import app.models.User;
@@ -12,6 +13,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -25,8 +27,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -258,22 +265,26 @@ public class FeeManagementController implements DashboardControllable {
 
             {
                 actionBox.setAlignment(Pos.CENTER);
-
-                // Tạo icon và HBox bao
+                
                 ImageView iconGhiNhan = createIcon("/app/assets/img/order.png");
                 ImageView iconChiTiet = createIcon("/app/assets/img/eye.png");
                 ImageView iconXoa = createIcon("/app/assets/img/delete.png");
+                ImageView iconXuatFile = createIcon("/app/assets/img/history.png");
+                ImageView iconBill = createIcon("/app/assets/img/export-file.png");
 
                 HBox boxGhiNhan = wrapIcon(iconGhiNhan, "Ghi nhận nộp phí");
                 HBox boxChiTiet = wrapIcon(iconChiTiet, "Xem chi tiết");
                 HBox boxXoa = wrapIcon(iconXoa, "Xóa hộ");
+                HBox boxXuatFile = wrapIcon(iconXuatFile, "Lịch xử nộp phí");
+                HBox boxBill = wrapIcon(iconBill, "Xem hóa đơn");
 
                 // Sự kiện
                 boxGhiNhan.setOnMouseClicked(e -> openReceiptDialog(getTableView().getItems().get(getIndex())));
                 boxChiTiet.setOnMouseClicked(e -> openDetailDialog(getTableView().getItems().get(getIndex())));
                 boxXoa.setOnMouseClicked(e -> deleteHousehold(getTableView().getItems().get(getIndex())));
-
-                actionBox.getChildren().addAll(boxGhiNhan, boxChiTiet, boxXoa);
+                boxXuatFile.setOnMouseClicked(e -> exportFile(getTableView().getItems().get(getIndex()),(Stage ) tableView.getScene().getWindow()));
+                boxBill.setOnMouseClicked(e -> exportBill(getTableView().getItems().get(getIndex()),(Stage ) tableView.getScene().getWindow()));
+                actionBox.getChildren().addAll(boxGhiNhan, boxChiTiet, boxBill, boxXuatFile, boxXoa);
             }
 
             @Override
@@ -290,23 +301,30 @@ public class FeeManagementController implements DashboardControllable {
             }
 
             private HBox wrapIcon(ImageView icon, String tooltipText) {
-                HBox box = new HBox(icon);
+            	
+            	HBox box = new HBox(icon);
                 box.setAlignment(Pos.CENTER);
                 box.setPadding(new Insets(5));
                 box.setCursor(Cursor.HAND);
-                Tooltip.install(box, new Tooltip(tooltipText));
-                box.getStyleClass().add("action-icon"); // Thêm class CSS nếu cần
+                box.getStyleClass().add("action-icon");
+
+                Tooltip tooltip = new Tooltip(tooltipText);
+                tooltip.setShowDelay(Duration.millis(200));       
+                tooltip.setHideDelay(Duration.millis(100));       
+                tooltip.setShowDuration(Duration.seconds(10));    
+                Tooltip.install(box, tooltip);
+                
                 return box;
             }
         });
 
 
-        colHouseholdId.prefWidthProperty().bind(tableView.widthProperty().multiply(0.15));
+        colHouseholdId.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
         colOwner.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2));
         colStatus.prefWidthProperty().bind(tableView.widthProperty().multiply(0.15));
         colTotalFee.prefWidthProperty().bind(tableView.widthProperty().multiply(0.13));
         colPaid.prefWidthProperty().bind(tableView.widthProperty().multiply(0.17));
-        colAction.prefWidthProperty().bind(tableView.widthProperty().multiply(0.2));
+        colAction.prefWidthProperty().bind(tableView.widthProperty().multiply(0.25));
     }
 
     
@@ -322,7 +340,7 @@ public class FeeManagementController implements DashboardControllable {
                     
                 });
             } catch (Exception e) {
-                Platform.runLater(() -> showError("Lỗi khi lấy dữ liệu: " + e.getMessage()));
+                Platform.runLater(() -> showAlert("Lỗi khi lấy dữ liệu: " + e.getMessage(), Alert.AlertType.ERROR) );
             }
         }).start();
     }
@@ -348,7 +366,7 @@ public class FeeManagementController implements DashboardControllable {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            showError("Không thể mở biên lai: " + e.getMessage());
+            showAlert("Không thể mở biên lai: " + e.getMessage() , Alert.AlertType.ERROR);
         }
     }
     
@@ -366,7 +384,7 @@ public class FeeManagementController implements DashboardControllable {
                 	loadData();
                 	
                 } else {
-                	showError("Xóa hộ khẩu thất bại: " );
+                	showAlert("Xóa hộ khẩu thất bại: " , Alert.AlertType.ERROR);
                 }
                
             }
@@ -400,12 +418,152 @@ public class FeeManagementController implements DashboardControllable {
             e.printStackTrace();
         }
     }
+    
+    public void exportFile(FeeRecord household, Stage stage) {
+    	 try {
+    	        // Cho người dùng chọn nơi lưu file
+    	        FileChooser fileChooser = new FileChooser();
+    	        fileChooser.setTitle("Chọn nơi lưu file");
+    	        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("DOCX files", "*.docx"));
+    	        fileChooser.setInitialFileName("FeeRecord_" + household.getOwnerUserName() + ".docx");
 
-    private void showError(String msg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Lỗi");
+    	        File file = fileChooser.showSaveDialog(stage);
+    	        if (file == null) {
+    	            showAlert("Đã huỷ xuất file", Alert.AlertType.INFORMATION);
+    	            return;
+    	        }
+
+    	        boolean isExport;
+    	        try (FileOutputStream out = new FileOutputStream(file)) {
+    	            isExport = ApiService.exportCharityLog(household.getOwnerUserName(), out);
+    	        }
+
+    	        if (isExport) {
+    	            showAlert("Xuất file thành công!", Alert.AlertType.INFORMATION);
+
+    	            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+    	            confirm.setTitle("Mở file");
+    	            confirm.setHeaderText("Bạn có muốn mở file ngay bây giờ?");
+    	            Optional<ButtonType> result = confirm.showAndWait();
+    	            if (result.isPresent() && result.get() == ButtonType.OK) {
+    	            	if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+    	            	    try {
+    	            	        Desktop.getDesktop().open(file);
+    	            	    } catch (IOException e) {
+    	            	        e.printStackTrace();
+    	            	        showAlert("Không thể mở file: " + e.getMessage(), Alert.AlertType.ERROR);
+    	            	    }
+    	            	}
+    	            }
+    	        } else {
+    	            showAlert("Xuất file thất bại.", Alert.AlertType.ERROR);
+    	        }
+
+    	    } catch (Exception e) {
+    	        e.printStackTrace();
+    	        showAlert("Đã xảy ra lỗi: " + e.getMessage(), Alert.AlertType.ERROR);
+    	    }
+    }
+    
+    public void exportBill(FeeRecord household, Stage stage) {
+   	 try {
+   	        // Cho người dùng chọn nơi lưu file
+   	        FileChooser fileChooser = new FileChooser();
+   	        fileChooser.setTitle("Chọn nơi lưu file");
+   	        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("DOCX files", "*.docx"));
+   	        fileChooser.setInitialFileName("Bill_" + household.getOwnerUserName() + ".docx");
+
+   	        File file = fileChooser.showSaveDialog(stage);
+   	        if (file == null) {
+   	            showAlert("Đã huỷ xuất file", Alert.AlertType.INFORMATION);
+   	            return;
+   	        }
+
+   	        boolean isExport;
+   	        try (FileOutputStream out = new FileOutputStream(file)) {
+   	            isExport = ApiService.exportBill(household.getOwnerUserName(), out);
+   	        }
+
+   	        if (isExport) {
+   	            showAlert("Xuất file thành công!", Alert.AlertType.INFORMATION);
+
+   	            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+   	            confirm.setTitle("Mở file");
+   	            confirm.setHeaderText("Bạn có muốn mở file ngay bây giờ?");
+   	            Optional<ButtonType> result = confirm.showAndWait();
+   	            if (result.isPresent() && result.get() == ButtonType.OK) {
+   	            	if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+   	            	    try {
+   	            	        Desktop.getDesktop().open(file);
+   	            	    } catch (IOException e) {
+   	            	        e.printStackTrace();
+   	            	        showAlert("Không thể mở file: " + e.getMessage(), Alert.AlertType.ERROR);
+   	            	    }
+   	            	}
+   	            }
+   	        } else {
+   	            showAlert("Xuất file thất bại.", Alert.AlertType.ERROR);
+   	        }
+
+   	    } catch (Exception e) {
+   	        e.printStackTrace();
+   	        showAlert("Đã xảy ra lỗi: " + e.getMessage(), Alert.AlertType.ERROR);
+   	    }
+   }
+    
+    @FXML
+    public void exportAll(ActionEvent event) { 
+    	try {
+    		Stage stage = (Stage ) tableView.getScene().getWindow();
+   	        
+   	        FileChooser fileChooser = new FileChooser();
+   	        fileChooser.setTitle("Chọn nơi lưu file");
+   	        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("DOCX files", "*.docx"));
+   	        fileChooser.setInitialFileName("All_Fee"+ ".docx");
+
+   	        File file = fileChooser.showSaveDialog(stage);
+   	        if (file == null) {
+   	            showAlert("Đã huỷ xuất file", Alert.AlertType.INFORMATION);
+   	            return;
+   	        }
+
+   	        boolean isExport;
+   	        try (FileOutputStream out = new FileOutputStream(file)) {
+   	            isExport = ApiService.exportAllBill(out);
+   	        }
+
+   	        if (isExport) {
+   	            showAlert("Xuất file thành công!", Alert.AlertType.INFORMATION);
+
+   	            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+   	            confirm.setTitle("Mở file");
+   	            confirm.setHeaderText("Bạn có muốn mở file ngay bây giờ?");
+   	            Optional<ButtonType> result = confirm.showAndWait();
+   	            if (result.isPresent() && result.get() == ButtonType.OK) {
+   	            	if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+   	            	    try {
+   	            	        Desktop.getDesktop().open(file);
+   	            	    } catch (IOException e) {
+   	            	        e.printStackTrace();
+   	            	        showAlert("Không thể mở file: " + e.getMessage(), Alert.AlertType.ERROR);
+   	            	    }
+   	            	}
+   	            }
+   	        } else {
+   	            showAlert("Xuất file thất bại.", Alert.AlertType.ERROR);
+   	        }
+
+   	    } catch (Exception e) {
+   	        e.printStackTrace();
+   	        showAlert("Đã xảy ra lỗi: " + e.getMessage(), Alert.AlertType.ERROR);
+   	    }
+    }
+
+    private void showAlert(String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Thông báo");
         alert.setHeaderText(null);
-        alert.setContentText(msg);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
@@ -425,11 +583,9 @@ public class FeeManagementController implements DashboardControllable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            showError("Không thể mở form thêm khoản phí: " + e.getMessage());
+            showAlert("Không thể mở form thêm khoản phí: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-    
-   
 
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);

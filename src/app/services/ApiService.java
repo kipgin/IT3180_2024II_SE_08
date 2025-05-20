@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -646,6 +649,34 @@ public class ApiService {
 	        }
 	    }
 	    
+	    public static double updateFee(String username) {
+	        try {
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/update-fee/" + username ) ) 
+	                    .header("Content-Type", "application/json")
+	                    .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            if(response.statusCode() == 200) {
+	            
+	            return ( Double.parseDouble(response.body())) ;
+	            } else {
+	            	return 0;
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return 0;
+	        }
+	    }
+	    
 	    public static boolean updatePayment(PaymentRecord paymenRecord) {
 	        try {
 	            ObjectMapper objectMapper = new ObjectMapper();
@@ -680,7 +711,7 @@ public class ApiService {
 	        try {
 	        	HttpClient client = HttpClient.newHttpClient();
 	            HttpRequest request = HttpRequest.newBuilder()
-	                    .uri(URI.create(BASE_URL + "/feemanage/get-one-ownerusername/" + username))
+	                    .uri(URI.create(BASE_URL + "/feemanage/update-fee/" + username))
 	                    .GET()
 	                    .build();
 
@@ -723,7 +754,198 @@ public class ApiService {
 	        }
 	    }
 	    
+	    public static boolean exportFeeLog(String name , OutputStream outputStream ) {
+	        try {
+	           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	           
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/export-fee-logs-xlsx/" + name))  
+	                    .header("Content-Type", "application/json")
+	                    .GET()
+	                    .build();
+
+	           
+	            HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+
+	            if (response.statusCode() == 200) {
+	                try (InputStream in = response.body()) {
+	                    byte[] buffer = new byte[8192];
+	                    int bytesRead;
+	                    while ((bytesRead = in.read(buffer)) != -1) {
+	                        outputStream.write(buffer, 0, bytesRead);
+	                    }
+	                    return true;
+	                }
+	            } else {
+	                return false;
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean exportBill(String name , OutputStream outputStream ) {
+	        try {
+	           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	           
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feemanage/export-bill/" + name))  
+	                    .header("Content-Type", "application/json")
+	                    .GET()
+	                    .build();
+
+	           
+	            HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+
+	            if (response.statusCode() == 200) {
+	                try (InputStream in = response.body()) {
+	                    byte[] buffer = new byte[8192];
+	                    int bytesRead;
+	                    while ((bytesRead = in.read(buffer)) != -1) {
+	                        outputStream.write(buffer, 0, bytesRead);
+	                    }
+	                    return true;
+	                }
+	            } else {
+	                return false;
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean exportAllBill(OutputStream outputStream ) {
+	        try {
+	           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	           
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/feesection/export-all-fee-logs-xlsx" ))  
+	                    .header("Content-Type", "application/json")
+	                    .GET()
+	                    .build();
+
+	           
+	            HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+
+	            if (response.statusCode() == 200) {
+	                try (InputStream in = response.body()) {
+	                    byte[] buffer = new byte[8192];
+	                    int bytesRead;
+	                    while ((bytesRead = in.read(buffer)) != -1) {
+	                        outputStream.write(buffer, 0, bytesRead);
+	                    }
+	                    return true;
+	                }
+	            } else {
+	                return false;
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
 	    // Charity
+	    
+	    public static boolean exportCharityLog(String name , OutputStream outputStream ) {
+	        try {
+	           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	           
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charity/export-charity-logs-xlsx/" + name))  
+	                    .header("Content-Type", "application/json")
+	                    .GET()
+	                    .build();
+
+	           
+	            HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+
+	            if (response.statusCode() == 200) {
+	                try (InputStream in = response.body()) {
+	                    byte[] buffer = new byte[8192];
+	                    int bytesRead;
+	                    while ((bytesRead = in.read(buffer)) != -1) {
+	                        outputStream.write(buffer, 0, bytesRead);
+	                    }
+	                    outputStream.flush();
+	                    return true;
+	                }
+	            } else {
+	                return false;
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean exportAllCharity(OutputStream outputStream ) {
+	        try {
+	           
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	            
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	           
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/charitysection/export-all-charity-logs-xlsx" ))  
+	                    .header("Content-Type", "application/json")
+	                    .GET()
+	                    .build();
+
+	           
+	            HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+
+	            if (response.statusCode() == 200) {
+	                try (InputStream in = response.body()) {
+	                    byte[] buffer = new byte[8192];
+	                    int bytesRead;
+	                    while ((bytesRead = in.read(buffer)) != -1) {
+	                        outputStream.write(buffer, 0, bytesRead);
+	                    }
+	                    return true;
+	                }
+	            } else {
+	                return false;
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
 	    
 	    public static List<CharityName> getAllCharityName(){
 	    	try {
@@ -1018,6 +1240,31 @@ public class ApiService {
 
 	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 	            return (response.statusCode() == 200) ;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return false;
+	        }
+	    }
+	    
+	    public static boolean delNotification(Notification record) {
+	        try {
+	        	
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            ObjectNode jsonNode = objectMapper.createObjectNode();
+	           
+	           
+	      
+	            String requestBody = objectMapper.writeValueAsString(jsonNode);
+
+	            HttpClient client = HttpClient.newHttpClient();
+	            HttpRequest request = HttpRequest.newBuilder()
+	                    .uri(URI.create(BASE_URL + "/api/notifications/" + record.getId() + "/" + record.getSenderId()))
+	                    .header("Content-Type", "application/json")
+	                    .DELETE()
+	                    .build();
+
+	            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+	            return (response.statusCode() == 200 ) ;
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            return false;
