@@ -1,19 +1,16 @@
 # IT3180_2024II_SE_08
-
+## Chạy trực tiếp:
+- Windows (SDK >= 21) : https://drive.google.com/drive/u/0/folders/1pSoi4IxbQg1kYD-6uwG57-ff_MNuqIoR?fbclid=IwY2xjawKfkIBleHRuA2FlbQIxMABicmlkETFkeWhEUDZjUHp6NEJoM0ljAR4uJIO9y-bEdAeRm1CVmDzWwFzjsu3ZywJV3L2c65IzoJoaLY6Zwf4OaZXMvA_aem_Zz2xr016_bvhiNibUyojqg
 ## Yêu cầu
-
 Trước khi bắt đầu sử dụng ứng dụng, bạn cần đảm bảo máy tính của mình đã cài đặt đầy đủ các công cụ sau:
 
 1. **IDE để chạy Java**:
     - IntelliJ IDEA và Eclipse. Trong đó Intellij sẽ dùng để chạy Backend, và Eclipse sẽ chạy Frontend
-2. **Tài nguyên**:
-    - https://drive.google.com/drive/folders/1DOx_PrBDPG-06iy4j011uQ1ZQ3B-xG4j?usp=sharing
-    - Bạn hãy truy cập vào link trên để lấy hai file application.properties và application.yaml (trong trường hợp bạn muốn chạy project bên backend) (khi đó bạn sẽ cần copy hai file này vào \src\main\resources)
 
 
 ### Chú ý
-1. Nhánh main - Backend
-2. Nhánh fronted - Frontend
+1. Nhánh ver2 - Backend
+2. Nhánh ver2frontend - Frontend
 ## Hướng dẫn cách chạy ứng dụng
 
 Sau khi đã cài đặt tất cả các công cụ cần thiết, bạn có thể làm theo các bước dưới đây để chạy ứng dụng:
@@ -45,8 +42,8 @@ Nếu mọi thứ đã được cấu hình đúng, bạn sẽ thấy giao diệ
 
 Khi mở ứng dụng, bạn sẽ được yêu cầu đăng nhập. Sử dụng thông tin tài khoản mặc định sau để đăng nhập:
 
-- **Tên đăng nhập**: `admin`
-- **Mật khẩu**: `1234`
+- **Tên đăng nhập**: `admin_tam`
+- **Mật khẩu**: `123`
 
 Sau khi đăng nhập thành công, bạn sẽ được chuyển đến giao diện chính của ứng dụng với các tính năng cơ bản.
 
