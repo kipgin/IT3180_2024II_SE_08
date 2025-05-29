@@ -216,6 +216,8 @@ public class FeeManageService {
             return 0.0;
         }
         feeManage.updateTotalFee();
+        feeManage.setPaid(false);
+        feeManageRepository.save(feeManage);
         return feeManage.getTotalFee();
     }
 
