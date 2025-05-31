@@ -19,7 +19,7 @@ public class DueTimeFee {
     @Column(nullable =true)
     private LocalDateTime dueTime;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String recurringTime;
 
     @Column(nullable = true)

@@ -159,6 +159,7 @@ public class CharityService {
             if(section.getName().equals(name)){
                 section.setDonate(section.getDonate()+money);
                 Integer fee=section.getDonate();
+
                 EmailSender emailSender = new EmailSender("caohuythinh@gmail.com","plop alwz udsz opmu");
                 LocalDateTime paidTime = LocalDateTime.now();
                 String subject="Xác nhận đóng góp vào lúc:  " + paidTime.toString();
@@ -176,9 +177,12 @@ public class CharityService {
                 LogCharitySection logCharitySection = new LogCharitySection();
                 logCharitySection.setName(name);
                 logCharitySection.setDonateMoney(money);
-                logCharitySection.setLogCharityTable(logCharityTableService.findByOwnerUserName(ownerUserName));
+                if(logCharityTableService.findByOwnerUserName(ownerUserName) != null) {
+                    logCharitySection.setLogCharityTable(logCharityTableService.findByOwnerUserName(ownerUserName));
+                    logCharitySectionRepository.save(logCharitySection);
+                }
 //                logCharityTableService.addSectionToTable(ownerUserName,logCharitySection);
-                logCharitySectionRepository.save(logCharitySection);
+//                logCharitySectionRepository.save(logCharitySection);
                 break;
             }
         }

@@ -1,6 +1,7 @@
 package com.example.BTL_CNPM.feemanage.service;
 
 
+import com.example.BTL_CNPM.duetimefee.repository.DueTimeFeeRepository;
 import com.example.BTL_CNPM.feemanage.model.FeeName;
 import com.example.BTL_CNPM.feemanage.model.FeeSection;
 import com.example.BTL_CNPM.feemanage.repository.FeeNameRepository;
@@ -58,6 +59,9 @@ public class FeeManageService {
 
     @Autowired
     private LogFeeSectionRepository logFeeSectionRepository;
+
+    @Autowired
+    private DueTimeFeeRepository dueTimeFeeRepository;
 
 
     public boolean existsById(Integer id){
@@ -265,50 +269,53 @@ public class FeeManageService {
         if(feeManage.getAccom_status()== MOVED_OUT  || fee > feeManage.getTotalFee()){
             return false;
         }
-        UsersGmail email = usersGmailRepository.findByUsername(feeManage.getOwnerUserName()).orElse(null);
-        if(email == null){
-            return false;
-        }
-
-
         feeManage.setTotalFee(feeManage.getTotalFee() - fee);
-        EmailSender emailSender = new EmailSender("caohuythinh@gmail.com","plop alwz udsz opmu");
-        LocalDateTime paidTime = LocalDateTime.now();
-        String subject="Xác nhận nộp phí vào lúc:  " + paidTime.toString();
-        String body="Số tiền cư dân vừa nộp là: "+ fee.toString() + " VND." +"\n"
-                    + "Hình thức thanh toán: Tiền mặt."+"\n"
-                    +"Số tiền mà hộ cư dân cần phải nộp còn lại là : "+ feeManage.getTotalFee().toString() +" VND."+"\n";
-
-        if(feeManage.getTotalFee() == 0){
+        if(feeManage.getTotalFee()==0){
             feeManage.setPaid(true);
-            body = body + "Cư dân đã thanh toán hết các khoản phí." + "\n" +"Chúc cư dân một ngày tốt lành!";
         }
-        else{
-            body = body + "Đề nghị cư dân thanh toán số phí còn lại sớm nhất có thể!";
+        UsersGmail email = usersGmailRepository.findByUsername(feeManage.getOwnerUserName()).orElse(null);
+        if(email != null) {
+
+            EmailSender emailSender = new EmailSender("caohuythinh@gmail.com", "plop alwz udsz opmu");
+            LocalDateTime paidTime = LocalDateTime.now();
+            String subject = "Xác nhận nộp phí vào lúc:  " + paidTime.toString();
+            String body = "Số tiền cư dân vừa nộp là: " + fee.toString() + " VND." + "\n"
+                    + "Hình thức thanh toán: Tiền mặt." + "\n"
+                    + "Số tiền mà hộ cư dân cần phải nộp còn lại là : " + feeManage.getTotalFee().toString() + " VND." + "\n";
+
+            if (feeManage.getTotalFee() == 0) {
+                feeManage.setPaid(true);
+                body = body + "Cư dân đã thanh toán hết các khoản phí." + "\n" + "Chúc cư dân một ngày tốt lành!";
+            } else {
+                body = body + "Đề nghị cư dân thanh toán số phí còn lại sớm nhất có thể!";
+            }
+            emailSender.sendEmail(email.getEmail(), subject, body);
         }
         for(FeeSection feeSection : feeManage.getFeeSections()){
+            if(dueTimeFeeRepository.findByName(feeSection.getName()).orElse(null) != null){
+                continue;
+            }
             feeSection.setBlockUsed((double) 0);
         }
-        emailSender.sendEmail(email.getEmail(), subject, body);
+        if(logFeeTableService.findByOwnerUserName(ownerUserName) != null) {
+            LocalDateTime paidTime = LocalDateTime.now();
+            String logFee = "Vào lúc: " + paidTime.toString() + ", " + "hộ cư dân với username: " + feeManage.getOwnerUserName() + " đã thanh toán: "
+                    + fee.toString() + " VND" + " dành cho phí bắt buộc tháng này.";
+            if (feeManage.getTotalFee() == 0) {
+                logFee = logFee + " Hộ cư dân đã thanh toán đủ.";
+            } else {
+                logFee = logFee + " Hộ cư dân còn " + feeManage.getTotalFee().toString() + " VND" + " chưa được thanh toán.";
+            }
+            LogFeeTable logFeeTable = logFeeTableService.findByOwnerUserName(ownerUserName);
 
-        String logFee = "Vào lúc: "+paidTime.toString() +", "+"hộ cư dân với username: " + feeManage.getOwnerUserName() + " đã thanh toán: "
-                        +fee.toString()+ " VND"+ " dành cho phí bắt buộc tháng này.";
-        if(feeManage.getTotalFee()==0){
-            logFee = logFee + " Hộ cư dân đã thanh toán đủ.";
+            LogFeeSection logFeeSection = new LogFeeSection();
+            logFeeSection.setFeePaid(fee);
+            logFeeSection.setLogFeeTable(logFeeTableService.findByOwnerUserName(ownerUserName));
+            logFeeSection.setPaid(feeManage.getPaid());
+            logFeeSection.setLogFeeTable(logFeeTable);
+            logFeeSectionRepository.save(logFeeSection);
+            logFeeTableService.createSectionOfTable(ownerUserName, logFeeSection);
         }
-        else{
-            logFee= logFee +" Hộ cư dân còn " + feeManage.getTotalFee().toString() +" VND" +" chưa được thanh toán.";
-        }
-        LogFeeTable logFeeTable = logFeeTableService.findByOwnerUserName(ownerUserName);
-
-        LogFeeSection logFeeSection = new LogFeeSection();
-        logFeeSection.setFeePaid(fee);
-        logFeeSection.setLogFeeTable(logFeeTableService.findByOwnerUserName(ownerUserName));
-        logFeeSection.setPaid(feeManage.getPaid());
-        logFeeSection.setLogFeeTable(logFeeTable);
-        logFeeSectionRepository.save(logFeeSection);
-        logFeeTableService.createSectionOfTable(ownerUserName,logFeeSection);
-
         feeManageRepository.save(feeManage);
         return true;
     }
